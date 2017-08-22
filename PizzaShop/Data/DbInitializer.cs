@@ -12,12 +12,24 @@ namespace PizzaShop.Data
         public static void Initializer(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var regularUser = new ApplicationUser
+            //todo add address etc
+            var studentUser = new ApplicationUser
             {
                 UserName = "student@test.se",
-                Email = "student@test.se"
+                Email = "student@test.se",
+                Orders = new List<Order>(),
+                Name = "Isabella Gross",
+                Address = "Mjärdgatan 8",
+                Zipcode = "13343",
+                City = "Saltsjöbaden"
             };
-            var regularUserResult = userManager.CreateAsync(regularUser, "Pa$$w0rd").Result;
+            var studentUserResult = userManager.CreateAsync(studentUser, "Pa$$w0rd").Result;
+            var teacherUser = new ApplicationUser
+            {
+                UserName = "teacher@test.se",
+                Email = "teacher@test.se"
+            };
+            var teacherUserResult = userManager.CreateAsync(teacherUser, "Pa$$w0rd").Result;
 
             var adminRole = new IdentityRole { Name = "Admin" };
             var roleResult = roleManager.CreateAsync(adminRole).Result;
@@ -29,7 +41,8 @@ namespace PizzaShop.Data
             };
             var adminUserResult = userManager.CreateAsync(adminUser, "Pa$$w0rd").Result;
 
-
+            //todo refactor
+            //todo add orders and orderdishes
             if (!context.Dishes.Any())
             {
                 var cheese = new Ingredient { Name = "Cheese" };
@@ -41,7 +54,7 @@ namespace PizzaShop.Data
                 var pineapple = new Ingredient { Name = "Pineapple" };
                 var curry = new Ingredient { Name = "Curry" };
                 var bacon = new Ingredient { Name = "Bacon" };
-                var onion = new Ingredient { Name = "Onion" };
+                var banana = new Ingredient { Name = "Banana" };
 
 
                 var margherita = new Dish { Name = "Margherita", Price = 89 };
@@ -56,9 +69,17 @@ namespace PizzaShop.Data
                 var capricciosaHam = new DishIngredient { Dish = capricciosa, Ingredient = ham };
                 var capricciosaTomatoSauce = new DishIngredient { Dish = capricciosa, Ingredient = tomatoSauce };
 
-                var fungiTomatoSauce = new DishIngredient {Dish = fungi, Ingredient = tomatoSauce};
+                var fungiTomatoSauce = new DishIngredient { Dish = fungi, Ingredient = tomatoSauce };
                 var fungiCheese = new DishIngredient { Dish = fungi, Ingredient = cheese };
                 var fungiMushroom = new DishIngredient { Dish = fungi, Ingredient = mushroom };
+
+                var hawaiiTomatoSauce = new DishIngredient { Dish = hawaii, Ingredient = tomatoSauce };
+                var hawaiiCheese = new DishIngredient { Dish = hawaii, Ingredient = cheese };
+                var hawaiiCurry = new DishIngredient { Dish = hawaii, Ingredient = curry };
+                var hawaiiHam = new DishIngredient { Dish = hawaii, Ingredient = ham };
+                var hawaiiMushroom = new DishIngredient { Dish = hawaii, Ingredient = mushroom };
+                var hawaiiBanana = new DishIngredient { Dish = hawaii, Ingredient = banana };
+                var hawaiiPineapple = new DishIngredient { Dish = hawaii, Ingredient = pineapple };
 
                 capricciosa.DishIngredients = new List<DishIngredient>();
                 capricciosa.DishIngredients.Add(capricciosaTomatoSauce);
@@ -74,11 +95,45 @@ namespace PizzaShop.Data
                 fungi.DishIngredients.Add(fungiCheese);
                 fungi.DishIngredients.Add(fungiTomatoSauce);
 
-                context.Ingredients.AddRange(cheese, tomatoSauce, ham, mushroom, bacon, curry, onion, pineapple, shrimp, tuna);
+                hawaii.DishIngredients = new List<DishIngredient>();
+                hawaii.DishIngredients.Add(hawaiiTomatoSauce);
+                hawaii.DishIngredients.Add(hawaiiCheese);
+                hawaii.DishIngredients.Add(hawaiiCurry);
+                hawaii.DishIngredients.Add(hawaiiHam);
+                hawaii.DishIngredients.Add(hawaiiMushroom);
+                hawaii.DishIngredients.Add(hawaiiBanana);
+                hawaii.DishIngredients.Add(hawaiiPineapple);
+
+                var firstOrder = new Order();
+                firstOrder.OrderDateTime = DateTime.Now;
+                firstOrder.User = studentUser;
+
+                var firstOrderHawaii = new OrderDish {Dish = hawaii, Order = firstOrder};
+                var firstOrderFungi = new OrderDish {Dish = fungi, Order = firstOrder};
+
+                var firstOrderDishes = new List<OrderDish>();
+                firstOrderDishes.Add(firstOrderHawaii);
+                firstOrderDishes.Add(firstOrderFungi);
+                firstOrder.OrderDishes = firstOrderDishes;
+
+                foreach (var dish in firstOrder.OrderDishes)
+                {
+                    firstOrder.TotalAmount = firstOrder.TotalAmount + dish.Dish.Price;
+                }
+                //firstOrder.TotalAmount = firstOrder.OrderDishes.ForEach(dish => dish.Dish.Price += dish.Dish.Price);
+
+                //var secondOrder = new Order();
+
+                studentUser.Orders.Add(firstOrder);
+
+                context.Orders.AddRange(firstOrder);
+                context.OrderDishes.AddRange(firstOrderFungi, firstOrderHawaii);
+                context.Ingredients.AddRange(cheese, tomatoSauce, ham, mushroom, bacon, curry, banana, pineapple, shrimp, tuna);
                 context.Dishes.AddRange(capricciosa, margherita, hawaii, fungi);
                 context.DishIngredients.AddRange(capricciosaTomatoSauce, capricciosaCheese,
                     capricciosaHam, margheritaCheese, margheritaTomatoSouce, fungiMushroom,
-                    fungiCheese, fungiTomatoSauce);
+                    fungiCheese, fungiTomatoSauce, hawaiiPineapple, hawaiiBanana, hawaiiCheese,
+                    hawaiiCurry, hawaiiHam, hawaiiMushroom, hawaiiTomatoSauce);
                 context.SaveChanges();
             }
         }
