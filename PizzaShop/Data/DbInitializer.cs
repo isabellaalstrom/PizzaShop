@@ -60,18 +60,19 @@ namespace PizzaShop.Data
                 var fungiCheese = new DishIngredient { Dish = fungi, Ingredient = cheese };
                 var fungiMushroom = new DishIngredient { Dish = fungi, Ingredient = mushroom };
 
+                capricciosa.DishIngredients = new List<DishIngredient>();
+                capricciosa.DishIngredients.Add(capricciosaTomatoSauce);
+                capricciosa.DishIngredients.Add(capricciosaHam);
+                capricciosa.DishIngredients.Add(capricciosaCheese);
 
-                capricciosa.DishIngredients = new List<DishIngredient>
-                {
-                    capricciosaTomatoSauce,
-                    capricciosaHam,
-                    capricciosaCheese,
-                    margheritaCheese,
-                    margheritaTomatoSouce,
-                    fungiMushroom,
-                    fungiCheese,
-                    fungiTomatoSauce
-                };
+                margherita.DishIngredients = new List<DishIngredient>();
+                margherita.DishIngredients.Add(margheritaCheese);
+                margherita.DishIngredients.Add(margheritaTomatoSouce);
+
+                fungi.DishIngredients = new List<DishIngredient>();
+                fungi.DishIngredients.Add(fungiMushroom);
+                fungi.DishIngredients.Add(fungiCheese);
+                fungi.DishIngredients.Add(fungiTomatoSauce);
 
                 context.Ingredients.AddRange(cheese, tomatoSauce, ham, mushroom, bacon, curry, onion, pineapple, shrimp, tuna);
                 context.Dishes.AddRange(capricciosa, margherita, hawaii, fungi);
