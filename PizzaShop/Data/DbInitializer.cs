@@ -34,21 +34,50 @@ namespace PizzaShop.Data
             {
                 var cheese = new Ingredient { Name = "Cheese" };
                 var ham = new Ingredient { Name = "Ham" };
-                var tomato = new Ingredient { Name = "Tomato" };
-                var capricciosa = new Dish { Name = "Capricciosa", Price = 79 };
-                var margaritha = new Dish { Name = "Margaritha", Price = 69 };
-                var hawaii = new Dish { Name = "Hawaii", Price = 79 };
+                var tomatoSauce = new Ingredient { Name = "Tomato" };
+                var mushroom = new Ingredient { Name = "Mushroom" };
+                var shrimp = new Ingredient { Name = "Shrimp" };
+                var tuna = new Ingredient { Name = "Tuna" };
+                var pineapple = new Ingredient { Name = "Pineapple" };
+                var curry = new Ingredient { Name = "Curry" };
+                var bacon = new Ingredient { Name = "Bacon" };
+                var onion = new Ingredient { Name = "Onion" };
+
+
+                var margherita = new Dish { Name = "Margherita", Price = 89 };
+                var fungi = new Dish { Name = "Fungi", Price = 91 };
+                var capricciosa = new Dish { Name = "Capricciosa", Price = 99 };
+                var hawaii = new Dish { Name = "Hawaii", Price = 99 };
+
+                var margheritaCheese = new DishIngredient { Dish = margherita, Ingredient = cheese };
+                var margheritaTomatoSouce = new DishIngredient { Dish = margherita, Ingredient = tomatoSauce };
+
                 var capricciosaCheese = new DishIngredient { Dish = capricciosa, Ingredient = cheese };
                 var capricciosaHam = new DishIngredient { Dish = capricciosa, Ingredient = ham };
-                var capricciosaTomato = new DishIngredient { Dish = capricciosa, Ingredient = tomato };
-                capricciosa.DishIngredients = new List<DishIngredient>();
-                capricciosa.DishIngredients.Add(capricciosaTomato);
-                capricciosa.DishIngredients.Add(capricciosaHam);
-                capricciosa.DishIngredients.Add(capricciosaCheese);
- 
-                context.Ingredients.AddRange(cheese, tomato, ham);
-                context.Dishes.AddRange(capricciosa, margaritha, hawaii);
-                context.DishIngredients.AddRange(capricciosaTomato, capricciosaCheese, capricciosaHam);
+                var capricciosaTomatoSauce = new DishIngredient { Dish = capricciosa, Ingredient = tomatoSauce };
+
+                var fungiTomatoSauce = new DishIngredient {Dish = fungi, Ingredient = tomatoSauce};
+                var fungiCheese = new DishIngredient { Dish = fungi, Ingredient = cheese };
+                var fungiMushroom = new DishIngredient { Dish = fungi, Ingredient = mushroom };
+
+
+                capricciosa.DishIngredients = new List<DishIngredient>
+                {
+                    capricciosaTomatoSauce,
+                    capricciosaHam,
+                    capricciosaCheese,
+                    margheritaCheese,
+                    margheritaTomatoSouce,
+                    fungiMushroom,
+                    fungiCheese,
+                    fungiTomatoSauce
+                };
+
+                context.Ingredients.AddRange(cheese, tomatoSauce, ham, mushroom, bacon, curry, onion, pineapple, shrimp, tuna);
+                context.Dishes.AddRange(capricciosa, margherita, hawaii, fungi);
+                context.DishIngredients.AddRange(capricciosaTomatoSauce, capricciosaCheese,
+                    capricciosaHam, margheritaCheese, margheritaTomatoSouce, fungiMushroom,
+                    fungiCheese, fungiTomatoSauce);
                 context.SaveChanges();
             }
         }
