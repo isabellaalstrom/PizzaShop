@@ -69,7 +69,7 @@ namespace PizzaShop
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Dishes}/{action=Index}/{id?}");
             });
             DbInitializer.Initializer(dbContext, userManager, roleManager);
 
