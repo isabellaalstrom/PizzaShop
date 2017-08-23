@@ -46,6 +46,19 @@ namespace PizzaShop.Data
                 .WithMany(d => d.OrderDishes)
                 .HasForeignKey(od => od.DishId);
 
+
+            builder.Entity<CartItemIngredient>()
+                .HasKey(cii => new {cii.CartItemId, cii.IngredientId});
+            builder.Entity<CartItemIngredient>()
+                .HasOne(di => di.CartItem)
+                .WithMany(d => d.CartItemIngredients)
+                .HasForeignKey(di => di.CartItemId);
+
+            builder.Entity<CartItemIngredient>()
+                .HasOne(a => a.Ingredient)
+                .WithMany(b => b.CartItemIngredients)
+                .HasForeignKey(o => o.IngredientId);
+
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
@@ -57,6 +70,9 @@ namespace PizzaShop.Data
         public DbSet<DishIngredient> DishIngredients { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDish> OrderDishes { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<CartItemIngredient> CartItemIngredients { get; set; }
+        public DbSet<PizzaShop.Models.Cart> Cart { get; set; }
 
     }
 }
