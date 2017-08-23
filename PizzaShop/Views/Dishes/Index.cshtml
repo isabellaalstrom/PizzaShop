@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PizzaShop.Models.Dish>
+﻿@model IEnumerable<Dish>
 
 @{
     ViewData["Title"] = "Index";
@@ -23,7 +23,8 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+    @Html.RenderPartialAsync("_DishPartial", item)
+        @*<tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -35,7 +36,7 @@
                 <a asp-action="Details" asp-route-id="@item.DishId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.DishId">Delete</a>
             </td>
-        </tr>
+        </tr>*@
 }
     </tbody>
 </table>
