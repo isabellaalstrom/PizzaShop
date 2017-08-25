@@ -40,6 +40,7 @@ namespace PizzaShop.Data
                 Email = "admin@test.se"
             };
             var adminUserResult = userManager.CreateAsync(adminUser, "Pa$$w0rd").Result;
+            var result = userManager.AddToRoleAsync(adminUser, "Admin");
 
             //todo refactor
             //todo add orders and orderdishes

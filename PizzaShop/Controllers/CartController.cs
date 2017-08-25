@@ -37,6 +37,16 @@ namespace PizzaShop.Controllers
             return View(cartVM);
         }
 
+        public RedirectToActionResult AddToCart(int dishId)
+        {
+            var selectedDish = _context.Dishes.FirstOrDefault(p => p.DishId == dishId);
+
+            if (selectedDish != null)
+            {
+                _cart.AddToCart(selectedDish, 1);
+            }
+            return RedirectToAction("Index");
+        }
         //// GET: Cart/Details/5
         //public async Task<IActionResult> Details(string id)
         //{
@@ -167,5 +177,6 @@ namespace PizzaShop.Controllers
         //{
         //    return _context.Cart.Any(e => e.CartId == id);
         //}
+
     }
 }

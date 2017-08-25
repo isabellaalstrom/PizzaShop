@@ -37,6 +37,20 @@ namespace PizzaShop.Controllers
             _logger = logger;
         }
 
+        //public async Task<IActionResult> Index()
+        //{
+        //    var currentUsername = HttpContext.User.Identity.Name;
+
+        //    if (currentUsername != null)
+        //    {
+        //        var user = await _userManager.FindByNameAsync(currentUsername);
+        //        return View(user);
+        //    }
+        //    else
+        //        return AccessDenied();
+        //}
+
+
         [TempData]
         public string ErrorMessage { get; set; }
 
