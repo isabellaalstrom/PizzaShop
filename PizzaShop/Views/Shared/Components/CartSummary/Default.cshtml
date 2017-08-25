@@ -1,0 +1,13 @@
+﻿@model CartViewModel
+
+@if (Model.Cart.CartItems.Count > 0)
+{
+    <li>
+        <a>
+            <span class="i fa fa-lg fa-shopping-cart"></span>
+            <span id="cart-status">
+                @Model.Cart.CartItems.Count
+            </span>
+        </a>
+    </li>
+}
