@@ -70,7 +70,7 @@ namespace PizzaShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
+            ViewData["ReturnUrl"] = returnUrl; // todo is null, why?
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout

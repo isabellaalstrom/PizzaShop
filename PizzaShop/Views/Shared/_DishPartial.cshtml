@@ -12,11 +12,14 @@
             @ingredient.Ingredient.Name <text> </text>
         }
     </td>
+@if (User.IsInRole("Admin"))
+{
     <td>
         <a asp-controller="Dishes" asp-action="Edit" asp-route-id="@Model.DishId">Edit</a> |
         <a asp-controller="Dishes" asp-action="Details" asp-route-id="@Model.DishId">Details</a> |
         <a asp-controller="Dishes" asp-action="Delete" asp-route-id="@Model.DishId">Delete</a>
     </td>
+}
     @*<div class="addToCart">
         <p class="button">
             <a class="btn btn-primary" asp-controller="Cart" asp-action="AddToCart"
