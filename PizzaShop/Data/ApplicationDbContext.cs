@@ -30,10 +30,15 @@ namespace PizzaShop.Data
                 .HasForeignKey(di => di.IngredientId);
 
             //för en till många-relation räcker detta
-            builder.Entity<Order>()
+            builder.Entity<Order>() //den som har många av det andra
                 .HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
+
+            builder.Entity<Dish>() //den som har många av det andra
+                .HasOne(o => o.DishType)
+                .WithMany(u => u.Dishes)
+                .HasForeignKey(o => o.DishTypeId);
 
             builder.Entity<OrderDish>()
                 .HasKey(od => new {od.OrderId, od.DishId});
@@ -73,6 +78,7 @@ namespace PizzaShop.Data
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<CartItemIngredient> CartItemIngredients { get; set; }
         public DbSet<PizzaShop.Models.Cart> Cart { get; set; }
+        public DbSet<DishType> DishTypes { get; set; }
 
     }
 }

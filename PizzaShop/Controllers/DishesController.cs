@@ -191,6 +191,7 @@ namespace PizzaShop.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //todo delete dishingredients too
             var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
             _context.Dishes.Remove(dish);
             await _context.SaveChangesAsync();

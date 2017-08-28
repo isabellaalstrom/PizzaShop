@@ -1,7 +1,7 @@
 ﻿@model Dish
 <tr>
     <td>
-        @Html.DisplayFor(modelItem => Model.Name)
+        @Html.DisplayFor(modelItem => Model.DishName)
     </td>
     <td>
         @Html.DisplayFor(modelItem => Model.Price)
@@ -9,7 +9,7 @@
     <td>
         @foreach (var ingredient in Model.DishIngredients)
         {
-            @ingredient.Ingredient.Name <text> </text>
+            @ingredient.Ingredient.IngredientName <text> </text>
         }
     </td>
 @if (User.IsInRole("Admin"))

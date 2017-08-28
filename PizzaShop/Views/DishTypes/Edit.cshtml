@@ -1,4 +1,4 @@
-﻿@model PizzaShop.Models.Ingredient
+﻿@model PizzaShop.Models.DishType
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,17 +6,17 @@
 
 <h2>Edit</h2>
 
-<h4>Ingredient</h4>
+<h4>DishType</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IngredientId" />
+            <input type="hidden" asp-for="DishTypeId" />
             <div class="form-group">
-                <label asp-for="IngredientName" class="control-label"></label>
-                <input asp-for="IngredientName" class="form-control" />
-                <span asp-validation-for="IngredientName" class="text-danger"></span>
+                <label asp-for="DishTypeName" class="control-label"></label>
+                <input asp-for="DishTypeName" class="form-control" />
+                <span asp-validation-for="DishTypeName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

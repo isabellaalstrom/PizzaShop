@@ -44,22 +44,30 @@ namespace PizzaShop.Data
             //todo refactor
             if (!context.Dishes.Any())
             {
-                var cheese = new Ingredient { Name = "Cheese" };
-                var ham = new Ingredient { Name = "Ham" };
-                var tomatoSauce = new Ingredient { Name = "Tomato" };
-                var mushroom = new Ingredient { Name = "Mushroom" };
-                var shrimp = new Ingredient { Name = "Shrimp" };
-                var tuna = new Ingredient { Name = "Tuna" };
-                var pineapple = new Ingredient { Name = "Pineapple" };
-                var curry = new Ingredient { Name = "Curry" };
-                var bacon = new Ingredient { Name = "Bacon" };
-                var banana = new Ingredient { Name = "Banana" };
+                var cheese = new Ingredient { IngredientName = "Cheese" };
+                var ham = new Ingredient { IngredientName = "Ham" };
+                var tomatoSauce = new Ingredient { IngredientName = "Tomato" };
+                var mushroom = new Ingredient { IngredientName = "Mushroom" };
+                var shrimp = new Ingredient { IngredientName = "Shrimp" };
+                var tuna = new Ingredient { IngredientName = "Tuna" };
+                var pineapple = new Ingredient { IngredientName = "Pineapple" };
+                var curry = new Ingredient { IngredientName = "Curry" };
+                var bacon = new Ingredient { IngredientName = "Bacon" };
+                var banana = new Ingredient { IngredientName = "Banana" };
+
+                var pizzaDishType = new DishType{DishTypeName = "Pizza"};
+                var saladDishType = new DishType{DishTypeName = "Salad"};
 
 
-                var margherita = new Dish { Name = "Margherita", Price = 89 };
-                var fungi = new Dish { Name = "Fungi", Price = 91 };
-                var capricciosa = new Dish { Name = "Capricciosa", Price = 99 };
-                var hawaii = new Dish { Name = "Hawaii", Price = 99 };
+                var margherita = new Dish { DishName = "Margherita", Price = 89, DishType = pizzaDishType};
+                var fungi = new Dish { DishName = "Fungi", Price = 91, DishType = pizzaDishType };
+                var capricciosa = new Dish { DishName = "Capricciosa", Price = 99, DishType = pizzaDishType };
+                var hawaii = new Dish { DishName = "Hawaii", Price = 99, DishType = pizzaDishType };
+
+                //pizzaDishType.Dishes.Add(margherita);
+                //pizzaDishType.Dishes.Add(fungi);
+                //pizzaDishType.Dishes.Add(capricciosa);
+                //pizzaDishType.Dishes.Add(hawaii);
 
                 var margheritaCheese = new DishIngredient { Dish = margherita, Ingredient = cheese };
                 var margheritaTomatoSouce = new DishIngredient { Dish = margherita, Ingredient = tomatoSauce };
@@ -125,6 +133,7 @@ namespace PizzaShop.Data
 
                 studentUser.Orders.Add(firstOrder);
 
+                context.DishTypes.AddRange(pizzaDishType, saladDishType);
                 context.Orders.AddRange(firstOrder);
                 context.OrderDishes.AddRange(firstOrderFungi, firstOrderHawaii);
                 context.Ingredients.AddRange(cheese, tomatoSauce, ham, mushroom, bacon, curry, banana, pineapple, shrimp, tuna);
