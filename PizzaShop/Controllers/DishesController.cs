@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Extensions.Internal;
 using PizzaShop.Data;
 using PizzaShop.Models;
 
@@ -59,11 +61,26 @@ namespace PizzaShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("DishId,Name,Price")] Dish dish)
+        public async Task<IActionResult> Create([Bind("DishId,Name,Price")] Dish dish, IFormCollection collection)
         {
             if (ModelState.IsValid)
             {
+                var ingredients = new List<Ingredient>();
+                foreach (var key in collection.Keys.Where(x => x.StartsWith("ingredient-")))
+                {
+                    ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(key.Remove(0, 11))));
+                }
+
                 _context.Add(dish);
+                foreach (var ingredient in ingredients)
+                {
+                    _context.DishIngredients.Add(new DishIngredient
+                    {
+                        Dish = dish,
+                        Ingredient = ingredient
+                    });
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

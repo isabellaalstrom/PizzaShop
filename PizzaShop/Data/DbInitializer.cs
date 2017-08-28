@@ -12,7 +12,6 @@ namespace PizzaShop.Data
         public static void Initializer(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            //todo add address etc
             var studentUser = new ApplicationUser
             {
                 UserName = "student@test.se",
@@ -43,7 +42,6 @@ namespace PizzaShop.Data
             var result = userManager.AddToRoleAsync(adminUser, "Admin");
 
             //todo refactor
-            //todo add orders and orderdishes
             if (!context.Dishes.Any())
             {
                 var cheese = new Ingredient { Name = "Cheese" };
