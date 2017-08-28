@@ -67,19 +67,7 @@ namespace PizzaShop.Controllers
             {
                 _context.Add(dish);
 
-                var ingredients = new List<Ingredient>();
-                foreach (var key in collection.Keys.Where(x => x.StartsWith("ingredient-")))
-                {
-                    ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(key.Remove(0, 11))));
-                }
-                foreach (var ingredient in ingredients)
-                {
-                    _context.DishIngredients.Add(new DishIngredient
-                    {
-                        Dish = dish,
-                        Ingredient = ingredient
-                    });
-                }
+                CreateDishIngredientsListAsync(dish, collection.Keys.Where(x => x.StartsWith("ingredient-")));
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -110,7 +98,7 @@ namespace PizzaShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("DishId,Name,Price")] Dish dish)
+        public async Task<IActionResult> Edit(int id, [Bind("DishId,Name,Price")] Dish dish, IFormCollection collection)
         {
             if (id != dish.DishId)
             {
@@ -121,6 +109,44 @@ namespace PizzaShop.Controllers
             {
                 try
                 {
+                    dish = _context.Dishes.Include(di => di.DishIngredients).SingleOrDefault(m => m.DishId == dish.DishId);
+                    var test = dish.DishIngredients;
+                    //UpdateDishIngredientsListAsync(dish, collection.Keys.Where(x => x.StartsWith("ingredient-")));
+
+                    var ingredients = new List<Ingredient>();
+                    foreach (var key in collection.Keys.Where(x => x.StartsWith("ingredient-")))
+                    {
+                        ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(key.Remove(0, 11))));
+                    }
+                    foreach (var ingredient in ingredients)
+                    {
+                        if (!DishIngredientExists(dish.DishId, ingredient.IngredientId))
+                        {
+                            _context.DishIngredients.Add(new DishIngredient
+                            {
+                                Dish = dish,
+                                Ingredient = ingredient
+                            });
+                        }
+                        else
+                        {
+                            var allIngredientsForThisDish = _context.DishIngredients.Where(di => di.DishId == dish.DishId);
+
+                            var dishesToRemove = new List<DishIngredient>();
+                            foreach (var dishIngredient in allIngredientsForThisDish)
+                            {
+                                if (!(ingredient == dishIngredient.Ingredient && dish.DishId == dishIngredient.DishId))
+                                {
+                                    dishesToRemove.AddRange(dish.DishIngredients.Where(x => x.Equals(dishIngredient)));
+                                    _context.RemoveRange(dish.DishIngredients.Where(x => x.Equals(dishIngredient)));
+
+                                    _context.Remove(dishIngredient);
+                                    _context.Update(dish);
+                                    _context.SaveChanges();
+                                }
+                            }
+                        }
+                    }
                     _context.Update(dish);
                     await _context.SaveChangesAsync();
                 }
@@ -139,6 +165,7 @@ namespace PizzaShop.Controllers
             }
             return View(dish);
         }
+
 
         // GET: Dishes/Delete/5
         [Authorize(Roles = "Admin")]
@@ -171,9 +198,57 @@ namespace PizzaShop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        private async void CreateDishIngredientsListAsync(Dish dish, IEnumerable<string> ingredientCollection)
+        {
+            var ingredients = new List<Ingredient>();
+            foreach (var key in ingredientCollection)
+            {
+                ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(key.Remove(0, 11))));
+            }
+            foreach (var ingredient in ingredients)
+            {
+                _context.DishIngredients.Add(new DishIngredient
+                {
+                    Dish = dish,
+                    Ingredient = ingredient
+                });
+            }
+            await _context.SaveChangesAsync();
+
+        }
+
+        //private async void UpdateDishIngredientsListAsync(Dish dish, IEnumerable<string> ingredientCollection)
+        //{
+        //    var ingredients = new List<Ingredient>();
+        //    foreach (var key in ingredientCollection)
+        //    {
+        //        ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(key.Remove(0, 11))));
+        //    }
+        //    foreach (var ingredient in ingredients)
+        //    {
+        //        if (!DishIngredientExists(dish.DishId, ingredient.IngredientId))
+        //        {
+        //            _context.DishIngredients.Add(new DishIngredient
+        //            {
+        //                Dish = dish,
+        //                Ingredient = ingredient
+        //            });
+        //        }
+        //    }
+        //    await _context.SaveChangesAsync();
+        //}
+
         private bool DishExists(int id)
         {
             return _context.Dishes.Any(e => e.DishId == id);
         }
+
+        private bool DishIngredientExists(int dishId, int ingredientId)
+        {
+            var existingDishIngredients = _context.DishIngredients.Where(d => d.DishId == dishId).Where(i => i.IngredientId == ingredientId);
+            return existingDishIngredients.Any();
+        }
+
+
     }
 }
