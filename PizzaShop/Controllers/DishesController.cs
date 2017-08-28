@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -100,6 +101,7 @@ namespace PizzaShop.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("DishId,Name,Price")] Dish dish, IFormCollection collection)
         {
+
             if (id != dish.DishId)
             {
                 return NotFound();
@@ -132,16 +134,13 @@ namespace PizzaShop.Controllers
                         {
                             var allIngredientsForThisDish = _context.DishIngredients.Where(di => di.DishId == dish.DishId);
 
-                            var dishesToRemove = new List<DishIngredient>();
                             foreach (var dishIngredient in allIngredientsForThisDish)
                             {
                                 if (!(ingredient == dishIngredient.Ingredient && dish.DishId == dishIngredient.DishId))
                                 {
-                                    dishesToRemove.AddRange(dish.DishIngredients.Where(x => x.Equals(dishIngredient)));
-                                    _context.RemoveRange(dish.DishIngredients.Where(x => x.Equals(dishIngredient)));
-
                                     _context.Remove(dishIngredient);
-                                    _context.Update(dish);
+                                    //_context.Update(dish);
+                                    //_context.Update(ingredient);
                                     _context.SaveChanges();
                                 }
                             }
