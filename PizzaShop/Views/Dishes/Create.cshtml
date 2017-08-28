@@ -1,6 +1,5 @@
-﻿@using PizzaShop.Services
-@model PizzaShop.Models.Dish
-@inject PizzaShop.Services.IngredientService _ingredient
+﻿@model Dish
+@inject IngredientService _ingredient
 
 @{
     ViewData["Title"] = "Create";
@@ -28,7 +27,7 @@
                 @foreach (var ingredient in _ingredient.All())
                 {
                     <label class="control-label">@ingredient.Name</label>
-                    <input type="checkbox" name="ingredient-@ingredient.IngredientId" class="form-control"/>
+                    <input type="checkbox" name="ingredient-@ingredient.IngredientId"/>
                     @*<span asp-validation-for="Price" class="text-danger"></span>*@    
                 }
 

@@ -65,13 +65,13 @@ namespace PizzaShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                _context.Add(dish);
+
                 var ingredients = new List<Ingredient>();
                 foreach (var key in collection.Keys.Where(x => x.StartsWith("ingredient-")))
                 {
                     ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(key.Remove(0, 11))));
                 }
-
-                _context.Add(dish);
                 foreach (var ingredient in ingredients)
                 {
                     _context.DishIngredients.Add(new DishIngredient
@@ -96,7 +96,7 @@ namespace PizzaShop.Controllers
                 return NotFound();
             }
 
-            var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
+            var dish = await _context.Dishes.Include(di => di.DishIngredients).SingleOrDefaultAsync(m => m.DishId == id);
             if (dish == null)
             {
                 return NotFound();

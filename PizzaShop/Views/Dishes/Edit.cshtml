@@ -1,4 +1,5 @@
 ﻿@model Dish
+@inject IngredientService _ingredient
 
 @{
     ViewData["Title"] = "Edit";
@@ -24,11 +25,21 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DishIngredients" class="control-label"></label>
                 
-                <input asp-for="DishIngredients" class="form-control" />
-                <span asp-validation-for="DishIngredients" class="text-danger"></span>
+                @foreach (var ingredient in _ingredient.All())
+                {//todo refactor into html-helper?
+                    var isChecked = "";
+                    if (Model.DishIngredients.Exists(x => x.IngredientId == ingredient.IngredientId))
+                    {
+                        isChecked = "checked=\"checked\"";
+                    }
+
+                    <label class="control-label">@ingredient.Name</label>
+                    <input type="checkbox" @isChecked name="ingredient-@ingredient.IngredientId"/>
+
+                }
             </div>
+                
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>

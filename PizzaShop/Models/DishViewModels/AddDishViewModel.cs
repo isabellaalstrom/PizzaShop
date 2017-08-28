@@ -14,7 +14,5 @@ namespace PizzaShop.Models.DishViewModels
         public string Price { get; set; }
         [Display(Name = "Ingredienser")]
         public virtual ICollection<DishIngredient> DishIngredients { get; set; }
-        [Display(Name = "Ingredienser")]
-        public List<SelectIngredient> SelectedIngredients { get; set; }
     }
 }
