@@ -23,7 +23,7 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Cart
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var items = _cart.GetCartItems();
             _cart.CartItems = items;

@@ -38,7 +38,8 @@ namespace PizzaShop
                 .AddDefaultTokenProviders();
 
             // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            //services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IEmailSender, FakeEmailSender>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<IdentityRole>>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

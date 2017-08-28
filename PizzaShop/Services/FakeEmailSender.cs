@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Remotion.Linq.Clauses.Expressions;
 
 namespace PizzaShop.Services
-{
-    // This class is used by the application to send email for account confirmation and password reset.
-    // For more details see https://go.microsoft.com/fwlink/?LinkID=532713
-    public class EmailSender : IEmailSender
+{ 
+    public class FakeEmailSender : IEmailSender
     {
+        //todo injecta i controller som ska skicka mail, skulle nåt mer göras här också?
         public Task SendEmailAsync(string email, string subject, string message)
         {
+            Debug.WriteLine($"{email}{subject}{message}");
             return Task.CompletedTask;
         }
     }
