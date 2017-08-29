@@ -29,21 +29,21 @@ namespace PizzaShop.Controllers
                 ReturnUrl = returnUrl
             });
         }
-        public RedirectToActionResult AddToCart(int dishId, string returnUrl)
+        public RedirectToActionResult AddToCart(int id, string returnUrl)
         {
             Dish dish= _context.Dishes
-                .FirstOrDefault(p => p.DishId == dishId);
+                .FirstOrDefault(p => p.DishId == id);
             if (dish != null)
             {
                 _cart.AddItem(dish, 1);
             }
             return RedirectToAction("Index", new { returnUrl });
         }
-        public RedirectToActionResult RemoveFromCart(int dishId,
+        public RedirectToActionResult RemoveFromCart(int id,
             string returnUrl)
         {
             Dish dish = _context.Dishes
-                .FirstOrDefault(p => p.DishId == dishId);
+                .FirstOrDefault(p => p.DishId == id);
             if (dish != null)
             {
                 _cart.RemoveItem(dish);

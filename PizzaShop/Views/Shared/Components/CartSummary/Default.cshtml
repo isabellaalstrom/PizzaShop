@@ -1,7 +1,7 @@
 ﻿@using PizzaShop.Extensions
 @model Cart
-<div class="">
-    @if (Model.Items.Count() > 0) {
+<div class="navbar-right">
+    @if (Model.Items.Any()) {
         <small class="navbar-text">
             <b>Your cart:</b>
             @Model.Items.Sum(x => x.Quantity) item(s)

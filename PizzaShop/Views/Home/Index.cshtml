@@ -1,30 +1,81 @@
-﻿@model IEnumerable<Dish>
+﻿@model MenuViewModel
 
-@{
-    ViewData["Title"] = "Index";
-}
+<div class="container-fluid">
+    <div id="menu">
+        <div class="panel-body">
+            <h1 class="menu-title">Menu</h1>
+        </div>
 
-<h2>Index</h2>
-<table class="table">
-    <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.DishName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>@Html.DisplayNameFor(model => model.DishIngredients)</th>
-        <th>@Html.DisplayNameFor(model => model.DishType)</th>
-        <th></th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model) {
-        {
-            await Html.RenderPartialAsync("_DishPartial", item);
-        }
+        <div class="col-md-6">
+            <h2 class="title text-center">Pizza</h2>
+            @foreach (var dish in Model.PizzaDishes)
+            {
+                await Html.RenderPartialAsync("_MenuDishPartial", dish);
+            }
+
+        </div>
+        <div class="col-md-6">
+            <h2 class="title text-center">Salad</h2>
+            @foreach (var dish in Model.SalladDishes)
+            {
+                await Html.RenderPartialAsync("_MenuDishPartial", dish);
+            }
+        </div>
+        <div class="clearfix"> </div>
+
+        <div class="col-md-6">
+            <h2 class="title text-center">Pasta</h2>
+            @foreach (var dish in Model.PastaDishes)
+            {
+                await Html.RenderPartialAsync("_MenuDishPartial", dish);
+            }
+        </div>
+        <div class="col-md-6">
+
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+    @*<div class="col-sm-2">
+            <div class="CartSummary" data-spy="affix" data-offset-top="200" data-offset-bottom="400">
+                <div class="panel-body">
+                    <a asp-controller="Cart" asp-action="Index"><h3 class="title">Varukorg</h3></a>
+                </div>
+                <div id="CartSummary">@{ await Html.RenderPartialAsync("_CartSummary", Model.Cart); }</div>
+            </div>
+        </div>*@
+</div>
+
+
+
+
+
+@*@model IEnumerable<Dish>
+
+    @{
+        ViewData["Title"] = "Index";
     }
-    </tbody>
-</table>
+
+    <h2>Index</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DishName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>@Html.DisplayNameFor(model => model.DishIngredients)</th>
+            <th>@Html.DisplayNameFor(model => model.DishType)</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model) {
+            {
+                await Html.RenderPartialAsync("_MenuDishPartial", item);
+            }
+        }
+        </tbody>
+    </table>*@

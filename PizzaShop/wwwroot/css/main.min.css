@@ -1,1 +1,1 @@
-﻿.admin-navbar{background-color:#f00;}
+﻿@import url(https://fonts.googleapis.com/css?family=Slabo+27px|Ubuntu:400,400i,700);.admin-navbar{margin-top:50px;padding-bottom:10px;}.admin-navbar .navbar-link{padding-right:20px;}h1,h2,h3,.title,a{font-family:"Ubuntu",sans-serif;font-weight:normal;}body{font-family:"Slabo",serif;font-weight:normal;}#menu{background-color:#fafafa;}#menu .menu-title{text-align:center;}.body-content{margin-top:50px;}

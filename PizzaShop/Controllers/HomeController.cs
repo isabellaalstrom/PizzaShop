@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaShop.Data;
 using PizzaShop.Models;
+using PizzaShop.Models.MenuViewModels;
 
 namespace PizzaShop.Controllers
 {
@@ -21,25 +22,63 @@ namespace PizzaShop.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Dishes
-                .Include(dt => dt.DishType)
-                .Include(di => di.DishIngredients)
-                .ThenInclude(i => i.Ingredient)
-                .ToListAsync());
+            var model = new MenuViewModel();
+
+            IList<DishModel> pastaDishes = new List<DishModel>();
+            IList<DishModel> pizzaDishes = new List<DishModel>();
+            IList<DishModel> salladDishes = new List<DishModel>();
+
+            TransformDishToModel(pastaDishes, pizzaDishes, salladDishes);
+
+            model.PizzaDishes = pizzaDishes.OrderBy(x => x.Price).ToList();
+            model.PastaDishes = pastaDishes.OrderBy(x => x.Price).ToList();
+            model.SalladDishes = salladDishes.OrderBy(x => x.Price).ToList();
+            //model.Cart = _cart;
+
+            return View(model);
         }
 
-        public IActionResult About()
+        private void TransformDishToModel(IList<DishModel> pastaDishes, IList<DishModel> pizzaDishes, IList<DishModel> salladDishes)
         {
-            ViewData["Message"] = "Your application description page.";
+            var result = _context.Dishes
+                .Include(i => i.DishType)
+                .Include(i => i.DishIngredients)
+                .ThenInclude(i => i.Ingredient);
 
-            return View();
-        }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            foreach (var dish in result)
+            {
+                if (dish.DishType.DishTypeName == "Pizza")
+                {
+                    pizzaDishes.Add(new DishModel
+                    {
+                        DishId = dish.DishId,
+                        DishName = dish.DishName,
+                        Price = dish.Price,
+                        Ingredients = dish.DishIngredients.Where(w => w.Ingredient != null).Select(s => s.Ingredient.IngredientName).ToList()
+                    });
+                }
+                if (dish.DishType.DishTypeName == "Pasta")
+                {
+                    pastaDishes.Add(new DishModel
+                    {
+                        DishId = dish.DishId,
+                        DishName = dish.DishName,
+                        Price = dish.Price,
+                        Ingredients = dish.DishIngredients.Select(s => s.Ingredient.IngredientName).ToList()
+                    });
+                }
+                if (dish.DishType.DishTypeName == "Salad")
+                {
+                    salladDishes.Add(new DishModel
+                    {
+                        DishId = dish.DishId,
+                        DishName = dish.DishName,
+                        Price = dish.Price,
+                        Ingredients = dish.DishIngredients.Select(s => s.Ingredient.IngredientName).ToList()
+                    });
+                }
+            }
         }
 
         public IActionResult Error()

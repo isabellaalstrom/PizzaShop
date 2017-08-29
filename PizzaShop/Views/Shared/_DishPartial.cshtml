@@ -21,17 +21,4 @@
             <a asp-controller="Dishes" asp-action="Delete" asp-route-id="@Model.DishId">Delete</a>
         </td>
     }
-    <td>
-        @*<form id="@Model.DishId" asp-action="AddToCart"
-              asp-controller="Cart" method="post">
-            <input type="hidden" asp-for="DishId" />
-            <input type="hidden" name="returnUrl"
-                   value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-            <span class="lead">
-                <button type="submit" class="btn btn-success btn-sm pull-right">
-                    Add To Cart
-                </button>
-            </span>
-        </form>*@
-    </td>
 </tr>

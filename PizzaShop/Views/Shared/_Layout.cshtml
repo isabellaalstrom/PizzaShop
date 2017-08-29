@@ -11,6 +11,10 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/main.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        @*<link href="~/lib/pizza-web/web/css/style.css" rel="stylesheet" />
+        <link href="~/lib/pizza-web/web/css/bootstrap.css" rel="stylesheet" />*@
+        @*<script src="~/lib/pizza-web/web/js/jquery-1.11.1.min.js"></script>
+            <script src="~/lib/pizza-web/web/js/modernizr.custom.js"></script>*@
 
     </environment>
     <environment exclude="Development">
@@ -35,21 +39,21 @@
                 </button>
 
             </div>
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">MENU</a>
-            <a asp-area="" asp-controller="Contact" asp-action="Index" class="navbar-brand">Contact us</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MENU</a>
+
+            @await Component.InvokeAsync("LoginLogout")
+            @*<a asp-area="" asp-controller="Contact" asp-action="Index" class="navbar-brand">Contact us</a>*@
+
+            @await Component.InvokeAsync("CartSummary")
             @if (User.IsInRole("Admin"))
             {
-                <a asp-area="" asp-controller="Dishes" asp-action="Index" class="navbar-brand">Dishes</a>
-                <a asp-area="" asp-controller="Ingredients" asp-action="Index" class="navbar-brand">Ingredients</a>
-                <a asp-area="" asp-controller="DishTypes" asp-action="Index" class="navbar-brand">Dish types</a>
-
+                <div class="admin-navbar">
+                    <span class="navbar-link fa fa-pencil fa-lg"> </span>
+                    <a asp-area="" asp-controller="Dishes" asp-action="Index" class="navbar-link">Dishes</a>
+                    <a asp-area="" asp-controller="Ingredients" asp-action="Index" class="navbar-link">Ingredients</a>
+                    <a asp-area="" asp-controller="DishTypes" asp-action="Index" class="navbar-link">Dish types</a>
+                </div>
             }
-            <div class="pull-right">
-                @await Component.InvokeAsync("LoginLogout")
-            </div>
-            <div class="pull-right">
-                @await Component.InvokeAsync("CartSummary")
-            </div>
         </div>
     </nav>
 

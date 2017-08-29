@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PizzaShop.Models.MenuViewModels
+{
+    public class MenuViewModel
+    {
+        //public Cart Cart { get; set; }
+        public IList<DishModel> PastaDishes { get; set; }
+        public IList<DishModel> PizzaDishes { get; set; }
+        public IList<DishModel> SalladDishes { get; set; }
+    }
+
+    public class DishModel
+    {
+        public int DishId { get; set; }
+
+        public string DishName { get; set; }
+
+        public decimal Price { get; set; }
+
+        public IList<string> Ingredients { get; set; }
+    }
+}

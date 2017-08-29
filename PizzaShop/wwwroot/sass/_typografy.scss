@@ -1,0 +1,16 @@
+﻿@import url(https://fonts.googleapis.com/css?family=Slabo+27px|Ubuntu:400,400i,700);
+
+$slabo: 'Slabo', serif;
+$ubuntu: 'Ubuntu', sans-serif;
+
+h1, h2, h3, .title, a {
+    font-family: $ubuntu;
+    font-weight: normal;
+}
+body {
+    font-family: $slabo;
+    font-weight: normal;
+}
+.button {
+    
+}
