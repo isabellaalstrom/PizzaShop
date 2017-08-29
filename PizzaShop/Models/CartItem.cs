@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PizzaShop.Entities;
 
 namespace PizzaShop.Models
 {

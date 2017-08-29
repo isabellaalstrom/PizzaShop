@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PizzaShop.Entities;
 using PizzaShop.Models;
 
 namespace PizzaShop.Data

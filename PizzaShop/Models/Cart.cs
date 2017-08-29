@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PizzaShop.Data;
+using PizzaShop.Entities;
 
 namespace PizzaShop.Models
 {

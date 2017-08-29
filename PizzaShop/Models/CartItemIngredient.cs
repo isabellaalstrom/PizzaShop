@@ -1,4 +1,6 @@
-﻿namespace PizzaShop.Models
+﻿using PizzaShop.Entities;
+
+namespace PizzaShop.Models
 {
     public class CartItemIngredient
     {

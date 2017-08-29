@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzaShop.Data;
+using PizzaShop.Entities;
 using PizzaShop.Models;
 
 namespace PizzaShop.Controllers
