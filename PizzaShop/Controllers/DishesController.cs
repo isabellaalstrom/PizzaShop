@@ -24,6 +24,7 @@ namespace PizzaShop.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Dishes
         public async Task<IActionResult> Index()
         {
@@ -34,6 +35,7 @@ namespace PizzaShop.Controllers
                                 .ToListAsync());
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Dishes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
