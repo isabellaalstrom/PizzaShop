@@ -43,7 +43,7 @@ namespace PizzaShop.Tests
         }
 
         [Fact]
-        public void Can_Remove_Line()
+        public void Can_Remove_Item()
         {
             // Arrange - create some test Dishs
             Dish p1 = new Dish { DishId = 1, DishName = "P1" };
@@ -62,6 +62,22 @@ namespace PizzaShop.Tests
             // Assert
             Assert.Equal(0, target.Items.Count(c => c.Dish == p2));
             Assert.Equal(2, target.Items.Count());
+        }
+
+        [Fact]
+        public void Can_Clear_Contents()
+        {
+            // Arrange - create some test Dishs
+            Dish p1 = new Dish { DishId = 1, DishName = "P1", Price = 100 };
+            Dish p2 = new Dish { DishId = 2, DishName = "P2", Price = 50 };
+            Cart target = new Cart();
+            // Arrange - add some items
+            target.AddItem(p1, 1);
+            target.AddItem(p2, 1);
+            // Act - reset the cart
+            target.Clear();
+            // Assert
+            Assert.Equal(0, target.Items.Count());
         }
     }
 }
