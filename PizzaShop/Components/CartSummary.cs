@@ -10,24 +10,14 @@ namespace PizzaShop.Components
 {
     public class CartSummary : ViewComponent
     {
-        public readonly Cart _cart;
-
-        public CartSummary(Cart cart)
+        private Cart cart;
+        public CartSummary(Cart cartService)
         {
-            _cart = cart;
+            cart = cartService;
         }
-
-        //public IViewComponentResult Invoke()
-        //{
-        //    //var items = _cart.GetCartItems();
-        //    var items = new List<CartItem>() { new CartItem(), new CartItem() };
-        //    _cart.CartItems = items;
-        //    var cartVM = new CartViewModel
-        //    {
-        //        Cart = _cart,
-        //        TotalAmount = _cart.GetCartTotal()
-        //    };
-        //    return View(cartVM);
-        //}
+        public IViewComponentResult Invoke()
+        {
+            return View(cart);
+        }
     }
 }

@@ -58,13 +58,13 @@ namespace PizzaShop.Data
                 var cream = new Ingredient { IngredientName = "Cream" };
                 var onion = new Ingredient { IngredientName = "Onion" };
 
-                var pizzaDishType = new DishType{DishTypeName = "Pizza"};
-                var saladDishType = new DishType{DishTypeName = "Salad"};
-                var pastaDishType = new DishType {DishTypeName = "Pasta"};
+                var pizzaDishType = new DishType { DishTypeName = "Pizza" };
+                var saladDishType = new DishType { DishTypeName = "Salad" };
+                var pastaDishType = new DishType { DishTypeName = "Pasta" };
                 context.DishTypes.AddRange(pizzaDishType, saladDishType, pastaDishType);
 
 
-                var margherita = new Dish { DishName = "Margherita", Price = 89, DishType = pizzaDishType};
+                var margherita = new Dish { DishName = "Margherita", Price = 89, DishType = pizzaDishType };
                 var fungi = new Dish { DishName = "Fungi", Price = 91, DishType = pizzaDishType };
                 var capricciosa = new Dish { DishName = "Capricciosa", Price = 99, DishType = pizzaDishType };
                 var hawaii = new Dish { DishName = "Hawaii", Price = 99, DishType = pizzaDishType };
@@ -72,11 +72,6 @@ namespace PizzaShop.Data
                 var carbonara = new Dish { DishName = "Carbonara", Price = 89, DishType = pastaDishType };
                 var lasagne = new Dish { DishName = "Lasagne", Price = 95, DishType = pastaDishType };
                 var pastaConTono = new Dish { DishName = "Pasta Con Tono", Price = 92, DishType = pastaDishType };
-
-                //pizzaDishType.Dishes.Add(margherita);
-                //pizzaDishType.Dishes.Add(fungi);
-                //pizzaDishType.Dishes.Add(capricciosa);
-                //pizzaDishType.Dishes.Add(hawaii);
 
                 var margheritaCheese = new DishIngredient { Dish = margherita, Ingredient = cheese };
                 var margheritaTomatoSouce = new DishIngredient { Dish = margherita, Ingredient = tomatoSauce };
@@ -134,8 +129,8 @@ namespace PizzaShop.Data
                 firstOrder.OrderDateTime = DateTime.Now;
                 firstOrder.User = studentUser;
 
-                var firstOrderHawaii = new OrderDish {Dish = hawaii, Order = firstOrder};
-                var firstOrderFungi = new OrderDish {Dish = fungi, Order = firstOrder};
+                var firstOrderHawaii = new OrderDish { Dish = hawaii, Order = firstOrder };
+                var firstOrderFungi = new OrderDish { Dish = fungi, Order = firstOrder };
 
                 var firstOrderDishes = new List<OrderDish>();
                 firstOrderDishes.Add(firstOrderHawaii);
@@ -148,11 +143,11 @@ namespace PizzaShop.Data
                 }
                 //firstOrder.TotalAmount = firstOrder.OrderDishes.ForEach(dish => dish.Dish.Price += dish.Dish.Price);
 
-                //var secondOrder = new Order();
+                var secondOrder = new Order();
 
                 studentUser.Orders.Add(firstOrder);
 
-                //context.DishTypes.AddRange(pizzaDishType, saladDishType, pastaDishType);
+                context.DishTypes.AddRange(pizzaDishType, saladDishType, pastaDishType);
                 context.Orders.AddRange(firstOrder);
                 context.OrderDishes.AddRange(firstOrderFungi, firstOrderHawaii);
                 context.Ingredients.AddRange(cheese, tomatoSauce, ham, mushroom, bacon, curry, banana, pineapple, shrimp, tuna);

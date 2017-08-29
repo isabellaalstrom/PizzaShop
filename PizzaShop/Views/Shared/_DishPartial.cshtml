@@ -1,4 +1,5 @@
-﻿@model Dish
+﻿@using PizzaShop.Extensions
+@model Dish
 <tr>
     <td>
         @Html.DisplayFor(modelItem => Model.DishName)
@@ -13,18 +14,24 @@
         }
     </td>
     <td>@Model.DishType.DishTypeName</td>
-@if (User.IsInRole("Admin"))
-{
-    <td>
-        <a asp-controller="Dishes" asp-action="Edit" asp-route-id="@Model.DishId">Edit</a> |
-        <a asp-controller="Dishes" asp-action="Details" asp-route-id="@Model.DishId">Details</a> |
-        <a asp-controller="Dishes" asp-action="Delete" asp-route-id="@Model.DishId">Delete</a>
-    </td>
-}
-    @*<div class="addToCart">
-        <p class="button">
-            <a class="btn btn-primary" asp-controller="Cart" asp-action="AddToCart"
-               asp-route-pieId="@Model.DishId">Add to cart</a>
-        </p>
-    </div>*@
+    @if (User.IsInRole("Admin"))
+    {
+        <td>
+            <a asp-controller="Dishes" asp-action="Edit" asp-route-id="@Model.DishId">Edit</a> |
+            <a asp-controller="Dishes" asp-action="Details" asp-route-id="@Model.DishId">Details</a> |
+            <a asp-controller="Dishes" asp-action="Delete" asp-route-id="@Model.DishId">Delete</a>
+        </td>
+    }
 </tr>
+<form id="@Model.DishId" asp-action="AddToCart"
+      asp-controller="Cart" method="post">
+    <input type="hidden" asp-for="DishId" />
+    <input type="hidden" name="returnUrl"
+           value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+    <span class="lead">
+        @Model.DishName
+        <button type="submit" class="btn btn-success btn-sm pull-right">
+            Add To Cart
+        </button>
+    </span>
+</form>

@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace PizzaShop.Models.CartViewModels
 {
-    public class CartViewModel
+    public class CartIndexViewModel
     {
         public Cart Cart { get; set; }
-        public int TotalAmount { get; set; }
+        public string ReturnUrl { get; set; }
         //todo maybe also user info, if logged in?
     }
 }

@@ -17,6 +17,9 @@ namespace PizzaShop.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Cart>()
+                .HasKey(cart => cart.CartId);
+
             //Säger explicit vilka ids som ska användas som primary key i dishingredient
             builder.Entity<DishIngredient>()
                 .HasKey(di => new { di.DishId, di.IngredientId });
@@ -77,8 +80,7 @@ namespace PizzaShop.Data
         public DbSet<OrderDish> OrderDishes { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<CartItemIngredient> CartItemIngredients { get; set; }
-        public DbSet<PizzaShop.Models.Cart> Cart { get; set; }
         public DbSet<DishType> DishTypes { get; set; }
-
+        public DbSet<Cart> Carts { get; set; }
     }
 }
