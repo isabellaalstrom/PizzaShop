@@ -3,7 +3,7 @@
 $slabo: 'Slabo', serif;
 $ubuntu: 'Ubuntu', sans-serif;
 
-h1, h2, h3, .title, a {
+h1, h2, h3, .title, a, th {
     font-family: $ubuntu;
     font-weight: normal;
 }
@@ -11,6 +11,10 @@ body {
     font-family: $slabo;
     font-weight: normal;
 }
-.button {
-    
+button, .btn {
+    font-family: $ubuntu;
+    font-weight: 400;
+}
+.btn-danger {
+    font-style: italic;
 }

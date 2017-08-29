@@ -1,7 +1,7 @@
 ﻿@model DishModel
 
 <div class="menu-text">
-    <div class="menu-text-left">
+    <div class="col-md-8">
         <h3 class="title">@Model.DishName</h3>
         <h4>
             @foreach (var ingredient in Model.Ingredients)
@@ -11,37 +11,17 @@
         </h4>
 
     </div>
-    <div class="menu-text-middle">
-        <h4>@Model.Price.ToString("c")</h4>
-    </div>
-    <div class="menu-text-right">
-        <form id="@Model.DishId" asp-action="AddToCart"
-              asp-controller="Cart" asp-route-id="@Model.DishId" method="post">
-            <input type="hidden" asp-for="@Model.DishId" />
-            <input type="hidden" name="returnUrl"
-                   value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-            <span class="lead">
-                <button type="submit" class="btn btn-success btn-sm pull-right">
-                    Add To Cart
-                </button>
-            </span>
-        </form>
-                                
-
-        @*<a class="btn btn-success btn-sm"
-                                   asp-controller="Cart"
-                                   asp-action="AddToCart"
-                                   asp-route-id="@Model.DishId"
-                                   data-ajax="true"
-                                   data-ajax-method="GET"
-                                   data-ajax-mode="replace"
-                                   data-ajax-update="#CartSummary">Lägg till i varukorg</a>*@
-
-        @*<a class="btn btn-success btn-sm btn-margin-top"
+    <div class="col-md-4">
+        <h3>@Model.Price.ToString("c")</h3>
+        <a class="btn-success btn-sm" asp-action="AddToCart" asp-controller="Cart"
+           asp-route-id="@Model.DishId"
+           asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">Add to cart</a>
+    </div> 
+        
+@*todo*@        @*<a class="btn btn-success btn-sm btn-margin-top"
                                    asp-controller="Cart"
                                    asp-action="BuyNow"
                                    asp-route-id="@Model.DishId">Köp</a>*@
 
-    </div>
     <div class="clearfix"> </div>
 </div>
