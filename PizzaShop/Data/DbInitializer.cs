@@ -54,15 +54,22 @@ namespace PizzaShop.Data
                 var curry = new Ingredient { IngredientName = "Curry" };
                 var bacon = new Ingredient { IngredientName = "Bacon" };
                 var banana = new Ingredient { IngredientName = "Banana" };
+                var meat = new Ingredient { IngredientName = "Meat" };
+                var cream = new Ingredient { IngredientName = "Cream" };
+                var onion = new Ingredient { IngredientName = "Onion" };
 
                 var pizzaDishType = new DishType{DishTypeName = "Pizza"};
                 var saladDishType = new DishType{DishTypeName = "Salad"};
-
+                var pastaDishType = new DishType { DishTypeName = "Pasta" };
 
                 var margherita = new Dish { DishName = "Margherita", Price = 89, DishType = pizzaDishType};
                 var fungi = new Dish { DishName = "Fungi", Price = 91, DishType = pizzaDishType };
                 var capricciosa = new Dish { DishName = "Capricciosa", Price = 99, DishType = pizzaDishType };
                 var hawaii = new Dish { DishName = "Hawaii", Price = 99, DishType = pizzaDishType };
+
+                var carbonara = new Dish { DishName = "Carbonara", Price = 89, DishType = pastaDishType };
+                var lasagne = new Dish { DishName = "Lasagne", Price = 95, DishType = pastaDishType };
+                var pastaConTono = new Dish { DishName = "Pasta Con Tono", Price = 92, DishType = pastaDishType };
 
                 //pizzaDishType.Dishes.Add(margherita);
                 //pizzaDishType.Dishes.Add(fungi);
@@ -87,6 +94,16 @@ namespace PizzaShop.Data
                 var hawaiiMushroom = new DishIngredient { Dish = hawaii, Ingredient = mushroom };
                 var hawaiiBanana = new DishIngredient { Dish = hawaii, Ingredient = banana };
                 var hawaiiPineapple = new DishIngredient { Dish = hawaii, Ingredient = pineapple };
+
+                var carbonaraCheese = new DishIngredient { Dish = carbonara, Ingredient = tomatoSauce };
+                var carbonaraCream = new DishIngredient { Dish = carbonara, Ingredient = cream };
+                var carbonaraBacon = new DishIngredient { Dish = carbonara, Ingredient = bacon };
+                var lasagneCheese = new DishIngredient { Dish = lasagne, Ingredient = cheese };
+                var lasagneCream = new DishIngredient { Dish = lasagne, Ingredient = cream };
+                var lasagneMeat = new DishIngredient { Dish = lasagne, Ingredient = meat };
+                var pastaConTonoTomatoSauce = new DishIngredient { Dish = pastaConTono, Ingredient = tomatoSauce };
+                var pastaConTonoTuna = new DishIngredient { Dish = pastaConTono, Ingredient = tuna };
+                var pastaConTonoOnion = new DishIngredient { Dish = pastaConTono, Ingredient = onion };
 
                 capricciosa.DishIngredients = new List<DishIngredient>();
                 capricciosa.DishIngredients.Add(capricciosaTomatoSauce);
@@ -133,7 +150,7 @@ namespace PizzaShop.Data
 
                 studentUser.Orders.Add(firstOrder);
 
-                context.DishTypes.AddRange(pizzaDishType, saladDishType);
+                context.DishTypes.AddRange(pizzaDishType, saladDishType, pastaDishType);
                 context.Orders.AddRange(firstOrder);
                 context.OrderDishes.AddRange(firstOrderFungi, firstOrderHawaii);
                 context.Ingredients.AddRange(cheese, tomatoSauce, ham, mushroom, bacon, curry, banana, pineapple, shrimp, tuna);
@@ -141,7 +158,9 @@ namespace PizzaShop.Data
                 context.DishIngredients.AddRange(capricciosaTomatoSauce, capricciosaCheese,
                     capricciosaHam, margheritaCheese, margheritaTomatoSouce, fungiMushroom,
                     fungiCheese, fungiTomatoSauce, hawaiiPineapple, hawaiiBanana, hawaiiCheese,
-                    hawaiiCurry, hawaiiHam, hawaiiMushroom, hawaiiTomatoSauce);
+                    hawaiiCurry, hawaiiHam, hawaiiMushroom, hawaiiTomatoSauce, carbonaraCheese,
+                    carbonaraCream, carbonaraBacon, lasagneCheese, lasagneCream, lasagneMeat,
+                    pastaConTonoTuna, pastaConTonoTomatoSauce, pastaConTonoOnion);
                 context.SaveChanges();
             }
         }
