@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PizzaShop.Entities;
 using PizzaShop.Models;
 using PizzaShop.Models.ManageViewModels;
 using PizzaShop.Services;

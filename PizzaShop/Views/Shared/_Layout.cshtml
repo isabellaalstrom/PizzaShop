@@ -21,72 +21,69 @@
     </environment>
 </head>
 <body>
-   
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"/>
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" />
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">MENU</a>
+            <a asp-area="" asp-controller="Contact" asp-action="Index" class="navbar-brand">Contact us</a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-area="" asp-controller="Dishes" asp-action="Index" class="navbar-brand">Dishes</a>
+                <a asp-area="" asp-controller="Ingredients" asp-action="Index" class="navbar-brand">Ingredients</a>
+                <a asp-area="" asp-controller="DishTypes" asp-action="Index" class="navbar-brand">Dish types</a>
+
+            }
+            <div class="pull-right">
+                @await Component.InvokeAsync("LoginLogout")
+            </div>
+            <div class="pull-right">
+                @await Component.InvokeAsync("CartSummary")
+            </div>
         </div>
-        <div class="navbar-collapse collapse navbar-left">
-            <ul class="nav navbar-nav">
-                <li><a asp-area="" asp-controller="Dishes" asp-action="Index" class="navbar-brand">Menu</a></li>
-                <li><a asp-area="" asp-controller="Contact" asp-action="Index" class="navbar-brand">Contact us</a></li>
-                @if (User.IsInRole("Admin"))
-                {
-                    <li><a asp-area="" asp-controller="Dishes" asp-action="Index" class="navbar-brand">Dishes</a></li>
-                    <li><a asp-area="" asp-controller="Ingredients" asp-action="Index" class="navbar-brand">Ingredients</a></li>
-                    <li><a asp-area="" asp-controller="DishTypes" asp-action="Index" class="navbar-brand">Dish types</a></li>
+    </nav>
 
-                }
 
-                <li><div class="">@await Component.InvokeAsync("CartSummary")</div></li>
 
-            </ul>
-            @await Component.InvokeAsync("LoginLogout")
-            <div></div>
-        </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2017 - PizzaShop</p>
+        </footer>
     </div>
-</nav>
 
- 
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
 
-<div class="container body-content">
-    @RenderBody()
-    <hr/>
-    <footer>
-        <p>&copy; 2017 - PizzaShop</p>
-    </footer>
-</div>
-
-<environment include="Development">
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-</environment>
-<environment exclude="Development">
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-            asp-fallback-test="window.jQuery"
-            crossorigin="anonymous"
-            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-    </script>
-    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-            crossorigin="anonymous"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-    </script>
-    <script src="~/js/site.min.js" asp-append-version="true"></script>
-</environment>
-
-@RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

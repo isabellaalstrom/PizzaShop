@@ -1,4 +1,5 @@
-﻿@model ApplicationUser
+﻿@using PizzaShop.Entities
+@model PizzaShop.Entities.ApplicationUser
     
 @{
     var userName = User.IsInRole("Admin") ? "Admin" : Model.Name;

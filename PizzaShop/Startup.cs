@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PizzaShop.Data;
+using PizzaShop.Entities;
 using PizzaShop.Models;
 using PizzaShop.Services;
 
@@ -86,7 +87,7 @@ namespace PizzaShop
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Dishes}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
             DbInitializer.Initializer(dbContext, userManager, roleManager);
 
