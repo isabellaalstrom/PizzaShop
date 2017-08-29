@@ -17,17 +17,17 @@ namespace PizzaShop.Components
             _cart = cart;
         }
 
-        public IViewComponentResult Invoke()
-        {
-            //var items = _cart.GetCartItems();
-            var items = new List<CartItem>() { new CartItem(), new CartItem() };
-            _cart.CartItems = items;
-            var cartVM = new CartViewModel
-            {
-                Cart = _cart,
-                TotalAmount = _cart.GetCartTotal()
-            };
-            return View(cartVM);
-        }
+        //public IViewComponentResult Invoke()
+        //{
+        //    //var items = _cart.GetCartItems();
+        //    var items = new List<CartItem>() { new CartItem(), new CartItem() };
+        //    _cart.CartItems = items;
+        //    var cartVM = new CartViewModel
+        //    {
+        //        Cart = _cart,
+        //        TotalAmount = _cart.GetCartTotal()
+        //    };
+        //    return View(cartVM);
+        //}
     }
 }

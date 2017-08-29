@@ -43,7 +43,7 @@ namespace PizzaShop
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<IdentityRole>>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped(Cart.GetCart);
+            //services.AddScoped(Cart.GetCart);
             services.AddTransient<IngredientService>();
             services.AddTransient<DishTypeService>();
 
