@@ -94,7 +94,7 @@ namespace PizzaShop.Controllers
                 return NotFound();
             }
 
-            var dish = await _context.Dishes.Include(di => di.DishIngredients).SingleOrDefaultAsync(m => m.DishId == id);
+            var dish = await _context.Dishes.Include(dt => dt.DishType).Include(di => di.DishIngredients).SingleOrDefaultAsync(m => m.DishId == id);
             if (dish == null)
             {
                 return NotFound();
@@ -108,7 +108,7 @@ namespace PizzaShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("DishId,Name,Price")] Dish dish, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, [Bind("DishId,DishName,Price")] Dish dish, IFormCollection collection)
         {
 
             if (id != dish.DishId)
@@ -120,10 +120,10 @@ namespace PizzaShop.Controllers
             {
                 try
                 {
-                    dish = _context.Dishes.Include(di => di.DishIngredients).SingleOrDefault(m => m.DishId == dish.DishId);
-                    var test = dish.DishIngredients;
+                    //var tempDish = _context.Dishes.Include(di => di.DishIngredients).SingleOrDefault(m => m.DishId == dish.DishId);
+                    //var test = tempDish.DishIngredients;
                     //UpdateDishIngredientsListAsync(dish, collection.Keys.Where(x => x.StartsWith("ingredient-")));
-
+                    //todo add dishtype
                     var ingredients = new List<Ingredient>();
                     foreach (var key in collection.Keys.Where(x => x.StartsWith("ingredient-")))
                     {
@@ -155,6 +155,9 @@ namespace PizzaShop.Controllers
                             }
                         }
                     }
+                    var dishTypeId = Int32.Parse(collection["dishType"]);
+                    var dishType = _context.DishTypes.FirstOrDefault(dt => dt.DishTypeId == dishTypeId);
+                    dish.DishType = dishType;
                     _context.Update(dish);
                     await _context.SaveChangesAsync();
                 }

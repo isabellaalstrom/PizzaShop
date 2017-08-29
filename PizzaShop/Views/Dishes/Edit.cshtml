@@ -1,6 +1,6 @@
-﻿@using PizzaShop.Entities
-@model PizzaShop.Entities.Dish
+﻿@model Dish
 @inject IngredientService _ingredient
+@inject DishTypeService _dishType
 
 @{
     ViewData["Title"] = "Edit";
@@ -40,7 +40,19 @@
 
                 }
             </div>
-            @*todo dishtype*@
+            @*todo dishtype checked*@
+            <div class="form-group">
+                @foreach (var dishType in _dishType.All())
+                {
+                    var isChecked = "";
+                    if (Model.DishIngredients.Exists(x => x.Dish.DishType.DishTypeId == dishType.DishTypeId))
+                    {
+                        isChecked = "checked=\"checked\"";
+                    }
+                    <label class="control-label">@dishType.DishTypeName</label>
+                    <input @isChecked type="radio" name="dishType" id="@dishType.DishTypeId" value="@dishType.DishTypeId"/>
+                }
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
