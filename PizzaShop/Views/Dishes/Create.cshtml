@@ -1,5 +1,6 @@
 ﻿@model Dish
 @inject IngredientService _ingredient
+@inject DishTypeService _dishType
 
 @{
     ViewData["Title"] = "Create";
@@ -31,6 +32,13 @@
                     @*<span asp-validation-for="Price" class="text-danger"></span>*@    
                 }
 
+            </div>
+            <div class="form-group">
+                @foreach (var dishType in _dishType.All())
+                {
+                    <label class="control-label">@dishType.DishTypeName</label>
+                    <input type="radio" name="dishType" id="@dishType.DishTypeId" value="@dishType.DishTypeId" />
+                }
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

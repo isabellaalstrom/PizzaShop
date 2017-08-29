@@ -60,7 +60,9 @@ namespace PizzaShop.Data
 
                 var pizzaDishType = new DishType{DishTypeName = "Pizza"};
                 var saladDishType = new DishType{DishTypeName = "Salad"};
-                var pastaDishType = new DishType { DishTypeName = "Pasta" };
+                var pastaDishType = new DishType {DishTypeName = "Pasta"};
+                context.DishTypes.AddRange(pizzaDishType, saladDishType, pastaDishType);
+
 
                 var margherita = new Dish { DishName = "Margherita", Price = 89, DishType = pizzaDishType};
                 var fungi = new Dish { DishName = "Fungi", Price = 91, DishType = pizzaDishType };
@@ -150,7 +152,7 @@ namespace PizzaShop.Data
 
                 studentUser.Orders.Add(firstOrder);
 
-                context.DishTypes.AddRange(pizzaDishType, saladDishType, pastaDishType);
+                //context.DishTypes.AddRange(pizzaDishType, saladDishType, pastaDishType);
                 context.Orders.AddRange(firstOrder);
                 context.OrderDishes.AddRange(firstOrderFungi, firstOrderHawaii);
                 context.Ingredients.AddRange(cheese, tomatoSauce, ham, mushroom, bacon, curry, banana, pineapple, shrimp, tuna);

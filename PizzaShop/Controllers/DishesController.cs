@@ -26,7 +26,11 @@ namespace PizzaShop.Controllers
         // GET: Dishes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Dishes.Include(d => d.DishIngredients).ThenInclude(d => d.Ingredient).ToListAsync());
+            return View(await _context.Dishes
+                                .Include(dt => dt.DishType)
+                                .Include(di => di.DishIngredients)
+                                .ThenInclude(i => i.Ingredient)
+                                .ToListAsync());
         }
 
         // GET: Dishes/Details/5
@@ -38,8 +42,9 @@ namespace PizzaShop.Controllers
             }
 
             var dish = await _context.Dishes
-                .Include(d => d.DishIngredients)
-                .ThenInclude(di => di.Ingredient)
+                .Include(dt => dt.DishType)
+                .Include(di => di.DishIngredients)
+                .ThenInclude(i => i.Ingredient)
                 .SingleOrDefaultAsync(m => m.DishId == id);
             if (dish == null)
             {
@@ -62,10 +67,13 @@ namespace PizzaShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("DishId,Name,Price")] Dish dish, IFormCollection collection)
+        public async Task<IActionResult> Create([Bind("DishId,DishName,Price")] Dish dish, IFormCollection collection)
         {
             if (ModelState.IsValid)
             {
+                var dishTypeId = Int32.Parse(collection["dishType"]);
+                var dishType = _context.DishTypes.FirstOrDefault(dt => dt.DishTypeId == dishTypeId);
+                dish.DishType = dishType;
                 _context.Add(dish);
 
                 CreateDishIngredientsListAsync(dish, collection.Keys.Where(x => x.StartsWith("ingredient-")));

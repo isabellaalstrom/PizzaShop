@@ -45,6 +45,7 @@ namespace PizzaShop
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(Cart.GetCart);
             services.AddTransient<IngredientService>();
+            services.AddTransient<DishTypeService>();
 
             services.AddDistributedMemoryCache();
 
