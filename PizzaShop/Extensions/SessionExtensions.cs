@@ -11,6 +11,7 @@ namespace PizzaShop.Extensions
     {
         public static void SetJson(this ISession session, string key, object value)
         {
+            //cart > cartitems > cartitemingredients
             session.SetString(key, JsonConvert.SerializeObject(value));
         }
         public static T GetJson<T>(this ISession session, string key)

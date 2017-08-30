@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using PizzaShop.Entities;
 using PizzaShop.Extensions;
+using PizzaShop.Services;
 
 namespace PizzaShop.Models
 {
@@ -21,11 +22,12 @@ namespace PizzaShop.Models
             cart.Session = session;
             return cart;
         }
+
         [JsonIgnore]
         public ISession Session { get; set; }
-        public override void AddItem(Dish dish, int quantity)
+        public override void AddItem(CartItem dish)
         {
-            base.AddItem(dish, quantity);
+            base.AddItem(dish);
             Session.SetJson("Cart", this);
         }
         public override void RemoveItem(Dish dish)

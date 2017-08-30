@@ -20,7 +20,7 @@ namespace PizzaShop.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var model = new MenuViewModel();
 

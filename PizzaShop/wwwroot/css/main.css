@@ -9,7 +9,7 @@ h1, h2, h3, .title, a, th {
   font-family: "Ubuntu", sans-serif;
   font-weight: normal; }
 
-body {
+body, td {
   font-family: "Slabo", serif;
   font-weight: normal; }
 

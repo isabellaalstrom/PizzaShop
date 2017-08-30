@@ -1,11 +1,14 @@
 ﻿@using PizzaShop.Extensions
 @model Cart
 <div class="navbar-right">
-    @if (Model.Items.Any()) {
+    @if (Model.Items.Any())
+    {
         <small class="navbar-text">
-            <b>Your cart:</b>
-            @Model.Items.Sum(x => x.Quantity) item(s)
-            @Model.ComputeTotalValue().ToString("c")
+            <a class="navbar-link" asp-controller="Cart" asp-action="Index">
+                <b>Your cart:</b>
+                @Model.Items.Count() item(s)
+                @Model.ComputeTotalValue().ToString("c")
+            </a>
         </small>
     }
     <a class="btn btn-sm btn-default navbar-btn"
@@ -17,14 +20,14 @@
 
 @*@model CartIndexViewModel
 
-@if (Model.Cart..Count > 0)
-{
-    <li>
-        <a>
-            <span class="i fa fa-lg fa-shopping-cart"></span>
-            <span id="cart-status">
-                @Model.Cart._cartItems.Count
-            </span>
-        </a>
-    </li>
-}*@
+    @if (Model.Cart..Count > 0)
+    {
+        <li>
+            <a>
+                <span class="i fa fa-lg fa-shopping-cart"></span>
+                <span id="cart-status">
+                    @Model.Cart._cartItems.Count
+                </span>
+            </a>
+        </li>
+    }*@

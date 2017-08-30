@@ -9,17 +9,20 @@ using PizzaShop.Data;
 using PizzaShop.Entities;
 using PizzaShop.Models;
 using PizzaShop.Models.CartViewModels;
+using PizzaShop.Services;
 
 namespace PizzaShop.Controllers
 {
     public class CartController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly Cart _cart;
-        public CartController(ApplicationDbContext context, Cart cart)
+        private readonly IngredientService _ingredientService;
+        public CartController(ApplicationDbContext context, Cart cart, IngredientService ingredientService)
         {
             _context = context;
             _cart = cart;
+            _ingredientService = ingredientService;
         }
         public ViewResult Index(string returnUrl)
         {
@@ -31,11 +34,27 @@ namespace PizzaShop.Controllers
         }
         public RedirectToActionResult AddToCart(int id, string returnUrl)
         {
-            Dish dish= _context.Dishes
+            Dish dish = _context.Dishes
                 .FirstOrDefault(p => p.DishId == id);
+            var ings = _ingredientService.IngredientByDishId(id);
+            dish.DishIngredients = null;
+            var item = new CartItem
+            {
+                Dish = dish,
+                CartItemIngredients = new List<CartItemIngredient>()
+            };
+            foreach (var ingredient in ings)
+            {
+                item.CartItemIngredients.Add(new CartItemIngredient
+                {
+                    IngredientName = ingredient.IngredientName,
+                    Price = ingredient.Price,
+                    CartItemId = item.CartItemId
+                });
+            }
             if (dish != null)
             {
-                _cart.AddItem(dish, 1);
+                _cart.AddItem(item);
             }
             return RedirectToAction("Index", new { returnUrl });
         }
