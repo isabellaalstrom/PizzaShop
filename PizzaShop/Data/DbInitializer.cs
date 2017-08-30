@@ -45,19 +45,19 @@ namespace PizzaShop.Data
             //todo refactor
             if (!context.Dishes.Any())
             {
-                var cheese = new Ingredient { IngredientName = "Cheese" };
-                var ham = new Ingredient { IngredientName = "Ham" };
-                var tomatoSauce = new Ingredient { IngredientName = "Tomato" };
-                var mushroom = new Ingredient { IngredientName = "Mushroom" };
-                var shrimp = new Ingredient { IngredientName = "Shrimp" };
-                var tuna = new Ingredient { IngredientName = "Tuna" };
-                var pineapple = new Ingredient { IngredientName = "Pineapple" };
-                var curry = new Ingredient { IngredientName = "Curry" };
-                var bacon = new Ingredient { IngredientName = "Bacon" };
-                var banana = new Ingredient { IngredientName = "Banana" };
-                var meat = new Ingredient { IngredientName = "Meat" };
-                var cream = new Ingredient { IngredientName = "Cream" };
-                var onion = new Ingredient { IngredientName = "Onion" };
+                var cheese = new Ingredient { IngredientName = "Cheese", Price = 5 };
+                var ham = new Ingredient { IngredientName = "Ham", Price = 5 };
+                var tomatoSauce = new Ingredient { IngredientName = "Tomato", Price = 5 };
+                var mushroom = new Ingredient { IngredientName = "Mushroom", Price = 5 };
+                var shrimp = new Ingredient { IngredientName = "Shrimp", Price = 5 };
+                var tuna = new Ingredient { IngredientName = "Tuna", Price = 5 };
+                var pineapple = new Ingredient { IngredientName = "Pineapple", Price = 5 };
+                var curry = new Ingredient { IngredientName = "Curry", Price = 5 };
+                var bacon = new Ingredient { IngredientName = "Bacon", Price = 5 };
+                var banana = new Ingredient { IngredientName = "Banana", Price = 5 };
+                var meat = new Ingredient { IngredientName = "Meat", Price = 5 };
+                var cream = new Ingredient { IngredientName = "Cream", Price = 5 };
+                var onion = new Ingredient { IngredientName = "Onion", Price = 5 };
 
                 var pizzaDishType = new DishType { DishTypeName = "Pizza" };
                 var saladDishType = new DishType { DishTypeName = "Salad" };
