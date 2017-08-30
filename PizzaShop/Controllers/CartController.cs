@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -69,10 +70,29 @@ namespace PizzaShop.Controllers
             }
             return RedirectToAction("Index", new { returnUrl });
         }
-
-        public IActionResult EditItemIngredients()
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public RedirectToActionResult EditItemIngredients(IFormCollection collection)
         {
-            throw new NotImplementedException();
+            var checkedIngredientIds = collection.Keys.Where(x => x.StartsWith("ingredient-"));
+            var ingredients = new List<Ingredient>();
+            foreach (var ingredientId in checkedIngredientIds)
+            {
+                ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(ingredientId.Remove(0, 11))));
+            }
+            var cartItemIngredients = new List<CartItemIngredient>();
+
+            foreach (var ingredient in ingredients)
+            {
+                cartItemIngredients.Add(new CartItemIngredient
+                {
+                    IngredientName = ingredient.IngredientName,
+                    Price = ingredient.Price
+                    //,
+                    //CartItemId = item.CartItemId
+                });
+            }
+            return RedirectToAction("Index");
         }
     }
 }

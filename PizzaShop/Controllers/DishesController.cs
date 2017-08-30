@@ -228,7 +228,6 @@ namespace PizzaShop.Controllers
                 });
             }
             await _context.SaveChangesAsync();
-
         }
 
         //private async void UpdateDishIngredientsListAsync(Dish dish, IEnumerable<string> ingredientCollection)
