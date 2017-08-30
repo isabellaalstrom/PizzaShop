@@ -1,5 +1,4 @@
-﻿@using PizzaShop.Entities
-@model IEnumerable<PizzaShop.Entities.Ingredient>
+﻿@model IEnumerable<Ingredient>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,9 +12,10 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.IngredientName)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IngredientName)
+            </th>
+            <th>@Html.DisplayNameFor(model => model.Price)</th>
             <th></th>
         </tr>
     </thead>
@@ -24,6 +24,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.IngredientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IngredientId">Edit</a> |

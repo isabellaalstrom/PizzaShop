@@ -1,5 +1,4 @@
-﻿@using PizzaShop.Entities
-@model PizzaShop.Entities.Dish
+﻿@model Dish
 
 @{
     ViewData["Title"] = "Details";
@@ -28,7 +27,7 @@
 <div>
     <dl class="dl-horizontal">
         <dt>Ingredients</dt>
-        @foreach (var ingredient in Model.DishIngredients)
+        @foreach (var ingredient in Model.DishIngredients.OrderBy(i => i.Ingredient.IngredientName))
         {
             <dd>@ingredient.Ingredient.IngredientName</dd>
         }
