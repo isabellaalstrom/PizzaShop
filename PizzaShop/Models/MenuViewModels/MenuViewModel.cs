@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PizzaShop.Entities;
 
 namespace PizzaShop.Models.MenuViewModels
 {
@@ -21,6 +22,6 @@ namespace PizzaShop.Models.MenuViewModels
 
         public decimal Price { get; set; }
 
-        public IList<string> Ingredients { get; set; }
+        public IList<Ingredient> Ingredients { get; set; }
     }
 }

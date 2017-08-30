@@ -4,9 +4,9 @@
     <div class="col-md-8">
         <h3 class="title">@Model.DishName</h3>
         <h4>
-            @foreach (var ingredient in Model.Ingredients)
+            @foreach (var ingredient in Model.Ingredients.OrderBy(i => i.IngredientName))
             {
-                @ingredient<text> </text>
+                @ingredient.IngredientName<text> </text>
             }
         </h4>
 

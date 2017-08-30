@@ -18,7 +18,7 @@ namespace PizzaShop.Services
         }
         public List<Ingredient> All()
         {
-            return _context.Ingredients.ToList();
+            return _context.Ingredients.OrderBy(i => i.IngredientName).ToList();
         }
     }
 }

@@ -55,7 +55,7 @@ namespace PizzaShop.Controllers
                         DishId = dish.DishId,
                         DishName = dish.DishName,
                         Price = dish.Price,
-                        Ingredients = dish.DishIngredients.Where(w => w.Ingredient != null).Select(s => s.Ingredient.IngredientName).ToList()
+                        Ingredients = dish.DishIngredients.Where(w => w.Ingredient != null).Select(s => s.Ingredient).ToList()
                     });
                 }
                 if (dish.DishType.DishTypeName == "Pasta")
@@ -65,7 +65,7 @@ namespace PizzaShop.Controllers
                         DishId = dish.DishId,
                         DishName = dish.DishName,
                         Price = dish.Price,
-                        Ingredients = dish.DishIngredients.Select(s => s.Ingredient.IngredientName).ToList()
+                        Ingredients = dish.DishIngredients.Select(s => s.Ingredient).ToList()
                     });
                 }
                 if (dish.DishType.DishTypeName == "Salad")
@@ -75,7 +75,7 @@ namespace PizzaShop.Controllers
                         DishId = dish.DishId,
                         DishName = dish.DishName,
                         Price = dish.Price,
-                        Ingredients = dish.DishIngredients.Select(s => s.Ingredient.IngredientName).ToList()
+                        Ingredients = dish.DishIngredients.Select(s => s.Ingredient).ToList()
                     });
                 }
             }
