@@ -69,5 +69,10 @@ namespace PizzaShop.Controllers
             }
             return RedirectToAction("Index", new { returnUrl });
         }
+
+        public IActionResult EditItemIngredients()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
