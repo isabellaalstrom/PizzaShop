@@ -30,9 +30,9 @@ namespace PizzaShop.Models
             base.AddItem(dish);
             Session.SetJson("Cart", this);
         }
-        public override void RemoveItem(Dish dish)
+        public override void RemoveItem(CartItem item)
         {
-            base.RemoveItem(dish);
+            base.RemoveItem(item);
             Session.SetJson("Cart", this);
         }
         public override void Clear()

@@ -48,7 +48,6 @@ namespace PizzaShop
             services.AddScoped(SessionCart.GetCart);
             services.AddTransient<IngredientService>();
             services.AddTransient<DishTypeService>();
-            services.AddTransient<CartItemService>();
 
             services.AddDistributedMemoryCache();
 

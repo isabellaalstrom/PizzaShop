@@ -19,7 +19,6 @@ namespace PizzaShop.Controllers
         private readonly ApplicationDbContext _context;
         private readonly Cart _cart;
         private readonly IngredientService _ingredientService;
-        private readonly CartItemService _cartItemService;
 
         public CartController(ApplicationDbContext context, Cart cart, IngredientService ingredientService)
         {
@@ -44,17 +43,16 @@ namespace PizzaShop.Controllers
             {
                 cartItemId = _cart.Items.Count() + 1;
             }
-            Dish dish = _context.Dishes
+            Dish dish = _context.Dishes/*.Include(x => x.DishIngredients).ThenInclude(x => x.Ingredient)*/
                 .FirstOrDefault(p => p.DishId == id);
             var ings = _ingredientService.IngredientByDishId(id);
-            dish.DishIngredients = null;
+            //dish.DishIngredients = null;
             var item = new CartItem
             {
                 CartItemId = cartItemId,
-                //Doesn't get a CartItemId - only 0
-                //CartId = _cart.CartId,
                 Dish = dish,
-                CartItemIngredients = new List<CartItemIngredient>()
+                CartItemIngredients = new List<CartItemIngredient>(),
+                Price = dish.Price
             };
             foreach (var ingredient in ings)
             {
@@ -73,39 +71,50 @@ namespace PizzaShop.Controllers
         public RedirectToActionResult RemoveFromCart(int id,
             string returnUrl)
         {
-            Dish dish = _context.Dishes
-                .FirstOrDefault(p => p.DishId == id);
-            if (dish != null)
+            var cartItem = _cart.Items.First(ci => ci.CartItemId == id);
+            if (cartItem != null)
             {
-                _cart.RemoveItem(dish);
+                _cart.RemoveItem(cartItem);
             }
             return RedirectToAction("Index", new { returnUrl });
         }
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        public RedirectToActionResult EditItemIngredients(int id, IFormCollection collection) //id == CartItemId
+        public RedirectToActionResult EditItemIngredients(int id, IFormCollection collection)
         {
-            //todo ta ut vilken CartItem det gäller
             var checkedIngredientIds = collection.Keys.Where(x => x.StartsWith("ingredient-"));
-            var checkedIngredients = new List<Ingredient>();
-            foreach (var ingredientId in checkedIngredientIds)
-            {
-                checkedIngredients.Add(
-                    _context.Ingredients.First(x => x.IngredientId == Int32.Parse(ingredientId.Remove(0, 11))));
-            }
-            foreach (var ingredient in _context.Ingredients)
-            {
-                var isEnabled = checkedIngredients.Any(cb => cb.IngredientId == ingredient.IngredientId);
-                if (isEnabled)
-                {
-                    //AddCartItemIngredient(cartitemid, ingredient);
-                    //
-                }
-                //kolla mot cartitems riktiga ingredienser om man tagit bort nåt.
-                //uppdatera totalpriset i cart?
-            }
+            var checkedIngredients = checkedIngredientIds.Select(ingredientId => 
+            _context.Ingredients.First(x => x.IngredientId == Int32.Parse(ingredientId.Remove(0, 11)))).ToList();
 
+            var cartItem = _cart.Items.First(ci => ci.CartItemId == id);
+            foreach (var ingredient in checkedIngredients)
+            {
+                if (!cartItem.Dish.DishIngredients.Any(cii => cii.Ingredient.IngredientName == ingredient.IngredientName))
+                {
+                    //cartItem.CartItemIngredients.Add(new CartItemIngredient
+                    //{
+                    //    CartItemId = cartItem.CartItemId,
+                    //    IngredientName = ingredient.IngredientName,
+                    //    Price = 0
+                    //});
+                //}
+                //else
+                //{
+                    cartItem.CartItemIngredients.Add(new CartItemIngredient
+                    {
+                        CartItemId = cartItem.CartItemId,
+                        IngredientName = ingredient.IngredientName,
+                        Price = ingredient.Price
+                    });
+                }
+            }
+            //todo kvar att göra - ta bort ingrediens
+            cartItem.Price += cartItem.CartItemIngredients.Sum(itemIngredient => itemIngredient.Price); //todo bugg gör att priset går upp dubbelt för samma ingredienser nästa gång jag editerar
+            var oldItem = _cart.Items.First(ci => ci.CartItemId == cartItem.CartItemId);
+
+            _cart.RemoveItem(oldItem);
+            _cart.AddItem(cartItem);
 
             //var checkedIngredientIds = collection.Keys.Where(x => x.StartsWith("ingredient-"));
             //var ingredients = new List<Ingredient>();

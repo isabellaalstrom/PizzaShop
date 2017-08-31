@@ -30,10 +30,10 @@
                     }
                     <a class="btn-default" data-toggle="modal" data-target="#ingredientModal"><span class="fa fa-lg fa-pencil"></span></a>
                 </td>
-                <td class="text-right">@item.Dish.Price.ToString("c")</td>
+                <td class="text-right">@item.Price.ToString("c")</td>
                 <td class="col-md-1">
                     <a class="btn btn-danger" asp-action="RemoveFromCart" method="post"
-                       asp-route-id="@item.Dish.DishId" asp-route-returnUrl="@Model.ReturnUrl">
+                       asp-route-id="@item.CartItemId" asp-route-returnUrl="@Model.ReturnUrl">
                         <span class="fa fa-lg fa-trash-o"></span>
                     </a>
 

@@ -19,9 +19,9 @@ namespace PizzaShop.Models
         {
             _cartItems.Add(item);
         }
-        public virtual void RemoveItem(Dish dish) => _cartItems.RemoveAll(l => l.Dish.DishId == dish.DishId);
+        public virtual void RemoveItem(CartItem item) => _cartItems.RemoveAll(ci => ci.CartItemId == item.CartItemId);
 
-        public virtual decimal ComputeTotalValue() => _cartItems.Sum(e => e.Dish.Price /** e.Quantity*/);
+        public virtual decimal ComputeTotalValue() => _cartItems.Sum(e => e.Price);
 
         public virtual void Clear() => _cartItems.Clear();
         public virtual IEnumerable<CartItem> Items => _cartItems;
