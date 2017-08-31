@@ -15,9 +15,9 @@ namespace PizzaShop.Models
     {
         public int CartId { get; set; }
         private readonly List<CartItem> _cartItems = new List<CartItem>();
-        public virtual void AddItem(CartItem dish)
+        public virtual void AddItem(CartItem item)
         {
-            _cartItems.Add(dish);
+            _cartItems.Add(item);
         }
         public virtual void RemoveItem(Dish dish) => _cartItems.RemoveAll(l => l.Dish.DishId == dish.DishId);
 

@@ -61,6 +61,10 @@ namespace PizzaShop.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
+                Name = user.Name,
+                Address = user.Address,
+                Zipcode = user.Zipcode,
+                City = user.City,
                 StatusMessage = StatusMessage
             };
 
@@ -102,6 +106,46 @@ namespace PizzaShop.Controllers
                 }
             }
 
+            var name = user.Name;
+            if (model.Name != name)
+            {
+                user.Name = model.Name;
+                var setNameResult = await _userManager.UpdateAsync(user);
+                if (!setNameResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting name for user with ID '{user.Id}'.");
+                }
+            }
+            var city = user.City;
+            if (model.City != city)
+            {
+                user.City = model.City;
+                var setCityResult = await _userManager.UpdateAsync(user);
+                if (!setCityResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting city for user with ID '{user.Id}'.");
+                }
+            }
+            var address = user.Address;
+            if (model.Address != address)
+            {
+                user.Address = model.Address;
+                var setAddressResult = await _userManager.UpdateAsync(user);
+                if (!setAddressResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting address for user with ID '{user.Id}'.");
+                }
+            }
+            var zipcode = user.Zipcode;
+            if (model.Zipcode != zipcode)
+            {
+                user.Zipcode = model.Zipcode;
+                var setZipcodeResult = await _userManager.UpdateAsync(user);
+                if (!setZipcodeResult.Succeeded)
+                {
+                    throw new ApplicationException($"Unexpected error occurred setting zipcode for user with ID '{user.Id}'.");
+                }
+            }
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
         }

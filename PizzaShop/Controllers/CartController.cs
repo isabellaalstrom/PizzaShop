@@ -19,12 +19,15 @@ namespace PizzaShop.Controllers
         private readonly ApplicationDbContext _context;
         private readonly Cart _cart;
         private readonly IngredientService _ingredientService;
+        private readonly CartItemService _cartItemService;
+
         public CartController(ApplicationDbContext context, Cart cart, IngredientService ingredientService)
         {
             _context = context;
             _cart = cart;
             _ingredientService = ingredientService;
         }
+
         public ViewResult Index(string returnUrl)
         {
             return View(new CartIndexViewModel
@@ -33,14 +36,23 @@ namespace PizzaShop.Controllers
                 ReturnUrl = returnUrl
             });
         }
+
         public RedirectToActionResult AddToCart(int id, string returnUrl)
         {
+            var cartItemId = 1;
+            if (_cart.Items.Any())
+            {
+                cartItemId = _cart.Items.Count() + 1;
+            }
             Dish dish = _context.Dishes
                 .FirstOrDefault(p => p.DishId == id);
             var ings = _ingredientService.IngredientByDishId(id);
             dish.DishIngredients = null;
             var item = new CartItem
             {
+                CartItemId = cartItemId,
+                //Doesn't get a CartItemId - only 0
+                //CartId = _cart.CartId,
                 Dish = dish,
                 CartItemIngredients = new List<CartItemIngredient>()
             };
@@ -49,16 +61,15 @@ namespace PizzaShop.Controllers
                 item.CartItemIngredients.Add(new CartItemIngredient
                 {
                     IngredientName = ingredient.IngredientName,
-                    Price = ingredient.Price,
+                    Price = 0,
                     CartItemId = item.CartItemId
                 });
             }
-            if (dish != null)
-            {
-                _cart.AddItem(item);
-            }
+            _cart.AddItem(item);
+
             return RedirectToAction("Index", new { returnUrl });
         }
+
         public RedirectToActionResult RemoveFromCart(int id,
             string returnUrl)
         {
@@ -70,28 +81,52 @@ namespace PizzaShop.Controllers
             }
             return RedirectToAction("Index", new { returnUrl });
         }
+
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        public RedirectToActionResult EditItemIngredients(IFormCollection collection)
+        public RedirectToActionResult EditItemIngredients(int id, IFormCollection collection) //id == CartItemId
         {
+            //todo ta ut vilken CartItem det gäller
             var checkedIngredientIds = collection.Keys.Where(x => x.StartsWith("ingredient-"));
-            var ingredients = new List<Ingredient>();
+            var checkedIngredients = new List<Ingredient>();
             foreach (var ingredientId in checkedIngredientIds)
             {
-                ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(ingredientId.Remove(0, 11))));
+                checkedIngredients.Add(
+                    _context.Ingredients.First(x => x.IngredientId == Int32.Parse(ingredientId.Remove(0, 11))));
             }
-            var cartItemIngredients = new List<CartItemIngredient>();
-
-            foreach (var ingredient in ingredients)
+            foreach (var ingredient in _context.Ingredients)
             {
-                cartItemIngredients.Add(new CartItemIngredient
+                var isEnabled = checkedIngredients.Any(cb => cb.IngredientId == ingredient.IngredientId);
+                if (isEnabled)
                 {
-                    IngredientName = ingredient.IngredientName,
-                    Price = ingredient.Price
-                    //,
-                    //CartItemId = item.CartItemId
-                });
+                    //AddCartItemIngredient(cartitemid, ingredient);
+                    //
+                }
+                //kolla mot cartitems riktiga ingredienser om man tagit bort nåt.
+                //uppdatera totalpriset i cart?
             }
+
+
+            //var checkedIngredientIds = collection.Keys.Where(x => x.StartsWith("ingredient-"));
+            //var ingredients = new List<Ingredient>();
+            //foreach (var ingredientId in checkedIngredientIds)
+            //{
+            //    ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(ingredientId.Remove(0, 11))));
+            //}
+            //var cartItemIngredients = new List<CartItemIngredient>();
+
+            //foreach (var ingredient in ingredients)
+            //{
+            //    cartItemIngredients.Add(new CartItemIngredient
+            //    {
+            //        IngredientName = ingredient.IngredientName,
+            //        Price = ingredient.Price
+            //        //,
+            //        //CartItemId = item.CartItemId
+            //    });
+            //}
+
+
             return RedirectToAction("Index");
         }
     }
