@@ -90,7 +90,8 @@ namespace PizzaShop.Controllers
             var cartItem = _cart.Items.First(ci => ci.CartItemId == id);
             foreach (var ingredient in checkedIngredients)
             {
-                if (!cartItem.Dish.DishIngredients.Any(cii => cii.Ingredient.IngredientName == ingredient.IngredientName))
+                if (!cartItem.Dish.DishIngredients.Any(cii => cii.Ingredient.IngredientName == ingredient.IngredientName)
+                    && !cartItem.CartItemIngredients.Any(cii => cii.IngredientName == ingredient.IngredientName))
                 {
                     //cartItem.CartItemIngredients.Add(new CartItemIngredient
                     //{
@@ -107,10 +108,10 @@ namespace PizzaShop.Controllers
                         IngredientName = ingredient.IngredientName,
                         Price = ingredient.Price
                     });
+                    cartItem.Price += ingredient.Price; /*cartItem.CartItemIngredients.Sum(itemIngredient => itemIngredient.Price);*/
                 }
             }
             //todo kvar att göra - ta bort ingrediens
-            cartItem.Price += cartItem.CartItemIngredients.Sum(itemIngredient => itemIngredient.Price); //todo bugg gör att priset går upp dubbelt för samma ingredienser nästa gång jag editerar
             var oldItem = _cart.Items.First(ci => ci.CartItemId == cartItem.CartItemId);
 
             _cart.RemoveItem(oldItem);
