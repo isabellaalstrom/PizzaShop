@@ -57,24 +57,22 @@
                             {
                                 <div class="form-group">
                                     @{
-                                        int price = ingredient.Price;
+                                        var price = ingredient.Price;
                                         var isChecked = "";
                                         if (item.CartItemIngredients.Exists(x => x.IngredientName == ingredient.IngredientName))
                                         {
                                             isChecked = "checked=\"checked\"";
+            
+                                        }
+                                        if (item.Dish.DishIngredients.Any(di => di.Ingredient.IngredientName == ingredient.IngredientName))
+                                        {
                                             price = 0;
                                         }
                                         <input type="checkbox" @isChecked name="ingredient-@ingredient.IngredientId" />
                                         <label class="control-label">@ingredient.IngredientName - @price kr</label>
-                                        if (item.CartItemIngredients.Exists(x => x.IngredientName == ingredient.IngredientName))
-                                        {
-                                            <span>*</span>
-                                        }
                                     }
                                 </div>
                                         }
-
-                            <p>* = included in dish</p>
 
                         </div>
                         <div class="modal-footer">

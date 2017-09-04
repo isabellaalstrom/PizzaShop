@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -75,6 +76,7 @@ namespace PizzaShop.Controllers
             if (cartItem != null)
             {
                 _cart.RemoveItem(cartItem);
+
             }
             return RedirectToAction("Index", new { returnUrl });
         }
@@ -83,59 +85,83 @@ namespace PizzaShop.Controllers
         //[ValidateAntiForgeryToken]
         public RedirectToActionResult EditItemIngredients(int id, IFormCollection collection)
         {
+            //todo refactor
             var checkedIngredientIds = collection.Keys.Where(x => x.StartsWith("ingredient-"));
-            var checkedIngredients = checkedIngredientIds.Select(ingredientId => 
-            _context.Ingredients.First(x => x.IngredientId == Int32.Parse(ingredientId.Remove(0, 11)))).ToList();
+            var checkedIngredients = checkedIngredientIds.Select(ingredientId =>
+            _context.Ingredients.First(x => x.IngredientId == int.Parse(ingredientId.Remove(0, 11)))).ToList();
 
             var cartItem = _cart.Items.First(ci => ci.CartItemId == id);
-            foreach (var ingredient in checkedIngredients)
+
+            //LÄGGA TILL
+            //gå igenom alla valda ing
+            foreach (var checkedIngredient in checkedIngredients)
             {
-                if (!cartItem.Dish.DishIngredients.Any(cii => cii.Ingredient.IngredientName == ingredient.IngredientName)
-                    && !cartItem.CartItemIngredients.Any(cii => cii.IngredientName == ingredient.IngredientName))
+                //om ing inte redan var vald
+                //och ing inte finns i originalingredienserna
+                //lägg till den och plussa priset
+                if (!cartItem.Dish.DishIngredients.Any(cii => cii.Ingredient.IngredientName == checkedIngredient.IngredientName)
+                    && !cartItem.CartItemIngredients.Any(cii => cii.IngredientName == checkedIngredient.IngredientName))
                 {
-                    //cartItem.CartItemIngredients.Add(new CartItemIngredient
-                    //{
-                    //    CartItemId = cartItem.CartItemId,
-                    //    IngredientName = ingredient.IngredientName,
-                    //    Price = 0
-                    //});
-                //}
-                //else
-                //{
                     cartItem.CartItemIngredients.Add(new CartItemIngredient
                     {
                         CartItemId = cartItem.CartItemId,
-                        IngredientName = ingredient.IngredientName,
-                        Price = ingredient.Price
+                        IngredientName = checkedIngredient.IngredientName,
+                        Price = checkedIngredient.Price
                     });
-                    cartItem.Price += ingredient.Price; /*cartItem.CartItemIngredients.Sum(itemIngredient => itemIngredient.Price);*/
+                    cartItem.Price += checkedIngredient.Price;
+                }
+                //ing är originalingrediens
+                //men finns inte i cii-lista (dvs bortvald förut men vill läggas till igen)
+                //addera inte på priset
+                else if (cartItem.Dish.DishIngredients.Any(cii => cii.Ingredient.IngredientName == checkedIngredient.IngredientName)
+                         && !cartItem.CartItemIngredients.Any(cii => cii.IngredientName == checkedIngredient.IngredientName))
+                {
+                    cartItem.CartItemIngredients.Add(new CartItemIngredient
+                    {
+                        CartItemId = cartItem.CartItemId,
+                        IngredientName = checkedIngredient.IngredientName
+                    });
                 }
             }
-            //todo kvar att göra - ta bort ingrediens
+            
+            //TA BORT
+            //ingrediens finns i originaldish
+            //men inte i checked
+            //ta bort men dra inte ner pris
+            foreach (var originalIngredient in cartItem.Dish.DishIngredients)
+            {
+                if (!checkedIngredients.Any(i => i.IngredientName == originalIngredient.Ingredient.IngredientName))
+                {
+                    cartItem.CartItemIngredients.Remove(cartItem.CartItemIngredients.Find(
+                        cii => cii.IngredientName == originalIngredient.Ingredient.IngredientName));
+                }
+            }
+
+            //finns i listan över cii
+            //men inte checked
+            //ta bort och dra ner pris
+            var toRemove = new List<CartItemIngredient>();
+            foreach (var cartItemIngredient in cartItem.CartItemIngredients)
+            {
+                if (!checkedIngredients.Any(i => i.IngredientName == cartItemIngredient.IngredientName))
+                {
+                    cartItem.Price = cartItem.Price - cartItemIngredient.Price;
+                    //cartItem.CartItemIngredients.Remove(cartItem.CartItemIngredients.Find(
+                    //    cii => cii.IngredientName == cartItemIngredient.IngredientName));
+                    toRemove.Add(cartItem.CartItemIngredients.Find(cii => cii.IngredientName == cartItemIngredient.IngredientName));
+                }
+            }
+            foreach (var cartItemIngredient in toRemove)
+            {
+                cartItem.CartItemIngredients.Remove(cartItemIngredient);
+            }
+
+
             var oldItem = _cart.Items.First(ci => ci.CartItemId == cartItem.CartItemId);
 
+            //todo _cart.UpdateItem(cartItem);
             _cart.RemoveItem(oldItem);
             _cart.AddItem(cartItem);
-
-            //var checkedIngredientIds = collection.Keys.Where(x => x.StartsWith("ingredient-"));
-            //var ingredients = new List<Ingredient>();
-            //foreach (var ingredientId in checkedIngredientIds)
-            //{
-            //    ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(ingredientId.Remove(0, 11))));
-            //}
-            //var cartItemIngredients = new List<CartItemIngredient>();
-
-            //foreach (var ingredient in ingredients)
-            //{
-            //    cartItemIngredients.Add(new CartItemIngredient
-            //    {
-            //        IngredientName = ingredient.IngredientName,
-            //        Price = ingredient.Price
-            //        //,
-            //        //CartItemId = item.CartItemId
-            //    });
-            //}
-
 
             return RedirectToAction("Index");
         }
