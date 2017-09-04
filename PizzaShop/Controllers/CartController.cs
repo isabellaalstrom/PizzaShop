@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzaShop.Data;
 using PizzaShop.Entities;
+using PizzaShop.Infrastructure;
 using PizzaShop.Models;
 using PizzaShop.Models.CartViewModels;
 using PizzaShop.Services;
@@ -43,7 +44,28 @@ namespace PizzaShop.Controllers
                 .Include(d => d.DishIngredients)
                 .ThenInclude(di => di.Ingredient)
                 .FirstOrDefault(p => p.DishId == id);
-            
+
+            if (_cart.Items.Any(ci => ci.Dish.DishId == dish.DishId))
+            {
+                var cartItems = _cart.Items.Where(ci => ci.Dish.DishId == dish.DishId);
+                foreach (var cartItem in cartItems)
+                {
+                    var dishIngredientsToCompare = cartItem.CartItemIngredients.Select(cartItemIngredient =>
+                    _context.DishIngredients.First(i => i.Ingredient.IngredientName == cartItemIngredient.IngredientName)).ToList();
+
+                    if (dish.DishIngredients.SequenceEqual(dishIngredientsToCompare, new DefaultDishIngredientComparer()))//if true finns en likadan ci redan, lägg på en på quantity istället
+                    {
+                        _cart.UpdateQuantity(cartItem);
+                        return RedirectToAction("Index", new { returnUrl });
+                    }
+                    //else
+                    //{
+                    //    _cart.AddItem(dish, 1);
+
+                    //}
+                }
+
+            }
             _cart.AddItem(dish, 1);
 
             return RedirectToAction("Index", new { returnUrl });
@@ -103,7 +125,7 @@ namespace PizzaShop.Controllers
                     });
                 }
             }
-            
+
             //TA BORT
             //ingrediens finns i originaldish
             //men inte i checked
@@ -135,13 +157,7 @@ namespace PizzaShop.Controllers
             {
                 cartItem.CartItemIngredients.Remove(cartItemIngredient);
             }
-
-
-            var oldItem = _cart.Items.First(ci => ci.CartItemId == cartItem.CartItemId);
-
-            //todo _cart.UpdateItem(cartItem);
-            //_cart.RemoveItem(oldItem);
-            //_cart.AddItem(cartItem, 1);
+            _cart.UpdateItemIngredients(cartItem);
 
             return RedirectToAction("Index");
         }

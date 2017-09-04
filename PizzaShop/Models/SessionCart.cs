@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using PizzaShop.Entities;
-using PizzaShop.Extensions;
+using PizzaShop.Infrastructure;
 using PizzaShop.Services;
 
 namespace PizzaShop.Models
@@ -39,6 +39,18 @@ namespace PizzaShop.Models
         {
             base.Clear();
             Session.Remove("Cart");
+        }
+
+        public override void UpdateItemIngredients(CartItem item)
+        {
+            base.UpdateItemIngredients(item);
+            Session.SetJson("Cart", this);
+        }
+
+        public override void UpdateQuantity(CartItem item)
+        {
+            base.UpdateQuantity(item);
+            Session.SetJson("Cart", this);
         }
     }
 }

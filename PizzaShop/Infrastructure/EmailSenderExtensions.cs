@@ -5,7 +5,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using PizzaShop.Services;
 
-namespace PizzaShop.Services
+namespace PizzaShop.Infrastructure
 {
     public static class EmailSenderExtensions
     {

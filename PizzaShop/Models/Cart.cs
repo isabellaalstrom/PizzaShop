@@ -27,7 +27,8 @@ namespace PizzaShop.Models
                 CartItemId = cartItemId,
                 Dish = dish,
                 CartItemIngredients = new List<CartItemIngredient>(),
-                Price = dish.Price
+                Price = dish.Price,
+                Quantity = quantity
             };
             foreach (var dishIngredient in dish.DishIngredients)
             {
@@ -42,9 +43,28 @@ namespace PizzaShop.Models
         }
         public virtual void RemoveItem(CartItem item) => _cartItems.RemoveAll(ci => ci.CartItemId == item.CartItemId);
 
-        public virtual decimal ComputeTotalValue() => _cartItems.Sum(e => e.Price);
+        public virtual decimal ComputeTotalValue() => _cartItems.Sum(e => e.Price * e.Quantity);
 
         public virtual void Clear() => _cartItems.Clear();
         public virtual IEnumerable<CartItem> Items => _cartItems;
+
+        public virtual void UpdateItemIngredients(CartItem updatedItem)
+        {
+            if (_cartItems.Exists(ci => ci.CartItemId == updatedItem.CartItemId))
+            {
+                var oldItem = _cartItems.First(ci => ci.CartItemId == updatedItem.CartItemId);
+                _cartItems.Remove(oldItem);
+                _cartItems.Add(updatedItem);
+            }
+        }
+
+        public virtual void UpdateQuantity(CartItem item)
+        {
+            var itemToUpdate = _cartItems.FirstOrDefault(ci => ci.CartItemId == item.CartItemId);
+            if (itemToUpdate!=null)
+            {
+                itemToUpdate.Quantity++;
+            }
+        }
     }
 }

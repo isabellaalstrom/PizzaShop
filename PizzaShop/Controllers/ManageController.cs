@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PizzaShop.Entities;
+using PizzaShop.Infrastructure;
 using PizzaShop.Models;
 using PizzaShop.Models.ManageViewModels;
 using PizzaShop.Services;
