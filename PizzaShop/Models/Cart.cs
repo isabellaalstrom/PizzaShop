@@ -15,8 +15,29 @@ namespace PizzaShop.Models
     {
         public int CartId { get; set; }
         private readonly List<CartItem> _cartItems = new List<CartItem>();
-        public virtual void AddItem(CartItem item)
+        public virtual void AddItem(Dish dish, int quantity)
         {
+            var cartItemId = 1;
+            if (_cartItems.Any())
+            {
+                cartItemId = _cartItems.Count + 1;
+            }
+            var item = new CartItem
+            {
+                CartItemId = cartItemId,
+                Dish = dish,
+                CartItemIngredients = new List<CartItemIngredient>(),
+                Price = dish.Price
+            };
+            foreach (var dishIngredient in dish.DishIngredients)
+            {
+                item.CartItemIngredients.Add(new CartItemIngredient
+                {
+                    IngredientName = dishIngredient.Ingredient.IngredientName,
+                    Price = 0,
+                    CartItemId = item.CartItemId
+                });
+            }
             _cartItems.Add(item);
         }
         public virtual void RemoveItem(CartItem item) => _cartItems.RemoveAll(ci => ci.CartItemId == item.CartItemId);

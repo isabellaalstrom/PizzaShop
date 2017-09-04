@@ -39,32 +39,12 @@ namespace PizzaShop.Controllers
 
         public RedirectToActionResult AddToCart(int id, string returnUrl)
         {
-            var cartItemId = 1;
-            if (_cart.Items.Any())
-            {
-                cartItemId = _cart.Items.Count() + 1;
-            }
-            Dish dish = _context.Dishes/*.Include(x => x.DishIngredients).ThenInclude(x => x.Ingredient)*/
+            var dish = _context.Dishes
+                .Include(d => d.DishIngredients)
+                .ThenInclude(di => di.Ingredient)
                 .FirstOrDefault(p => p.DishId == id);
-            var ings = _ingredientService.IngredientByDishId(id);
-            //dish.DishIngredients = null;
-            var item = new CartItem
-            {
-                CartItemId = cartItemId,
-                Dish = dish,
-                CartItemIngredients = new List<CartItemIngredient>(),
-                Price = dish.Price
-            };
-            foreach (var ingredient in ings)
-            {
-                item.CartItemIngredients.Add(new CartItemIngredient
-                {
-                    IngredientName = ingredient.IngredientName,
-                    Price = 0,
-                    CartItemId = item.CartItemId
-                });
-            }
-            _cart.AddItem(item);
+            
+            _cart.AddItem(dish, 1);
 
             return RedirectToAction("Index", new { returnUrl });
         }
@@ -160,8 +140,8 @@ namespace PizzaShop.Controllers
             var oldItem = _cart.Items.First(ci => ci.CartItemId == cartItem.CartItemId);
 
             //todo _cart.UpdateItem(cartItem);
-            _cart.RemoveItem(oldItem);
-            _cart.AddItem(cartItem);
+            //_cart.RemoveItem(oldItem);
+            //_cart.AddItem(cartItem, 1);
 
             return RedirectToAction("Index");
         }
