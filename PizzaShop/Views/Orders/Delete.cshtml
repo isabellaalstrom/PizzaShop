@@ -1,5 +1,4 @@
-﻿@using PizzaShop.Entities
-@model PizzaShop.Entities.Order
+﻿@model PizzaShop.Entities.Order
 
 @{
     ViewData["Title"] = "Delete";
@@ -23,6 +22,42 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.TotalAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Zipcode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Zipcode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phonenumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phonenumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Delivered)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Delivered)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.User)

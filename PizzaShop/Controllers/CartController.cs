@@ -88,6 +88,7 @@ namespace PizzaShop.Controllers
         public RedirectToActionResult EditItemIngredients(int id, IFormCollection collection)
         {
             //todo refactor
+            //todo if två likadana cartitems, ändra bara i ena?
             var checkedIngredientIds = collection.Keys.Where(x => x.StartsWith("ingredient-"));
             var checkedIngredients = checkedIngredientIds.Select(ingredientId =>
             _context.Ingredients.First(x => x.IngredientId == int.Parse(ingredientId.Remove(0, 11)))).ToList();

@@ -1,5 +1,4 @@
-﻿@using PizzaShop.Entities
-@model PizzaShop.Entities.Order
+﻿@model PizzaShop.Entities.Order
 
 @{
     ViewData["Title"] = "Details";
@@ -24,35 +23,47 @@
             @Html.DisplayFor(model => model.TotalAmount)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Zipcode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Zipcode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phonenumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phonenumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Delivered)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Delivered)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.User)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Address)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.Address)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Zipcode)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.Zipcode)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.User.City)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.City)
-        </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.User.Id)
-        </dt>
-        <dd>
             @Html.DisplayFor(model => model.User.Id)
-        </dd>*@
+        </dd>
     </dl>
 </div>
 <div>

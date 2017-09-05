@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzaShop.Data;
 using PizzaShop.Entities;
-using PizzaShop.Models;
 
 namespace PizzaShop.Controllers
 {
@@ -47,6 +47,7 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Orders/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
@@ -58,7 +59,8 @@ namespace PizzaShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId,OrderDateTime,TotalAmount,UserId")] Order order)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create([Bind("OrderId,OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber,Delivered")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -71,6 +73,7 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Orders/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,7 +95,8 @@ namespace PizzaShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderId,OrderDateTime,TotalAmount,UserId")] Order order)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("OrderId,OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber,Delivered")] Order order)
         {
             if (id != order.OrderId)
             {
@@ -124,6 +128,7 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Orders/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,6 +148,7 @@ namespace PizzaShop.Controllers
         }
 
         // POST: Orders/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
