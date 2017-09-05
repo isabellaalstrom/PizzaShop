@@ -47,10 +47,9 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Orders/Create
-        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 

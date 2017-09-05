@@ -38,6 +38,22 @@ namespace PizzaShop.Controllers
             });
         }
 
+        public ViewResult Test()
+        {
+            return null;
+        }
+
+
+        public ViewResult Test2(CartIndexViewModel model)
+        {
+            return null;
+        }
+
+        public ViewResult Test3(CartIndexViewModel model)
+        {
+            return null;
+        }
+
         public RedirectToActionResult AddToCart(int id, string returnUrl)
         {
             var dish = _context.Dishes

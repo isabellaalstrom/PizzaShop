@@ -15,6 +15,7 @@ namespace PizzaShop.Models
     {
         public int CartId { get; set; }
         private readonly List<CartItem> _cartItems = new List<CartItem>();
+
         public virtual void AddItem(Dish dish, int quantity)
         {
             var cartItemId = 1;

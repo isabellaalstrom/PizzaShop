@@ -1,31 +1,33 @@
-﻿@model PizzaShop.Entities.Order
+﻿@model CreateOrderViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Place order";
 }
 
-<h2>Create</h2>
+<h2>Place order</h2>
 
-<h4>Order</h4>
 <hr />
+
+@{await Html.RenderPartialAsync("_LoginPartial");}
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="OrderDateTime" class="control-label"></label>
                 <input asp-for="OrderDateTime" class="form-control" />
                 <span asp-validation-for="OrderDateTime" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="TotalAmount" class="control-label"></label>
-                <input asp-for="TotalAmount" class="form-control" />
+                <input disabled="disabled" asp-for="TotalAmount" class="form-control" />
                 <span asp-validation-for="TotalAmount" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
                 <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -52,20 +54,13 @@
                 <span asp-validation-for="Phonenumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="Delivered" /> @Html.DisplayNameFor(model => model.Delivered)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Progress to payment" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-danger" asp-controller="Cart" asp-action="Index">Go back to your cart</a>
 </div>
 
