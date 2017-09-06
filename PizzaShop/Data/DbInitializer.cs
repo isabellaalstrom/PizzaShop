@@ -37,7 +37,12 @@ namespace PizzaShop.Data
             var adminUser = new ApplicationUser
             {
                 UserName = "admin@test.se",
-                Email = "admin@test.se"
+                Email = "admin@test.se",
+                Name = "Isabella Gross Alström",
+                Address = "Mjärdgatan 8",
+                Zipcode = "13343",
+                City = "Saltsjöbaden",
+                PhoneNumber = "0707350345"
             };
             var adminUserResult = userManager.CreateAsync(adminUser, "Pa$$w0rd").Result;
             var result = userManager.AddToRoleAsync(adminUser, "Admin");
@@ -130,15 +135,15 @@ namespace PizzaShop.Data
                 firstOrder.OrderDateTime = DateTime.Now;
                 firstOrder.User = studentUser;
 
-                var firstOrderHawaii = new OrderDish { Dish = hawaii, Order = firstOrder };
-                var firstOrderFungi = new OrderDish { Dish = fungi, Order = firstOrder };
+                var firstOrderHawaii = new CartItem { Dish = hawaii, Order = firstOrder,IsModified = true };
+                var firstOrderFungi = new CartItem { Dish = fungi, Order = firstOrder, IsModified = false };
 
-                var firstOrderDishes = new List<OrderDish>();
-                firstOrderDishes.Add(firstOrderHawaii);
-                firstOrderDishes.Add(firstOrderFungi);
-                firstOrder.OrderDishes = firstOrderDishes;
+                var firstOrderItems = new List<CartItem>();
+                firstOrderItems.Add(firstOrderHawaii);
+                firstOrderItems.Add(firstOrderFungi);
+                firstOrder.OrderCartItems = firstOrderItems;
 
-                foreach (var dish in firstOrder.OrderDishes)
+                foreach (var dish in firstOrder.OrderCartItems)
                 {
                     firstOrder.TotalAmount = firstOrder.TotalAmount + dish.Dish.Price;
                 }
@@ -150,7 +155,7 @@ namespace PizzaShop.Data
 
                 context.DishTypes.AddRange(pizzaDishType, saladDishType, pastaDishType);
                 context.Orders.AddRange(firstOrder);
-                context.OrderDishes.AddRange(firstOrderFungi, firstOrderHawaii);
+                context.CartItems.AddRange(firstOrderFungi, firstOrderHawaii);
                 context.Ingredients.AddRange(cheese, tomatoSauce, ham, mushroom, bacon, curry, banana, pineapple, shrimp, tuna);
                 context.Dishes.AddRange(capricciosa, margherita, hawaii, fungi);
                 context.DishIngredients.AddRange(capricciosaTomatoSauce, capricciosaCheese,

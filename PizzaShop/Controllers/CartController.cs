@@ -38,7 +38,7 @@ namespace PizzaShop.Controllers
             });
         }
 
-        public RedirectToActionResult AddToCart(int id, string returnUrl)
+        public RedirectResult AddToCart(int id, string returnUrl)
         {
             Cart cart = _cartService.GetCart();
             var dish = _context.Dishes
@@ -57,19 +57,14 @@ namespace PizzaShop.Controllers
                     if (dish.DishIngredients.SequenceEqual(dishIngredientsToCompare, new DefaultDishIngredientComparer()))//if true finns en likadan ci redan, lägg på en på quantity istället
                     {
                         _cartService.UpdateQuantity(cartItem);
-                        return RedirectToAction("Index", new { returnUrl });
+                        return Redirect(returnUrl);
                     }
-                    //else
-                    //{
-                    //    _cart.AddItem(dish, 1);
-
-                    //}
                 }
 
             }
             _cartService.AddToCart(dish, 1);
 
-            return RedirectToAction("Index", new { returnUrl });
+            return Redirect(returnUrl);
         }
 
         public RedirectToActionResult RemoveFromCart(int id,
@@ -159,6 +154,16 @@ namespace PizzaShop.Controllers
             {
                 cartItem.CartItemIngredients.Remove(cartItemIngredient);
             }
+
+
+            var dishIngredientsToCompare = cartItem.CartItemIngredients.Select(cartItemIngredient =>
+                _context.DishIngredients.First(i => i.Ingredient.IngredientName == cartItemIngredient.IngredientName)).ToList();
+            var dish = _context.Dishes
+                .Include(d => d.DishIngredients)
+                .ThenInclude(di => di.Ingredient)
+                .FirstOrDefault(p => p.DishId == cartItem.DishId);
+            cartItem.IsModified = !dish.DishIngredients.SequenceEqual(dishIngredientsToCompare, new DefaultDishIngredientComparer());
+
             _cartService.UpdateItemIngredients(cartItem);
 
             return RedirectToAction("Index");

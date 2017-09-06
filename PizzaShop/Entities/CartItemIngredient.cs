@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using PizzaShop.Entities;
+using PizzaShop.Models;
 
-namespace PizzaShop.Models
+namespace PizzaShop.Entities
 {
     public class CartItemIngredient
     {
@@ -11,5 +11,7 @@ namespace PizzaShop.Models
         [DisplayName("Ingredient")]
         public string IngredientName { get; set; }
         public int Price { get; set; }
+        public bool IsOriginalIngredient { get; set; }
+
     }
 }

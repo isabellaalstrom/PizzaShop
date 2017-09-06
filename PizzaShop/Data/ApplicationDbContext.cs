@@ -18,8 +18,19 @@ namespace PizzaShop.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Cart>()
-                .HasKey(cart => cart.CartId);
+            //för en till många-relation räcker detta
+            builder.Entity<Order>() //den som har många av det andra
+                .HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId);
+
+            //builder.Entity<Cart>()
+            //    .HasKey(cart => cart.CartId);
+
+            builder.Entity<Dish>()
+                .HasOne(o => o.DishType)
+                .WithMany(u => u.Dishes)
+                .HasForeignKey(o => o.DishTypeId);            
 
             //Säger explicit vilka ids som ska användas som primary key i dishingredient
             builder.Entity<DishIngredient>()
@@ -33,42 +44,20 @@ namespace PizzaShop.Data
                 .WithMany(d => d.DishIngredients)
                 .HasForeignKey(di => di.IngredientId);
 
-            //för en till många-relation räcker detta
-            builder.Entity<Order>() //den som har många av det andra
-                .HasOne(o => o.User)
-                .WithMany(u => u.Orders)
-                .HasForeignKey(o => o.UserId);
+            builder.Entity<CartItem>()
+                .HasOne(di => di.Order)
+                .WithMany(d => d.OrderCartItems)
+                .HasForeignKey(di => di.OrderId);
 
-            builder.Entity<Dish>() //den som har många av det andra
-                .HasOne(o => o.DishType)
-                .WithMany(u => u.Dishes)
-                .HasForeignKey(o => o.DishTypeId);
-
-            builder.Entity<OrderDish>()
-                .HasKey(od => new {od.OrderId, od.DishId});
-            builder.Entity<OrderDish>()
-                .HasOne(od => od.Order)
-                .WithMany(o => o.OrderDishes)
-                .HasForeignKey(od => od.OrderId);
-            builder.Entity<OrderDish>()
-                .HasOne(od => od.Dish)
-                .WithMany(d => d.OrderDishes)
-                .HasForeignKey(od => od.DishId);
-
-            //builder.Entity<CartItem>()
-            //    .HasOne(di => di.Cart)
-            //    .WithMany(d => d.Items)
-            //    .HasForeignKey(di => di.CartId);
+            builder.Entity<CartItem>()
+                .HasOne(di => di.Dish)
+                .WithMany(d => d.CartItems)
+                .HasForeignKey(di => di.DishId);
 
             builder.Entity<CartItemIngredient>()
                 .HasOne(di => di.CartItem)
                 .WithMany(d => d.CartItemIngredients)
                 .HasForeignKey(di => di.CartItemId);
-
-            //builder.Entity<CartItemIngredient>()
-            //    .HasOne(a => a.Ingredient)
-            //    .WithMany(b => b.CartItemIngredients)
-            //    .HasForeignKey(o => o.IngredientId);
 
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
@@ -80,7 +69,6 @@ namespace PizzaShop.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<DishIngredient> DishIngredients { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDish> OrderDishes { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<CartItemIngredient> CartItemIngredients { get; set; }
         public DbSet<DishType> DishTypes { get; set; }

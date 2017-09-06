@@ -7,7 +7,9 @@
         <small class="navbar-text">
             <a class="navbar-link" asp-controller="Cart" asp-action="Index">
                 <b>Your cart:</b>
-                @Model.CartItems.Count() item(s)
+                @{
+                    var itemCount = Model.CartItems.Sum(cartItem => cartItem.Quantity);
+                    @itemCount  }  item(s)
                 @_cartService.ComputeTotalValue().ToString("c")
             </a>
         </small>

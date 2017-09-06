@@ -31,19 +31,30 @@ namespace PizzaShop.Controllers
         {
             var currentUsername = HttpContext.User.Identity.Name;
 
-            if (currentUsername == null)
+            var model = new CheckoutViewModel
             {
-                ModelState.AddModelError("", "Användaren kunde inte hittas");
-            }
-            var user = await _userManager.FindByNameAsync(currentUsername);
-            if (user != null)
+                TotalAmount = _cartService.ComputeTotalValue(),
+                OrderCartItems = _cartService.GetCart().CartItems
+            };
+
+            if (currentUsername != null)
             {
+                var user = await _userManager.FindByNameAsync(currentUsername);
+                if (user != null)
+                {
 
-
-                return View();
-            }
-            ModelState.AddModelError("", "Nåt gick fel");
-            return RedirectToAction("Index", "Cart");
+                    model.User = user;
+                    model.Name = user.Name;
+                    model.Address = user.Address;
+                    model.Zipcode = user.Address;
+                    model.City = user.City;
+                    model.Phonenumber = user.PhoneNumber;
+                    model.UserId = user.Id;
+                }
+                }
+            return View(model);
+            //ModelState.AddModelError("", "Nåt gick fel");
+            //return RedirectToAction("Index", "Cart");
         }
         // GET: Orders
         public async Task<IActionResult> Index()
@@ -84,16 +95,26 @@ namespace PizzaShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("OrderId,OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber,Delivered")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber")] CheckoutViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var order = new Order
+                {
+                    Name = model.Name,
+                    City = model.City,
+                    UserId = model.UserId,
+                    Address = model.Address,
+                    OrderDateTime = DateTime.Now,
+                    Phonenumber = model.Phonenumber,
+                    Zipcode = model.Zipcode,
+                    TotalAmount = model.TotalAmount
+                };
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", order.UserId);
-            return View(order);
+            return View(model);
         }
 
         // GET: Orders/Edit/5

@@ -37,6 +37,7 @@ namespace PizzaShop.Services
             {
                 CartItemId = cartItemId,
                 Dish = dish,
+                DishId = dish.DishId,
                 CartItemIngredients = new List<CartItemIngredient>(),
                 Price = dish.Price,
                 Quantity = quantity
@@ -47,7 +48,8 @@ namespace PizzaShop.Services
                 {
                     IngredientName = dishIngredient.Ingredient.IngredientName,
                     Price = 0,
-                    CartItemId = item.CartItemId
+                    CartItemId = item.CartItemId,
+                    IsOriginalIngredient = true
                 });
             }
             cart.CartItems.Add(item);

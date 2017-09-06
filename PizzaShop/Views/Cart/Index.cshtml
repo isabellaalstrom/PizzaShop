@@ -9,6 +9,7 @@
 
 <h2>Your shopping cart</h2>
 <h4>Here are the delicious dishes in your shopping cart.</h4>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
@@ -115,5 +116,4 @@
     </tfoot>
 </table>
 
-<a class="btn btn-success" asp-controller="Orders" asp-action="Create"
-   asp-route-id="@Model." asp-route-returnUrl="@Model.ReturnUrl">Place order</a>
+<a class="btn btn-success" asp-controller="Orders" asp-action="Checkout">Place order</a>

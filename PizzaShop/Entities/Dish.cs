@@ -14,6 +14,6 @@ namespace PizzaShop.Entities
         public DishType DishType { get; set; }
         [DisplayName("Ingredients")]
         public List<DishIngredient> DishIngredients { get; set; }
-        public List<OrderDish> OrderDishes { get; set; }
+        public List<CartItem> CartItems { get; set; }
     }
 }
