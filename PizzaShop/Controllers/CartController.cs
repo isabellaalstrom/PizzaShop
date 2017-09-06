@@ -19,13 +19,13 @@ namespace PizzaShop.Controllers
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly Cart _cart;
+        private readonly ICartService _cartService;
         private readonly IngredientService _ingredientService;
 
-        public CartController(ApplicationDbContext context, Cart cart, IngredientService ingredientService)
+        public CartController(ApplicationDbContext context, ICartService cartService, IngredientService ingredientService)
         {
             _context = context;
-            _cart = cart;
+            _cartService = cartService;
             _ingredientService = ingredientService;
         }
 
@@ -33,37 +33,22 @@ namespace PizzaShop.Controllers
         {
             return View(new CartIndexViewModel
             {
-                Cart = _cart,
+                Cart = _cartService.GetCart(),
                 ReturnUrl = returnUrl
             });
         }
 
-        public ViewResult Test()
-        {
-            return null;
-        }
-
-
-        public ViewResult Test2(CartIndexViewModel model)
-        {
-            return null;
-        }
-
-        public ViewResult Test3(CartIndexViewModel model)
-        {
-            return null;
-        }
-
         public RedirectToActionResult AddToCart(int id, string returnUrl)
         {
+            Cart cart = _cartService.GetCart();
             var dish = _context.Dishes
                 .Include(d => d.DishIngredients)
                 .ThenInclude(di => di.Ingredient)
                 .FirstOrDefault(p => p.DishId == id);
 
-            if (_cart.Items.Any(ci => ci.Dish.DishId == dish.DishId))
+            if (cart.CartItems.Any(ci => ci.Dish.DishId == dish.DishId))
             {
-                var cartItems = _cart.Items.Where(ci => ci.Dish.DishId == dish.DishId);
+                var cartItems = cart.CartItems.Where(ci => ci.Dish.DishId == dish.DishId);
                 foreach (var cartItem in cartItems)
                 {
                     var dishIngredientsToCompare = cartItem.CartItemIngredients.Select(cartItemIngredient =>
@@ -71,7 +56,7 @@ namespace PizzaShop.Controllers
 
                     if (dish.DishIngredients.SequenceEqual(dishIngredientsToCompare, new DefaultDishIngredientComparer()))//if true finns en likadan ci redan, lägg på en på quantity istället
                     {
-                        _cart.UpdateQuantity(cartItem);
+                        _cartService.UpdateQuantity(cartItem);
                         return RedirectToAction("Index", new { returnUrl });
                     }
                     //else
@@ -82,7 +67,7 @@ namespace PizzaShop.Controllers
                 }
 
             }
-            _cart.AddItem(dish, 1);
+            _cartService.AddToCart(dish, 1);
 
             return RedirectToAction("Index", new { returnUrl });
         }
@@ -90,10 +75,10 @@ namespace PizzaShop.Controllers
         public RedirectToActionResult RemoveFromCart(int id,
             string returnUrl)
         {
-            var cartItem = _cart.Items.First(ci => ci.CartItemId == id);
+            var cartItem = _cartService.GetCart().CartItems.First(ci => ci.CartItemId == id);
             if (cartItem != null)
             {
-                _cart.RemoveItem(cartItem);
+                _cartService.RemoveFromCart(cartItem);
 
             }
             return RedirectToAction("Index", new { returnUrl });
@@ -109,7 +94,7 @@ namespace PizzaShop.Controllers
             var checkedIngredients = checkedIngredientIds.Select(ingredientId =>
             _context.Ingredients.First(x => x.IngredientId == int.Parse(ingredientId.Remove(0, 11)))).ToList();
 
-            var cartItem = _cart.Items.First(ci => ci.CartItemId == id);
+            var cartItem = _cartService.GetCart().CartItems.First(ci => ci.CartItemId == id);
 
             //LÄGGA TILL
             //gå igenom alla valda ing
@@ -174,7 +159,7 @@ namespace PizzaShop.Controllers
             {
                 cartItem.CartItemIngredients.Remove(cartItemIngredient);
             }
-            _cart.UpdateItemIngredients(cartItem);
+            _cartService.UpdateItemIngredients(cartItem);
 
             return RedirectToAction("Index");
         }

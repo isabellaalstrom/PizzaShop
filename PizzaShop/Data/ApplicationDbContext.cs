@@ -55,10 +55,10 @@ namespace PizzaShop.Data
                 .WithMany(d => d.OrderDishes)
                 .HasForeignKey(od => od.DishId);
 
-            builder.Entity<CartItem>()
-                .HasOne(di => di.Cart)
-                .WithMany(d => d.Items)
-                .HasForeignKey(di => di.CartId);
+            //builder.Entity<CartItem>()
+            //    .HasOne(di => di.Cart)
+            //    .WithMany(d => d.Items)
+            //    .HasForeignKey(di => di.CartId);
 
             builder.Entity<CartItemIngredient>()
                 .HasOne(di => di.CartItem)

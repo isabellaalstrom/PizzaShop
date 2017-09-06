@@ -5,18 +5,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PizzaShop.Models;
 using PizzaShop.Models.CartViewModels;
+using PizzaShop.Services;
 
 namespace PizzaShop.Components
 {
     public class CartSummary : ViewComponent
     {
-        private Cart cart;
-        public CartSummary(Cart cartService)
+        private readonly ICartService _cartService;
+        public CartSummary(ICartService cartService)
         {
-            cart = cartService;
+            _cartService = cartService;
         }
         public IViewComponentResult Invoke()
         {
+            Cart cart = _cartService.GetCart();
             return View(cart);
         }
     }

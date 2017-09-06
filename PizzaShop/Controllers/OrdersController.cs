@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using PizzaShop.Data;
 using PizzaShop.Entities;
 using PizzaShop.Models;
+using PizzaShop.Services;
 
 namespace PizzaShop.Controllers
 {
@@ -17,13 +18,14 @@ namespace PizzaShop.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly Cart _cart;
+        private readonly ICartService _cartService;
 
-        public OrdersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, Cart cart)
+        public OrdersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ICartService cartService)
         {
             _context = context;
             _userManager = userManager;
-            _cart = cart;
+            _cartService = cartService;
+
         }
         public async Task<IActionResult> Checkout()
         {

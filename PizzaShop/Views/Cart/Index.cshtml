@@ -1,5 +1,6 @@
 ﻿@inject DishTypeService _dishType
 @inject IngredientService _ingredient
+@inject ICartService _cartService
 @model CartIndexViewModel
 
 @{
@@ -20,7 +21,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.Cart.Items)
+    @foreach (var item in Model.Cart.CartItems)
     {
         <tr>
             @*<td class="text-center">@item.Quantity</td>*@
@@ -108,7 +109,7 @@
         <td colspan="3" class="text-right">Total:</td>
 
         <td class="text-right">
-            @Model.Cart.ComputeTotalValue().ToString("c")
+            @_cartService.ComputeTotalValue().ToString("c")
         </td>
     </tr>
     </tfoot>
