@@ -62,7 +62,10 @@ namespace PizzaShop.Controllers
         {
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
+            if (returnUrl == null)
+            {
+                returnUrl = Request.Headers["Referer"].ToString();
+            }
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -72,16 +75,22 @@ namespace PizzaShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
+
             ViewData["ReturnUrl"] = returnUrl;
+
             if (ModelState.IsValid)
             {
+                if (returnUrl == null)
+                {
+                    returnUrl = Request.Headers["Referer"].ToString();
+                }
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    return Redirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -224,6 +233,10 @@ namespace PizzaShop.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            if (returnUrl == null)
+            {
+                returnUrl = Request.Headers["Referer"].ToString();
+            }
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -233,6 +246,10 @@ namespace PizzaShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
+            if (returnUrl == null)
+            {
+                returnUrl = Request.Headers["Referer"].ToString();
+            }
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -248,7 +265,7 @@ namespace PizzaShop.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return Redirect(returnUrl);
                 }
                 AddErrors(result);
             }
@@ -259,11 +276,16 @@ namespace PizzaShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> Logout(string returnUrl = null)
         {
+            if (returnUrl == null)
+            {
+                returnUrl = Request.Headers["Referer"].ToString();
+            }
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return Redirect(returnUrl);
+            //return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         [HttpPost]
