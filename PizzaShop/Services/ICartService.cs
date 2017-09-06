@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace PizzaShop.Services
 {
-    public class CartService : ICartService
+    public interface ICartService
     {
+
     }
 }

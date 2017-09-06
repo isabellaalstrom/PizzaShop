@@ -3,23 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzaShop.Data;
 using PizzaShop.Entities;
+using PizzaShop.Models;
 
 namespace PizzaShop.Controllers
 {
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly Cart _cart;
 
-        public OrdersController(ApplicationDbContext context)
+        public OrdersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, Cart cart)
         {
             _context = context;
+            _userManager = userManager;
+            _cart = cart;
         }
+        public async Task<IActionResult> Checkout()
+        {
+            var currentUsername = HttpContext.User.Identity.Name;
 
+            if (currentUsername == null)
+            {
+                ModelState.AddModelError("", "Användaren kunde inte hittas");
+            }
+            var user = await _userManager.FindByNameAsync(currentUsername);
+            if (user != null)
+            {
+
+
+                return View();
+            }
+            ModelState.AddModelError("", "Nåt gick fel");
+            return RedirectToAction("Index", "Cart");
+        }
         // GET: Orders
         public async Task<IActionResult> Index()
         {
@@ -49,7 +72,7 @@ namespace PizzaShop.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
