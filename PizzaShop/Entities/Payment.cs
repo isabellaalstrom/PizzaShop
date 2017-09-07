@@ -6,20 +6,19 @@ namespace PizzaShop.Entities
 {
     public class Payment
     {
+        public int PaymentId { get; set; }
         [Required]
-        [DisplayName("Card Holder")]
         public string CardHolder { get; set; }
         [Required]
-        [DisplayName("Credit Card Number")]
         public string CreditCardNumber { get; set; }
         [Required]
-        [DisplayName("Month")]
         public int ExpireMonth { get; set; }
         [Required]
-        [DisplayName("Year")]
         public int ExpireYear { get; set; }
         [Required]
-        [DisplayName("CVV")]
         public string Cvv { get; set; }
+
+        public int OrderId { get; set; }
+        public Order Order { get; set; }
     }
 }

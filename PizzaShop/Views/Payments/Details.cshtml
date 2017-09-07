@@ -1,0 +1,54 @@
+﻿@model PizzaShop.Entities.Payment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Payment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CardHolder)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CardHolder)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditCardNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreditCardNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpireMonth)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExpireMonth)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpireYear)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExpireYear)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cvv)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cvv)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Order)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Order.Address)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PaymentId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
