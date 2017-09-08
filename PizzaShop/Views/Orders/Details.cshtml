@@ -54,30 +54,39 @@
             @Html.DisplayNameFor(model => model.OrderCartItems)
         </dt>
         <dd>
-            <ul>
+            <ul class="list-unstyled">
                 @foreach (var cartItem in Model.OrderCartItems)
             {
                     <li>@cartItem.Dish.DishName</li>
-                    <ul>
-                        @foreach (var cii in cartItem.CartItemIngredients)
-                        {
-                            if (!cii.IsOriginalIngredient)
+                    <li>
+                        <ul>
+                            @foreach (var cii in cartItem.CartItemIngredients)
                             {
-                                <li>
-                                    Extra: @cii.IngredientName
-                                </li>
+                                if (!cii.IsOriginalIngredient)
+                                {
+                                    <li>
+                                        Extra: @cii.IngredientName
+                                    </li>
+                                }
                             }
-                        }
-                    </ul>
+                        </ul>
+                    </li>
                 }
             </ul>
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Delivered)
+            @Html.DisplayNameFor(model => model.IsDelivered)
         </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Delivered)
-        </dd>
+        @{
+            if (Model.IsDelivered)
+            {
+                <dd>Yes</dd>
+            }
+            else
+            {
+                <dd>No</dd>
+            }
+        }
         <dt>
             @Html.DisplayNameFor(model => model.User)
         </dt>

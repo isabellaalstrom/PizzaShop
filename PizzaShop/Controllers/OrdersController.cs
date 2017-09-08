@@ -29,12 +29,18 @@ namespace PizzaShop.Controllers
         }
         public async Task<IActionResult> Checkout()
         {
+            var cart = _cartService.GetCart();
+            if (!cart.CartItems.Any())
+            {
+                ModelState.AddModelError("", "Sorry, your cart is empty!");
+                return RedirectToAction("Index", "Cart");
+            }
             var currentUsername = HttpContext.User.Identity.Name;
 
             var model = new CheckoutViewModel
             {
                 TotalAmount = _cartService.ComputeTotalValue(),
-                OrderCartItems = _cartService.GetCart().CartItems
+                OrderCartItems = cart.CartItems
             };
 
             if (currentUsername != null)
@@ -46,17 +52,55 @@ namespace PizzaShop.Controllers
                     model.User = user;
                     model.Name = user.Name;
                     model.Address = user.Address;
-                    model.Zipcode = user.Address;
+                    model.Zipcode = user.Zipcode;
                     model.City = user.City;
                     model.Phonenumber = user.PhoneNumber;
                     model.UserId = user.Id;
                 }
-                }
+            }
             return View(model);
-            //ModelState.AddModelError("", "Nåt gick fel");
-            //return RedirectToAction("Index", "Cart");
         }
+
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> Checkout([Bind("OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber,OrderCartItems")] CheckoutViewModel model)
+        {
+            var cart = _cartService.GetCart();
+            if (ModelState.IsValid)
+            {
+                if (!cart.CartItems.Any())
+                {
+                    ModelState.AddModelError("", "Sorry, your cart is empty!");
+                    return View(model);
+                }
+                var order = new Order
+                {
+                    Name = model.Name,
+                    City = model.City,
+                    UserId = model.UserId,
+                    Address = model.Address,
+                    OrderDateTime = DateTime.Now,
+                    Phonenumber = model.Phonenumber,
+                    Zipcode = model.Zipcode,
+                    TotalAmount = model.TotalAmount,
+                    OrderCartItems = cart.CartItems,
+                    OrderId = _context.Orders.Count() + 1
+                };
+                _context.Add(order);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+
+
+
         // GET: Orders
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Orders.Include(o => o.User).Include(c => c.OrderCartItems).ThenInclude(ci => ci.Dish);
@@ -64,6 +108,7 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Orders/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -84,41 +129,6 @@ namespace PizzaShop.Controllers
             }
 
             return View(order);
-        }
-
-        // GET: Orders/Create
-        public IActionResult Create()
-        {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
-        }
-
-        // POST: Orders/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber")] CheckoutViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var order = new Order
-                {
-                    Name = model.Name,
-                    City = model.City,
-                    UserId = model.UserId,
-                    Address = model.Address,
-                    OrderDateTime = DateTime.Now,
-                    Phonenumber = model.Phonenumber,
-                    Zipcode = model.Zipcode,
-                    TotalAmount = model.TotalAmount
-                };
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(model);
         }
 
         // GET: Orders/Edit/5

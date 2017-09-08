@@ -20,8 +20,7 @@ namespace PizzaShop.Services
         public Cart GetCart()
         {
             ISession session = _httpContextAccessor.HttpContext.Session;
-            Cart cart = session?.GetJson<Cart>("Cart")
-                               ?? new Cart();
+            Cart cart = session?.GetJson<Cart>("Cart") ?? new Cart();
             return cart;
         }
 

@@ -161,6 +161,7 @@ namespace PizzaShop.Data
                 var firstOrder = new Order();
                 firstOrder.OrderDateTime = DateTime.Now;
                 firstOrder.User = studentUser;
+                firstOrder.OrderId = 1;
 
                 var firstOrderMargherita = new CartItem { Dish = margherita, Order = firstOrder, IsModified = true, Price = margherita.Price };
                 var cartItemMCheese = new CartItemIngredient
