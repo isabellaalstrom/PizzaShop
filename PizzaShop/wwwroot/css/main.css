@@ -25,6 +25,9 @@ button, .btn {
   #menu .menu-title {
     text-align: center; }
 
+.not-delivered {
+  border: solid 2px red; }
+
 .body-content {
   margin-top: 50px; }
 

@@ -1,11 +1,8 @@
-﻿@model PizzaShop.Entities.Order
-
+﻿@model Order
 @{
     ViewData["Title"] = "Details";
 }
-
 <h2>Details</h2>
-
 <div>
     <h4>Order</h4>
     <hr />
@@ -51,6 +48,29 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Phonenumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderCartItems)
+        </dt>
+        <dd>
+            <ul>
+                @foreach (var cartItem in Model.OrderCartItems)
+            {
+                    <li>@cartItem.Dish.DishName</li>
+                    <ul>
+                        @foreach (var cii in cartItem.CartItemIngredients)
+                        {
+                            if (!cii.IsOriginalIngredient)
+                            {
+                                <li>
+                                    Extra: @cii.IngredientName
+                                </li>
+                            }
+                        }
+                    </ul>
+                }
+            </ul>
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Delivered)

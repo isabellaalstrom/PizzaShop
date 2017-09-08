@@ -73,7 +73,7 @@ namespace PizzaShop.Data
         public DbSet<CartItemIngredient> CartItemIngredients { get; set; }
         public DbSet<DishType> DishTypes { get; set; }
         public DbSet<Cart> Carts { get; set; }
-        public DbSet<PizzaShop.Entities.Payment> Payment { get; set; }
+        public DbSet<Payment> Payment { get; set; }
 
     }
 }

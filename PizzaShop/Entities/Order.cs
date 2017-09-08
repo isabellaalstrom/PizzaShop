@@ -29,8 +29,9 @@ namespace PizzaShop.Entities
         [Required]
         public string Phonenumber { get; set; }
 
+        [DisplayName("Dishes")]
         public List<CartItem> OrderCartItems { get; set; }
 
-        public bool Delivered { get; set; }
+        public bool IsDelivered { get; set; }
     }
 }

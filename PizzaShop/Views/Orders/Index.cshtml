@@ -13,25 +13,16 @@
                 @Html.DisplayNameFor(model => model.OrderDateTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.OrderCartItems)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.Zipcode)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.City)
-                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Phonenumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Delivered)
+                @Html.DisplayNameFor(model => model.IsDelivered)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.User)
@@ -40,51 +31,55 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+
+    @foreach (var order in Model)
+    {
+        var deliverStatus ="";
+        if (!order.IsDelivered)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderDateTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                @* <td>
-                        @Html.DisplayFor(modelItem => item.Zipcode)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.City)
-                    </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phonenumber)
-                </td>
+            deliverStatus = "not-delivered";
+        }
 
-                @{
-                    if (item.Delivered)
+
+        <tr class="@deliverStatus">
+            <td>
+                @Html.DisplayFor(modelItem => order.OrderDateTime)
+            </td>
+            <td>
+                <ul class="list-unstyled">
+                    @foreach (var cartItem in order.OrderCartItems)
                     {
-                        <td>Yes</td>
+                        <li>@cartItem.Dish.DishName</li>
                     }
-                    else
-                    {
-                        <td>No</td>
-                    }
+                </ul>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => order.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => order.Phonenumber)
+            </td>
+
+            @{
+                if (order.IsDelivered)
+                {
+                    <td>Yes</td>
                 }
+                else
+                {
+                    <td>No</td>
+                }
+            }
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Id)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
-                </td>
-            </tr>
-                    }
+            <td>
+                @Html.DisplayFor(modelItem => order.User.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@order.OrderId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@order.OrderId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@order.OrderId">Delete</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

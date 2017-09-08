@@ -59,7 +59,7 @@ namespace PizzaShop.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Orders.Include(o => o.User);
+            var applicationDbContext = _context.Orders.Include(o => o.User).Include(c => c.OrderCartItems).ThenInclude(ci => ci.Dish);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -73,6 +73,10 @@ namespace PizzaShop.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.User)
+                .Include(o => o.OrderCartItems)
+                .ThenInclude(ci => ci.CartItemIngredients)
+                .Include(o => o.OrderCartItems)
+                .ThenInclude(ci => ci.Dish)
                 .SingleOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
