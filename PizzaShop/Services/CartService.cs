@@ -27,14 +27,14 @@ namespace PizzaShop.Services
         public void AddToCart(Dish dish, int quantity)
         {
             Cart cart = GetCart();
-            var cartItemId = 1;
-            if (cart.CartItems.Any())
-            {
-                cartItemId = cart.CartItems.Count + 1;
-            }
+            //var cartItemId = 1;
+            //if (cart.CartItems.Any())
+            //{
+            //    cartItemId = cart.CartItems.Count + 1;
+            //}
             var item = new CartItem
             {
-                CartItemId = cartItemId,
+                //CartItemId = cartItemId,
                 Dish = dish,
                 DishId = dish.DishId,
                 CartItemIngredients = new List<CartItemIngredient>(),
@@ -47,7 +47,8 @@ namespace PizzaShop.Services
                 {
                     IngredientName = dishIngredient.Ingredient.IngredientName,
                     Price = 0,
-                    CartItemId = item.CartItemId,
+                    CartItem = item,
+                    //CartItemId = item.CartItemId,
                     IsOriginalIngredient = true
                 });
             }

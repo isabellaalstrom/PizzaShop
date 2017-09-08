@@ -89,9 +89,15 @@ namespace PizzaShop.Controllers
                     OrderCartItems = cart.CartItems,
                     OrderId = _context.Orders.Count() + 1
                 };
+                foreach (var cartItem in order.OrderCartItems)
+                {
+                    cartItem.DishId = null;
+                    cartItem.Dish = null;
+                }
+                _cartService.ClearCart();
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", "Payments");
             }
             return View(model);
         }
