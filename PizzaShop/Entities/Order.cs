@@ -33,5 +33,9 @@ namespace PizzaShop.Entities
         public List<CartItem> OrderCartItems { get; set; }
 
         public bool IsDelivered { get; set; }
+        public bool IsPayed { get; set; }
+
+        //public int PaymentId { get; set; }
+        public Payment Payment { get; set; }
     }
 }

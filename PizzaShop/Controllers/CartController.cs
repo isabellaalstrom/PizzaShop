@@ -20,13 +20,11 @@ namespace PizzaShop.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ICartService _cartService;
-        private readonly IngredientService _ingredientService;
 
-        public CartController(ApplicationDbContext context, ICartService cartService, IngredientService ingredientService)
+        public CartController(ApplicationDbContext context, ICartService cartService)
         {
             _context = context;
             _cartService = cartService;
-            _ingredientService = ingredientService;
         }
 
         public ViewResult Index(string returnUrl)
@@ -70,6 +68,7 @@ namespace PizzaShop.Controllers
         public RedirectToActionResult RemoveFromCart(int id,
             string returnUrl)
         {
+            //todo ta bort en quantity
             var cartItem = _cartService.GetCart().CartItems.First(ci => ci.CartItemId == id);
             if (cartItem != null)
             {

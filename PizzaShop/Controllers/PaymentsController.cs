@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzaShop.Data;
 using PizzaShop.Entities;
+using PizzaShop.Models;
+using PizzaShop.Services;
 
 namespace PizzaShop.Controllers
 {
     public class PaymentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IEmailSender _emailSender;
 
-        public PaymentsController(ApplicationDbContext context)
+        public PaymentsController(ApplicationDbContext context, IEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
         }
 
         // GET: Payments1
@@ -46,10 +50,17 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Payments1/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "Address");
-            return View();
+            var order = _context.Orders.FirstOrDefault(o => o.OrderId == id);
+            var model = new CreatePaymentViewModel
+            {
+                OrderId = id,
+                Order = order,
+                CardHolder = order.Name,
+                Amount = order.TotalAmount
+            };
+            return View(model);
         }
 
         // POST: Payments1/Create
@@ -57,17 +68,43 @@ namespace PizzaShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PaymentId,CardHolder,CreditCardNumber,ExpireMonth,ExpireYear,Cvv,OrderId")] Payment payment)
+        public async Task<IActionResult> Create([Bind("PaymentId,CardHolder,CreditCardNumber,ExpireMonth,ExpireYear,Cvv,OrderId,Amount")] CreatePaymentViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var payment = new Payment
+                {
+                    Order = _context.Orders.Include(o => o.User).FirstOrDefault(o => o.OrderId == model.OrderId),
+                    OrderId = model.OrderId,
+                    Amount = model.Amount,
+                    CardHolder = model.CardHolder,
+                    CreditCardNumber = model.CreditCardNumber,
+                    Cvv = model.Cvv,
+                    ExpireMonth = model.ExpireMonth,
+                    ExpireYear = model.ExpireYear
+                };
                 _context.Add(payment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ThankYou), new { name = payment.Order.Name, amount = payment.Amount, email = payment.Order.User.Email } );
             }
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "Address", payment.OrderId);
-            return View(payment);
+            return View(model);
         }
+
+        public async Task<ViewResult> ThankYou(string name, int amount, string email)
+        {
+            var model = new ThankYouViewModel
+            {
+                Name = name,
+                Amount = amount,
+                Email = email
+            };
+            await _emailSender.SendEmailAsync(email, "Thank you for shopping at PizzaShop!",
+                "Your dish will be ready for delivery shortly.");
+
+            return View(model);
+        }
+
+
 
         // GET: Payments1/Edit/5
         public async Task<IActionResult> Edit(int? id)

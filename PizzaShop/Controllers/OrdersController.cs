@@ -81,6 +81,7 @@ namespace PizzaShop.Controllers
                     Name = model.Name,
                     City = model.City,
                     UserId = model.UserId,
+                    User = await _userManager.FindByIdAsync(model.UserId),
                     Address = model.Address,
                     OrderDateTime = DateTime.Now,
                     Phonenumber = model.Phonenumber,
@@ -97,7 +98,7 @@ namespace PizzaShop.Controllers
                 _cartService.ClearCart();
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Payments");
+                return RedirectToAction("Create", "Payments", new{ id = order.OrderId });
             }
             return View(model);
         }
