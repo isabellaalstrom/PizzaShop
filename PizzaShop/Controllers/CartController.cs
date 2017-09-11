@@ -52,12 +52,13 @@ namespace PizzaShop.Controllers
                 var cartItems = cart.CartItems.Where(ci => ci.Dish.DishId == dish.DishId);
                 foreach (var cartItem in cartItems)
                 {
+                    //todo dishIngredientsToCompare skickar inte med ingredient - ingredientname
                     var dishIngredientsToCompare = cartItem.CartItemIngredients.Select(cartItemIngredient =>
-                    _context.DishIngredients.First(i => i.Ingredient.IngredientName == cartItemIngredient.IngredientName)).ToList();
+                    _context.DishIngredients.Include(di => di.Ingredient).First(i => i.Ingredient.IngredientName == cartItemIngredient.IngredientName)).ToList();
 
                     if (dish.DishIngredients.SequenceEqual(dishIngredientsToCompare, new DefaultDishIngredientComparer()))//if true finns en likadan ci redan, lägg på en på quantity istället
                     {
-                        _cartService.UpdateQuantity(cartItem);
+                        _cartService.UpdateQuantity(cartItem, 1);
                         return Redirect(returnUrl);
                     }
                 }
@@ -73,10 +74,13 @@ namespace PizzaShop.Controllers
         {
             //todo ta bort en quantity
             var cartItem = _cartService.GetCart().CartItems.First(ci => ci.CartItemId == id);
-            if (cartItem != null)
+            if (cartItem != null && cartItem.Quantity == 1)
             {
                 _cartService.RemoveFromCart(cartItem);
-
+            }
+            else if (cartItem != null && cartItem.Quantity > 1)
+            {
+                _cartService.UpdateQuantity(cartItem, 0);
             }
             return RedirectToAction("Index", new { returnUrl });
         }

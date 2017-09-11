@@ -12,7 +12,7 @@ namespace PizzaShop.Services
         Cart GetCart();
         void AddToCart(Dish dish, int quantity);
         void UpdateItemIngredients(CartItem item);
-        void UpdateQuantity(CartItem item);
+        void UpdateQuantity(CartItem item, int quantity);
         void RemoveFromCart(CartItem item);
         void ClearCart();
         void SaveCart(Cart cart);

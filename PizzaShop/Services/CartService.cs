@@ -68,13 +68,17 @@ namespace PizzaShop.Services
             SaveCart(cart);
         }
 
-        public void UpdateQuantity(CartItem item)
+        public void UpdateQuantity(CartItem item, int quantity)
         {
             Cart cart = GetCart();
             var itemToUpdate = cart.CartItems.FirstOrDefault(ci => ci.CartItemId == item.CartItemId);
-            if (itemToUpdate != null)
+            if (itemToUpdate != null && quantity == 1)
             {
                 itemToUpdate.Quantity++;
+            }
+            else if (itemToUpdate != null && quantity == 0)
+            {
+                itemToUpdate.Quantity = itemToUpdate.Quantity - 1;
             }
             SaveCart(cart);
         }
