@@ -12,6 +12,5 @@ namespace PizzaShop.Entities
         public string IngredientName { get; set; }
         public int Price { get; set; }
         public bool IsOriginalIngredient { get; set; }
-
     }
 }
