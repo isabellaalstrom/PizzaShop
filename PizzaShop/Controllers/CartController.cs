@@ -52,27 +52,24 @@ namespace PizzaShop.Controllers
                 var cartItems = cart.CartItems.Where(ci => ci.Dish.DishId == dish.DishId);
                 foreach (var cartItem in cartItems)
                 {
-                    //todo dishIngredientsToCompare skickar inte med ingredient - ingredientname
-                    var dishIngredientsToCompare = cartItem.CartItemIngredients.Select(cartItemIngredient =>
-                    _context.DishIngredients.Include(di => di.Ingredient).First(i => i.Ingredient.IngredientName == cartItemIngredient.IngredientName)).ToList();
+                    //var dishIngredientsToCompare = cartItem.CartItemIngredients.Select(cartItemIngredient =>
+                    //_context.DishIngredients.Include(di => di.Ingredient).First(i => i.Ingredient.IngredientName == cartItemIngredient.IngredientName)).ToList();
 
-                    if (dish.DishIngredients.SequenceEqual(dishIngredientsToCompare, new DefaultDishIngredientComparer()))//if true finns en likadan ci redan, lägg på en på quantity istället
+                    //if (dish.DishIngredients.SequenceEqual(dishIngredientsToCompare, new DefaultDishIngredientComparer()))
+                    if (!cartItem.IsModified)
                     {
                         _cartService.UpdateQuantity(cartItem, 1);
                         return Redirect(returnUrl);
                     }
                 }
-
             }
             _cartService.AddToCart(dish, 1);
-
             return Redirect(returnUrl);
         }
 
         public RedirectToActionResult RemoveFromCart(int id,
             string returnUrl)
         {
-            //todo ta bort en quantity
             var cartItem = _cartService.GetCart().CartItems.First(ci => ci.CartItemId == id);
             if (cartItem != null && cartItem.Quantity == 1)
             {
@@ -85,8 +82,6 @@ namespace PizzaShop.Controllers
             return RedirectToAction("Index", new { returnUrl });
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<RedirectToActionResult> EditItemIngredients(int id, IFormCollection collection)
         {
             var checkedIngredientIds = collection.Keys.Where(x => x.StartsWith("ingredient-"));

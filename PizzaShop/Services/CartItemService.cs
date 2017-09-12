@@ -12,12 +12,10 @@ namespace PizzaShop.Services
     public class CartItemService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ICartService _cartService;
 
         public CartItemService(ApplicationDbContext context, ICartService cartService)
         {
             _context = context;
-            _cartService = cartService;
         }
 
         public async Task<CartItem> EditCartItemIngredients(IEnumerable<string> checkedIngredientIds, CartItem cartItem)

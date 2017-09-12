@@ -17,29 +17,24 @@ namespace PizzaShop.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Cart GetCart()
+        public virtual Cart GetCart()
         {
-            ISession session = _httpContextAccessor.HttpContext.Session;
-            Cart cart = session?.GetJson<Cart>("Cart") ?? new Cart();
+            var session = _httpContextAccessor.HttpContext.Session;
+            var cart = session?.GetJson<Cart>("Cart") ?? new Cart();
             return cart;
         }
 
         public void AddToCart(Dish dish, int quantity)
         {
             Cart cart = GetCart();
-            //var cartItemId = 1;
-            //if (cart.CartItems.Any())
-            //{
-            //    cartItemId = cart.CartItems.Count + 1;
-            //}
             var item = new CartItem
             {
-                //CartItemId = cartItemId,
                 Dish = dish,
                 DishId = dish.DishId,
                 CartItemIngredients = new List<CartItemIngredient>(),
                 Price = dish.Price,
-                Quantity = quantity
+                Quantity = quantity,
+                CartItemId = cart.CartId + dish.DishId + cart.CartItems.Count
             };
             foreach (var dishIngredient in dish.DishIngredients)
             {
@@ -48,7 +43,6 @@ namespace PizzaShop.Services
                     IngredientName = dishIngredient.Ingredient.IngredientName,
                     Price = 0,
                     CartItem = item,
-                    //CartItemId = item.CartItemId,
                     IsOriginalIngredient = true
                 });
             }

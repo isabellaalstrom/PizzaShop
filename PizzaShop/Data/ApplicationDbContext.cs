@@ -44,6 +44,9 @@ namespace PizzaShop.Data
                 .WithMany(d => d.DishIngredients)
                 .HasForeignKey(di => di.IngredientId);
 
+            //builder.Entity<CartItem>()
+            //    .HasKey(di => new { di.DishId, di.OrderId });
+
             builder.Entity<CartItem>()
                 .HasOne(di => di.Order)
                 .WithMany(d => d.OrderCartItems)
