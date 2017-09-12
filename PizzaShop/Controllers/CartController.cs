@@ -52,10 +52,6 @@ namespace PizzaShop.Controllers
                 var cartItems = cart.CartItems.Where(ci => ci.Dish.DishId == dish.DishId);
                 foreach (var cartItem in cartItems)
                 {
-                    //var dishIngredientsToCompare = cartItem.CartItemIngredients.Select(cartItemIngredient =>
-                    //_context.DishIngredients.Include(di => di.Ingredient).First(i => i.Ingredient.IngredientName == cartItemIngredient.IngredientName)).ToList();
-
-                    //if (dish.DishIngredients.SequenceEqual(dishIngredientsToCompare, new DefaultDishIngredientComparer()))
                     if (!cartItem.IsModified)
                     {
                         _cartService.UpdateQuantity(cartItem, 1);
@@ -85,9 +81,12 @@ namespace PizzaShop.Controllers
         public async Task<RedirectToActionResult> EditItemIngredients(int id, IFormCollection collection)
         {
             var checkedIngredientIds = collection.Keys.Where(x => x.StartsWith("ingredient-"));
+            var checkedIngredients = checkedIngredientIds.Select(ingredientId =>
+                _context.Ingredients.First(x => x.IngredientId == int.Parse(ingredientId.Remove(0, 11)))).ToList();
 
-            var updatedCartItem = await _cartItemService.EditCartItemIngredients(checkedIngredientIds,
-                _cartService.GetCart().CartItems.First(ci => ci.CartItemId == id)); 
+            var updatedCartItem = await _cartItemService.EditCartItemIngredients(checkedIngredients,
+                _cartService.GetCart().CartItems.First(ci => ci.CartItemId == id));
+
             _cartService.UpdateItemIngredients(updatedCartItem);
 
             return RedirectToAction("Index");

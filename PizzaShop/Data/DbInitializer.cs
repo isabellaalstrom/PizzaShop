@@ -58,7 +58,7 @@ namespace PizzaShop.Data
             {
                 var cheese = new Ingredient { IngredientName = "Cheese", Price = 5 };
                 var ham = new Ingredient { IngredientName = "Ham", Price = 10 };
-                var tomatoSauce = new Ingredient { IngredientName = "Tomato", Price = 5 };
+                var tomatoSauce = new Ingredient { IngredientName = "Tomato Sauce", Price = 5 };
                 var mushroom = new Ingredient { IngredientName = "Mushroom", Price = 5 };
                 var shrimp = new Ingredient { IngredientName = "Shrimp", Price = 10 };
                 var tuna = new Ingredient { IngredientName = "Tuna", Price = 10 };

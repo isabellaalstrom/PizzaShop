@@ -25,7 +25,7 @@
             <tr>
                 <td class="text-left">@item.Dish.DishName (@_dishType.All().FirstOrDefault(dt => dt.DishTypeId == item.Dish.DishTypeId).DishTypeName)</td>
                 <td class="text-left">
-                    @foreach (var ingredient in item.CartItemIngredients)
+                    @foreach (var ingredient in item.CartItemIngredients.OrderBy(x => x.IngredientName))
                 {
                         @ingredient.IngredientName <text> </text>
                     }
