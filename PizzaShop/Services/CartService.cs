@@ -91,7 +91,11 @@ namespace PizzaShop.Services
             _httpContextAccessor.HttpContext.Session.Remove("Cart");
         }
 
-        public void SaveCart(Cart cart) => _httpContextAccessor.HttpContext.Session.SetJson("Cart", cart);
+        public virtual bool SaveCart(Cart cart)
+        {
+            _httpContextAccessor.HttpContext.Session.SetJson("Cart", cart);
+            return true;
+        }
 
         public int ComputeTotalValue() => GetCart().CartItems.Sum(e => e.Price * e.Quantity);
         

@@ -15,7 +15,7 @@ namespace PizzaShop.Services
         void UpdateQuantity(CartItem item, int quantity);
         void RemoveFromCart(CartItem item);
         void ClearCart();
-        void SaveCart(Cart cart);
+        bool SaveCart(Cart cart);
         int ComputeTotalValue();
     }
 }
