@@ -29,11 +29,11 @@ namespace PizzaShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseInMemoryDatabase("DefaultConnection"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -44,7 +44,6 @@ namespace PizzaShop
             services.AddTransient<IEmailSender, FakeEmailSender>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<IdentityRole>>();
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient(typeof(ISession), serviceProvider =>
             {
                 var httpContextAccessor = serviceProvider.GetService <IHttpContextAccessor>();
@@ -64,12 +63,6 @@ namespace PizzaShop
             //    options.CookieHttpOnly = true;
             //});
             services.AddMvc();
-
-            //services.AddMvc().AddJsonOptions(
-            //    opt =>
-            //    {
-            //        opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
