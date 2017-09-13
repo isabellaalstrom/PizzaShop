@@ -1,6 +1,7 @@
 ﻿@inject DishTypeService _dishType
 @inject IngredientService _ingredient
 @inject ICartService _cartService
+@inject CartItemService _cartItemService
 @model CartIndexViewModel
 
 @{
@@ -36,11 +37,14 @@
                         var itemPrice = "";
                         if (item.Quantity > 1)
                         {
-                            itemPrice = $"{item.Quantity} * {item.Price:c} = " + (item.Price * item.Quantity).ToString("c");
+                            //itemPrice = $"{item.Quantity} * {item.Price:c} = " + (item.Price * item.Quantity).ToString("c");
+                            itemPrice = $"{item.Quantity} * {_cartItemService.GetItemPrice(item):c} = "
+                                + (_cartItemService.GetItemPrice(item) * item.Quantity).ToString("c");
                         }
                         else
                         {
-                            itemPrice = item.Price.ToString("c");
+                            //itemPrice = item.Price.ToString("c");
+                            itemPrice = _cartItemService.GetItemPrice(item).ToString("C");
                         }
 
                         @itemPrice

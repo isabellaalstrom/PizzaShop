@@ -26,7 +26,7 @@ namespace PizzaShop.Services
 
         public void AddToCart(Dish dish, int quantity)
         {
-            Cart cart = GetCart();
+            var cart = GetCart();
             var item = new CartItem
             {
                 Dish = dish,
@@ -52,7 +52,7 @@ namespace PizzaShop.Services
 
         public void UpdateItemIngredients(CartItem updatedItem)
         {
-            Cart cart = GetCart();
+            var cart = GetCart();
             if (cart.CartItems.Exists(ci => ci.CartItemId == updatedItem.CartItemId))
             {
                 var oldItem = cart.CartItems.First(ci => ci.CartItemId == updatedItem.CartItemId);
@@ -64,7 +64,7 @@ namespace PizzaShop.Services
 
         public void UpdateQuantity(CartItem item, int quantity)
         {
-            Cart cart = GetCart();
+            var cart = GetCart();
             var itemToUpdate = cart.CartItems.FirstOrDefault(ci => ci.CartItemId == item.CartItemId);
             if (itemToUpdate != null && quantity == 1)
             {
@@ -79,14 +79,14 @@ namespace PizzaShop.Services
 
         public void RemoveFromCart(CartItem item)
         {
-            Cart cart = GetCart();
+            var cart = GetCart();
             cart.CartItems.RemoveAll(ci => ci.CartItemId == item.CartItemId);
             SaveCart(cart);
         }
 
         public void ClearCart()
         {
-            Cart cart = GetCart();
+            var cart = GetCart();
             cart.CartItems.Clear();
             _httpContextAccessor.HttpContext.Session.Remove("Cart");
         }
@@ -97,7 +97,16 @@ namespace PizzaShop.Services
             return true;
         }
 
-        public int ComputeTotalValue() => GetCart().CartItems.Sum(e => e.Price * e.Quantity);
+        public int ComputeTotalValue()
+        {
+            int sum = 0;
+            foreach (var item in GetCart().CartItems)
+            {
+                var ingredientsSum = item.CartItemIngredients.Sum(x => x.Price);
+                sum += (item.Price + ingredientsSum) * item.Quantity;
+            }
+        return sum;
+        } 
         
     }
 }

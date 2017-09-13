@@ -22,7 +22,7 @@ namespace PizzaShop.Tests.Service
             var mockDish = new Dish
             {
                 DishId = 1,
-                DishName = "P1",
+                DishName = "Margherita",
                 Price = 89,
                 DishTypeId = 1,
                 DishIngredients = new List<DishIngredient>
@@ -33,19 +33,27 @@ namespace PizzaShop.Tests.Service
                     {
                         IngredientName = "Cheese", IngredientId = 1, Price = 5
                     }
+                },
+                new DishIngredient
+                {
+                    DishId = 1, Ingredient = new Ingredient
+                    {
+                        IngredientName = "Tomato Sauce", IngredientId = 2, Price = 5
+                    }
                 }
             }
             };
             var mockAccessor = new Mock<IHttpContextAccessor>();
-            var mockCart = new Mock<CartService>(mockAccessor.Object);
-            mockCart.Setup(x => x.GetCart()).Returns(cart);
-            mockCart.Setup(x => x.SaveCart(cart)).Returns(true);
+            var mockCartService = new Mock<CartService>(mockAccessor.Object);
+            mockCartService.Setup(x => x.GetCart()).Returns(cart);
+            mockCartService.Setup(x => x.SaveCart(cart)).Returns(true);
             // Act
-            mockCart.Object.AddToCart(mockDish, 1);
-            var results = mockCart.Object.GetCart().CartItems.ToArray();
+            mockCartService.Object.AddToCart(mockDish, 1);
+            var results = mockCartService.Object.GetCart().CartItems.ToArray();
             // Assert
             Assert.Equal(mockDish, results[0].Dish);
             Assert.Equal(results.Length, 1);
+            Assert.Equal(mockDish.DishName, "Margherita");
             Assert.NotEmpty(results);
         }
 
@@ -54,7 +62,7 @@ namespace PizzaShop.Tests.Service
         {
             // Arrange
             var cart = new Cart();
-            var mockCartItems = new List<CartItem>()
+            var mockCartItems = new List<CartItem>
             {
                 new CartItem
                 {
@@ -84,12 +92,191 @@ namespace PizzaShop.Tests.Service
             };
             cart.CartItems = mockCartItems;
             var mockAccessor = new Mock<IHttpContextAccessor>();
-            var mockCart = new Mock<CartService>(mockAccessor.Object);
-            mockCart.Setup(x => x.GetCart()).Returns(cart);
+            var mockCartService = new Mock<CartService>(mockAccessor.Object);
+            mockCartService.Setup(x => x.GetCart()).Returns(cart);
             // Act
-            var results = mockCart.Object.ComputeTotalValue();
+            var results = mockCartService.Object.ComputeTotalValue();
             // Assert
             Assert.True(results == 89);
+        }
+
+        [Fact]
+        public void ComputeTotalValue_Margherita_Extra_Ingredient_Returns_99()
+        {
+            // Arrange
+            var cart = new Cart();
+            var mockCartItems = new List<CartItem>
+            {
+                new CartItem
+                {
+                    CartItemId = 1,
+                    DishId = 1,
+                    Price = 89,
+                    CartId = 0,
+                    Quantity = 1,
+                    CartItemIngredients = new List<CartItemIngredient>
+                    {
+                        new CartItemIngredient
+                        {
+                            CartItemId = 1,
+                            IngredientName = "Cheese",
+                            IsOriginalIngredient = true,
+                            Price = 0
+                        },
+                        new CartItemIngredient
+                        {
+                            CartItemId = 1,
+                            IngredientName = "Tomato",
+                            IsOriginalIngredient = true,
+                            Price = 0
+                        },
+                        new CartItemIngredient
+                        {
+                            CartItemId = 1,
+                            IngredientName = "Ham",
+                            IsOriginalIngredient = false,
+                            Price = 10
+                        }
+                    }
+                }
+            };
+            cart.CartItems = mockCartItems;
+            var mockAccessor = new Mock<IHttpContextAccessor>();
+            var mockCartServiceService = new Mock<CartService>(mockAccessor.Object);
+            mockCartServiceService.Setup(x => x.GetCart()).Returns(cart);
+            // Act
+            var results = mockCartServiceService.Object.ComputeTotalValue();
+            // Assert
+            Assert.True(results == 99);
+        }
+
+        [Fact]
+        public void ComputeTotalValue_Two_Margherita_Extra_Ingredient_Returns_198()
+        {
+            // Arrange
+            var cart = new Cart();
+            var mockCartItems = new List<CartItem>
+            {
+                new CartItem
+                {
+                    CartItemId = 1,
+                    DishId = 1,
+                    Price = 89,
+                    CartId = 0,
+                    Quantity = 2,
+                    CartItemIngredients = new List<CartItemIngredient>
+                    {
+                        new CartItemIngredient
+                        {
+                            CartItemId = 1,
+                            IngredientName = "Cheese",
+                            IsOriginalIngredient = true,
+                            Price = 0
+                        },
+                        new CartItemIngredient
+                        {
+                            CartItemId = 1,
+                            IngredientName = "Tomato",
+                            IsOriginalIngredient = true,
+                            Price = 0
+                        },
+                        new CartItemIngredient
+                        {
+                            CartItemId = 1,
+                            IngredientName = "Ham",
+                            IsOriginalIngredient = false,
+                            Price = 10
+                        }
+                    }
+                }
+            };
+            cart.CartItems = mockCartItems;
+            var mockAccessor = new Mock<IHttpContextAccessor>();
+            var mockCartService = new Mock<CartService>(mockAccessor.Object);
+            mockCartService.Setup(x => x.GetCart()).Returns(cart);
+            // Act
+            var results = mockCartService.Object.ComputeTotalValue();
+            // Assert
+            Assert.True(results == 198);
+        }
+
+        [Fact]
+        public void ComputeTotalValue_Margherita_Excluded_Original_Ingredient_Returns_89()
+        {
+            // Arrange
+            var cart = new Cart();
+            var mockCartItems = new List<CartItem>
+            {
+                new CartItem
+                {
+                    CartItemId = 1,
+                    DishId = 1,
+                    Price = 89,
+                    CartId = 0,
+                    Quantity = 1,
+                    CartItemIngredients = new List<CartItemIngredient>
+                    {
+                        new CartItemIngredient
+                        {
+                            CartItemId = 1,
+                            IngredientName = "Cheese",
+                            IsOriginalIngredient = true,
+                            Price = 0
+                        }
+                    }
+                }
+            };
+            cart.CartItems = mockCartItems;
+            var mockAccessor = new Mock<IHttpContextAccessor>();
+            var mockCartService = new Mock<CartService>(mockAccessor.Object);
+            mockCartService.Setup(x => x.GetCart()).Returns(cart);
+            // Act
+            var results = mockCartService.Object.ComputeTotalValue();
+            // Assert
+            Assert.True(results == 89);
+        }
+
+        [Fact]
+        public void ComputeTotalValue_Margherita_Excluded_Original_Ingredient_And_Extra_Ingredient_Returns_99()
+        {
+            // Arrange
+            var cart = new Cart();
+            var mockCartItems = new List<CartItem>
+            {
+                new CartItem
+                {
+                    CartItemId = 1,
+                    DishId = 1,
+                    Price = 89,
+                    CartId = 0,
+                    Quantity = 1,
+                    CartItemIngredients = new List<CartItemIngredient>
+                    {
+                        new CartItemIngredient
+                        {
+                            CartItemId = 1,
+                            IngredientName = "Cheese",
+                            IsOriginalIngredient = true,
+                            Price = 0
+                        },
+                        new CartItemIngredient
+                        {
+                            CartItemId = 1,
+                            IngredientName = "Ham",
+                            IsOriginalIngredient = false,
+                            Price = 10
+                        }
+                    }
+                }
+            };
+            cart.CartItems = mockCartItems;
+            var mockAccessor = new Mock<IHttpContextAccessor>();
+            var mockCartService = new Mock<CartService>(mockAccessor.Object);
+            mockCartService.Setup(x => x.GetCart()).Returns(cart);
+            // Act
+            var results = mockCartService.Object.ComputeTotalValue();
+            // Assert
+            Assert.True(results == 99);
         }
     }
 }

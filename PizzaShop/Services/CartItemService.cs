@@ -13,7 +13,7 @@ namespace PizzaShop.Services
     {
         private readonly ApplicationDbContext _context;
 
-        public CartItemService(ApplicationDbContext context, ICartService cartService)
+        public CartItemService(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -44,7 +44,6 @@ namespace PizzaShop.Services
             {
                 if (checkedIngredients.All(i => i.IngredientName != cartItemIngredient.IngredientName))
                 {
-                    cartItem.Price = cartItem.Price - cartItemIngredient.Price;
                     toRemove.Add(cartItem.CartItemIngredients.Find(cii => cii.IngredientName == cartItemIngredient.IngredientName));
                 }
             }
@@ -62,7 +61,6 @@ namespace PizzaShop.Services
                     && cartItem.CartItemIngredients.All(cii => cii.IngredientName != checkedIngredient.IngredientName))
                 {
                     AddNewCartItemIngredient(cartItem, checkedIngredient, false);
-                    cartItem.Price += checkedIngredient.Price;
                 }
                 else if (cartItem.Dish.DishIngredients.Any(cii => cii.Ingredient.IngredientName == checkedIngredient.IngredientName)
                          && cartItem.CartItemIngredients.All(cii => cii.IngredientName != checkedIngredient.IngredientName))
@@ -81,6 +79,14 @@ namespace PizzaShop.Services
                 Price = checkedIngredient.Price,
                 IsOriginalIngredient = isOriginal
             });
+        }
+
+        public int GetItemPrice(CartItem item)
+        {
+            var sum = 0;
+            var ingredientsSum = item.CartItemIngredients.Sum(x => x.Price);
+            sum += (item.Price + ingredientsSum) * item.Quantity;
+            return sum;
         }
     }
 }
