@@ -41,7 +41,7 @@ namespace PizzaShop.Controllers
 
         public RedirectResult AddToCart(int id, string returnUrl)
         {
-            Cart cart = _cartService.GetCart();
+            var cart = _cartService.GetCart();
             var dish = _context.Dishes
                 .Include(d => d.DishIngredients)
                 .ThenInclude(di => di.Ingredient)

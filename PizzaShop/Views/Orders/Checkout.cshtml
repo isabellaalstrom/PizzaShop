@@ -63,7 +63,7 @@
                     {
                         if (!cartItemIngredient.IsOriginalIngredient)
                         {
-                            <p>@cartItemIngredient.IngredientName</p>
+                            <p>@cartItemIngredient.IngredientName @cartItemIngredient.Price.ToString("C")</p>
                         }
                     }
                 }

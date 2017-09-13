@@ -13,14 +13,15 @@ namespace PizzaShop.Tests.Service
     public class CartItemServiceTest
     {
         [Fact]
-        public void GetItemPrice_Margherita_Returns_89()
+        public void GetItemPrice_No_Ingredients_Returns_Correct_Price()
         {
             //Arrange
+            var price = 89;
             var item = new CartItem
             {
                 CartItemId = 1,
                 DishId = 1,
-                Price = 89,
+                Price = price,
                 CartId = 0,
                 Quantity = 1,
                 CartItemIngredients = new List<CartItemIngredient>
@@ -45,22 +46,24 @@ namespace PizzaShop.Tests.Service
                 .UseInMemoryDatabase("Test")
                 .Options;
             var dbContext = new ApplicationDbContext(dbOptions);
-            var mockCartItemService = new Mock<CartItemService>(dbContext);
+            var cartItemService = new CartItemService(dbContext);
             //Act
-            var result = mockCartItemService.Object.GetItemPrice(item);
+            var result = cartItemService.GetItemPrice(item);
             //Assert
-            Assert.Equal(result, 89);
+            Assert.Equal(result, price);
         }
 
         [Fact]
-        public void GetItemPrice_Margherita_Extra_Ingredient_Returns_99()
+        public void GetItemPrice_Margherita_Extra_Ingredient_Returns_Correct_Price()
         {
             //Arrange
+            var price = 89;
+            var extraIngredientPrice = 10;
             var item = new CartItem
             {
                 CartItemId = 1,
                 DishId = 1,
-                Price = 89,
+                Price = price,
                 CartId = 0,
                 Quantity = 1,
                 CartItemIngredients = new List<CartItemIngredient>
@@ -84,7 +87,7 @@ namespace PizzaShop.Tests.Service
                         CartItemId = 1,
                         IngredientName = "Ham",
                         IsOriginalIngredient = false,
-                        Price = 10
+                        Price = extraIngredientPrice
                     }
                 }
             };
@@ -92,11 +95,11 @@ namespace PizzaShop.Tests.Service
                 .UseInMemoryDatabase("Test")
                 .Options;
             var dbContext = new ApplicationDbContext(dbOptions);
-            var mockCartItemService = new Mock<CartItemService>(dbContext);
+            var cartItemService = new CartItemService(dbContext);
             //Act
-            var result = mockCartItemService.Object.GetItemPrice(item);
+            var result = cartItemService.GetItemPrice(item);
             //Assert
-            Assert.Equal(result, 99);
+            Assert.Equal(result, price + extraIngredientPrice);
         }
     }
 }

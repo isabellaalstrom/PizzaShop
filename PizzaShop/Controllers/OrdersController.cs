@@ -80,8 +80,6 @@ namespace PizzaShop.Controllers
                 {
                     Name = model.Name,
                     City = model.City,
-                    UserId = model.UserId,
-                    User = await _userManager.FindByIdAsync(model.UserId),
                     Address = model.Address,
                     OrderDateTime = DateTime.Now,
                     Phonenumber = model.Phonenumber,
@@ -90,6 +88,11 @@ namespace PizzaShop.Controllers
                     OrderCartItems = cart.CartItems,
                     OrderId = _context.Orders.Count() + 1
                 };
+                if (model.UserId != null)
+                {
+                    order.UserId = model.UserId;
+                    order.User = await _userManager.FindByIdAsync(model.UserId);
+                }
                 foreach (var cartItem in order.OrderCartItems)
                 {
                     cartItem.DishId = null;

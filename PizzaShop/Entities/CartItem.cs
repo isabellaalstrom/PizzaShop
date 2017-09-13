@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace PizzaShop.Entities
 {
@@ -6,6 +7,8 @@ namespace PizzaShop.Entities
     {
         public int CartItemId { get; set; }
         public int CartId { get; set; }
+        [DisplayName("Dish")]
+        public string CartItemName { get; set; }
         public Dish Dish { get; set; }
         public int? DishId { get; set; }
         public int Price { get; set; }

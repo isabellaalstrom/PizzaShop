@@ -83,10 +83,8 @@ namespace PizzaShop.Services
 
         public int GetItemPrice(CartItem item)
         {
-            var sum = 0;
             var ingredientsSum = item.CartItemIngredients.Sum(x => x.Price);
-            sum += (item.Price + ingredientsSum) * item.Quantity;
-            return sum;
+            return (item.Price + ingredientsSum) * item.Quantity;;
         }
     }
 }

@@ -163,7 +163,7 @@ namespace PizzaShop.Data
                 firstOrder.User = studentUser;
                 firstOrder.OrderId = 1;
 
-                var firstOrderMargherita = new CartItem { Dish = margherita, Order = firstOrder, IsModified = true, Price = margherita.Price };
+                var firstOrderMargherita = new CartItem { Dish = margherita, Order = firstOrder, IsModified = true, Price = margherita.Price, CartItemName = margherita.DishName };
                 var cartItemMCheese = new CartItemIngredient
                 {
                     CartItem = firstOrderMargherita,
@@ -187,7 +187,7 @@ namespace PizzaShop.Data
                 firstOrderMargherita.CartItemIngredients =
                     new List<CartItemIngredient> {cartItemMMushroom, cartItemMCheese, cartItemMTomatoSauce};
 
-                var firstOrderFungi = new CartItem { Dish = fungi, Order = firstOrder, IsModified = false, Price = fungi.Price };
+                var firstOrderFungi = new CartItem { Dish = fungi, Order = firstOrder, IsModified = false, Price = fungi.Price, CartItemName = fungi.DishName };
                 var cartItemFCheese = new CartItemIngredient
                 {
                     CartItem = firstOrderFungi,

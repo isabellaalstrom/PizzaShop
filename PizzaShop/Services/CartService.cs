@@ -34,7 +34,8 @@ namespace PizzaShop.Services
                 CartItemIngredients = new List<CartItemIngredient>(),
                 Price = dish.Price,
                 Quantity = quantity,
-                CartItemId = cart.CartId + dish.DishId + cart.CartItems.Count
+                CartItemId = cart.CartId + dish.DishId + cart.CartItems.Count,
+                CartItemName = dish.DishName
             };
             foreach (var dishIngredient in dish.DishIngredients)
             {

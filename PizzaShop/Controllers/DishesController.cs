@@ -122,10 +122,6 @@ namespace PizzaShop.Controllers
             {
                 try
                 {
-                    //var tempDish = _context.Dishes.Include(di => di.DishIngredients).SingleOrDefault(m => m.DishId == dish.DishId);
-                    //var test = tempDish.DishIngredients;
-                    //UpdateDishIngredientsListAsync(dish, collection.Keys.Where(x => x.StartsWith("ingredient-")));
-                    //todo add dishtype
                     var ingredients = new List<Ingredient>();
                     foreach (var key in collection.Keys.Where(x => x.StartsWith("ingredient-")))
                     {
