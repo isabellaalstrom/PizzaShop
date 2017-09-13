@@ -77,9 +77,8 @@ namespace PizzaShop.Tests.Service
             context.SaveChanges();
 
             var _cartService = ServiceProvider.GetService<CartService>();
-
+            _cartService.AddToCart(mockDish, 1);
             // Act
-           _cartService.AddToCart(mockDish, 1);
             var results = _cartService.GetCart().CartItems.ToArray();
             // Assert
             Assert.Equal(mockDish.DishName, results[0].Dish.DishName);
