@@ -11,16 +11,21 @@ namespace PizzaShop.Services
 {
     public class CartService : ICartService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public CartService(IHttpContextAccessor httpContextAccessor)
+        //private readonly IHttpContextAccessor _httpContextAccessor;
+        //public CartService(IHttpContextAccessor httpContextAccessor)
+        //{
+        //    _httpContextAccessor = httpContextAccessor;
+        //}
+        private readonly ISession _session;
+
+        public CartService(ISession session)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _session = session;
         }
 
         public virtual Cart GetCart()
         {
-            var session = _httpContextAccessor.HttpContext.Session;
-            var cart = session?.GetJson<Cart>("Cart") ?? new Cart();
+            var cart = _session?.GetJson<Cart>("Cart") ?? new Cart();
             return cart;
         }
 
@@ -89,12 +94,12 @@ namespace PizzaShop.Services
         {
             var cart = GetCart();
             cart.CartItems.Clear();
-            _httpContextAccessor.HttpContext.Session.Remove("Cart");
+            _session.Remove("Cart");
         }
 
         public virtual bool SaveCart(Cart cart)
         {
-            _httpContextAccessor.HttpContext.Session.SetJson("Cart", cart);
+            _session.SetJson("Cart", cart);
             return true;
         }
 

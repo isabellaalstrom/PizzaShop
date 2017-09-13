@@ -33,7 +33,6 @@ namespace PizzaShop.Controllers
             model.PizzaDishes = pizzaDishes.OrderBy(x => x.Price).ToList();
             model.PastaDishes = pastaDishes.OrderBy(x => x.Price).ToList();
             model.SalladDishes = salladDishes.OrderBy(x => x.Price).ToList();
-            //model.Cart = _cart;
 
             return View(model);
         }

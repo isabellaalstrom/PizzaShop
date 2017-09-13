@@ -44,8 +44,12 @@ namespace PizzaShop
             services.AddTransient<IEmailSender, FakeEmailSender>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<IdentityRole>>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddScoped(SessionCart.GetCart);
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient(typeof(ISession), serviceProvider =>
+            {
+                var httpContextAccessor = serviceProvider.GetService <IHttpContextAccessor>();
+                return httpContextAccessor.HttpContext.Session;
+            });
             services.AddTransient<ICartService, CartService>();
             services.AddTransient<IngredientService>();
             services.AddTransient<DishTypeService>();
