@@ -1,4 +1,6 @@
-﻿@using PizzaShop.Views.Manage
+﻿@using Microsoft.AspNetCore.Identity
+@using PizzaShop.Entities
+@using PizzaShop.Views.Manage
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

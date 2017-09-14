@@ -18,21 +18,16 @@ namespace PizzaShop.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //för en till många-relation räcker detta
-            builder.Entity<Order>() //den som har många av det andra
+            builder.Entity<Order>()
                 .HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
-
-            //builder.Entity<Cart>()
-            //    .HasKey(cart => cart.CartId);
 
             builder.Entity<Dish>()
                 .HasOne(o => o.DishType)
                 .WithMany(u => u.Dishes)
                 .HasForeignKey(o => o.DishTypeId);            
 
-            //Säger explicit vilka ids som ska användas som primary key i dishingredient
             builder.Entity<DishIngredient>()
                 .HasKey(di => new { di.DishId, di.IngredientId });
             builder.Entity<DishIngredient>()
@@ -43,9 +38,6 @@ namespace PizzaShop.Data
                 .HasOne(di => di.Ingredient)
                 .WithMany(d => d.DishIngredients)
                 .HasForeignKey(di => di.IngredientId);
-
-            //builder.Entity<CartItem>()
-            //    .HasKey(di => new { di.DishId, di.OrderId });
 
             builder.Entity<CartItem>()
                 .HasOne(di => di.Order)

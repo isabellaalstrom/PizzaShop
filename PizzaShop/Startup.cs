@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +10,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PizzaShop.Data;
 using PizzaShop.Entities;
 using PizzaShop.Models;
 using PizzaShop.Services;
+using ILoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
 
 namespace PizzaShop
 {
@@ -69,8 +72,9 @@ namespace PizzaShop
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             UserManager<ApplicationUser> userManager,
             ApplicationDbContext dbContext,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole().AddDebug();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -94,7 +98,7 @@ namespace PizzaShop
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            DbInitializer.Initializer(dbContext, userManager, roleManager);
+            DbInitializer.InitializerAsync(dbContext, userManager, roleManager).Wait();
 
         }
     }
