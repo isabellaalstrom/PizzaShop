@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Hosting
+@inject IHostingEnvironment _Environment
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -39,7 +42,7 @@
                 </button>
 
             </div>
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MENU</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MENU - @_Environment.EnvironmentName</a>
 
             @await Component.InvokeAsync("LoginLogout")
             @*<a asp-area="" asp-controller="Contact" asp-action="Index" class="navbar-brand">Contact us</a>*@

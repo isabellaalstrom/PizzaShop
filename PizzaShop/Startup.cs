@@ -22,9 +22,11 @@ namespace PizzaShop
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IHostingEnvironment _environment;
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
         public IConfiguration Configuration { get; }
@@ -32,11 +34,17 @@ namespace PizzaShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            if (_environment.IsProduction() || _environment.IsStaging())
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                   options.UseInMemoryDatabase("DefaultConnection"));
+            }
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseInMemoryDatabase("DefaultConnection"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -49,7 +57,7 @@ namespace PizzaShop
             services.AddTransient<RoleManager<IdentityRole>>();
             services.AddTransient(typeof(ISession), serviceProvider =>
             {
-                var httpContextAccessor = serviceProvider.GetService <IHttpContextAccessor>();
+                var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
                 return httpContextAccessor.HttpContext.Session;
             });
             services.AddTransient<ICartService, CartService>();
@@ -98,8 +106,11 @@ namespace PizzaShop
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            DbInitializer.InitializerAsync(dbContext, userManager, roleManager).Wait();
-
+            if (_environment.IsProduction() || _environment.IsStaging())
+            {
+                dbContext.Database.Migrate();
+            }
+            DbInitializer.Initializer(dbContext, userManager, roleManager);
         }
     }
 }
