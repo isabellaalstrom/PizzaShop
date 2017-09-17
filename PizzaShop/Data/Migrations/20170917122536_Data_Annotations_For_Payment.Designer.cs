@@ -11,9 +11,10 @@ using System;
 namespace PizzaShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170917122536_Data_Annotations_For_Payment")]
+    partial class Data_Annotations_For_Payment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,7 +193,7 @@ namespace PizzaShop.Data.Migrations
                     b.Property<int>("CartItemId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("CartId");
+                    b.Property<int>("CartId");
 
                     b.Property<string>("CartItemName");
 

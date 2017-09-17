@@ -28,6 +28,9 @@ namespace PizzaShop.Entities
         public string City { get; set; }
         [Required]
         public string Phonenumber { get; set; }
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
 
         [DisplayName("Dishes")]
         public List<CartItem> OrderCartItems { get; set; }

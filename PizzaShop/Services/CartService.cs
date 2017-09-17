@@ -24,7 +24,7 @@ namespace PizzaShop.Services
 
         public virtual Cart GetCart()
         {
-            var cart = _session?.GetJson<Cart>("Cart") ?? new Cart();
+            var cart = _session?.GetJson<Cart>("Cart") ?? new Cart{ CartId = Guid.NewGuid() };
             return cart;
         }
 
@@ -35,10 +35,10 @@ namespace PizzaShop.Services
             {
                 Dish = dish,
                 DishId = dish.DishId,
+                CartId = cart.CartId,
                 CartItemIngredients = new List<CartItemIngredient>(),
                 Price = dish.Price,
                 Quantity = quantity,
-                //CartItemId = cart.CartId + dish.DishId + cart.CartItems.Count,
                 CartItemName = dish.DishName
             };
             foreach (var dishIngredient in dish.DishIngredients)

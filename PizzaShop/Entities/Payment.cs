@@ -9,13 +9,13 @@ namespace PizzaShop.Entities
         public int PaymentId { get; set; }
         [Required]
         public string CardHolder { get; set; }
-        [Required]
+        [Required, MinLength(10), MaxLength(16)]
         public string CreditCardNumber { get; set; }
         [Required]
         public int ExpireMonth { get; set; }
         [Required]
         public int ExpireYear { get; set; }
-        [Required]
+        [Required, MinLength(3), MaxLength(3)]
         public string Cvv { get; set; }
 
         public int Amount { get; set; }

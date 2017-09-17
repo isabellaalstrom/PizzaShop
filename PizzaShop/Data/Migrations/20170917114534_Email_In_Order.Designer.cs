@@ -11,9 +11,10 @@ using System;
 namespace PizzaShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170917114534_Email_In_Order")]
+    partial class Email_In_Order
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,7 +193,7 @@ namespace PizzaShop.Data.Migrations
                     b.Property<int>("CartItemId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("CartId");
+                    b.Property<int>("CartId");
 
                     b.Property<string>("CartItemName");
 
@@ -347,12 +348,10 @@ namespace PizzaShop.Data.Migrations
                         .IsRequired();
 
                     b.Property<string>("CreditCardNumber")
-                        .IsRequired()
-                        .HasMaxLength(16);
+                        .IsRequired();
 
                     b.Property<string>("Cvv")
-                        .IsRequired()
-                        .HasMaxLength(3);
+                        .IsRequired();
 
                     b.Property<int>("ExpireMonth");
 

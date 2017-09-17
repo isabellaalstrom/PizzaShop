@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.AzureAppServices;
 using Newtonsoft.Json;
 using PizzaShop.Data;
 using PizzaShop.Entities;
@@ -68,11 +69,6 @@ namespace PizzaShop
             services.AddDistributedMemoryCache();
 
             services.AddSession();
-            //    (options =>
-            //{
-            //    options.IdleTimeout = TimeSpan.FromSeconds(10);
-            //    options.CookieHttpOnly = true;
-            //});
             services.AddMvc();
         }
 
@@ -82,6 +78,16 @@ namespace PizzaShop
             ApplicationDbContext dbContext,
             RoleManager<IdentityRole> roleManager, ILoggerFactory loggerFactory)
         {
+            if (env.IsProduction())
+            {
+                loggerFactory.AddAzureWebAppDiagnostics(
+                    new AzureAppServicesDiagnosticsSettings
+                    {
+                        OutputTemplate =
+                            "{Timestamp:yyyy-MM-dd HH:mm:ss zzz} [{Level}] {RequestId}-{SourceContext}: {Message}{NewLine}{Exception}"
+                    });
+            }
+
             loggerFactory.AddConsole().AddDebug();
             if (env.IsDevelopment())
             {
@@ -91,10 +97,10 @@ namespace PizzaShop
             }
             else
             {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-                app.UseDatabaseErrorPage();
-                //app.UseExceptionHandler("/Home/Error");
+                //app.UseDeveloperExceptionPage();
+                //app.UseBrowserLink();
+                //app.UseDatabaseErrorPage();
+                app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseStaticFiles();

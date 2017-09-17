@@ -22,7 +22,7 @@ namespace PizzaShop.Tests.Service
                 CartItemId = 1,
                 DishId = 1,
                 Price = price,
-                CartId = 0,
+                CartId = Guid.NewGuid(),
                 Quantity = 1,
                 CartItemIngredients = new List<CartItemIngredient>
                 {
@@ -64,7 +64,7 @@ namespace PizzaShop.Tests.Service
                 CartItemId = 1,
                 DishId = 1,
                 Price = price,
-                CartId = 0,
+                CartId = Guid.NewGuid(),
                 Quantity = 1,
                 CartItemIngredients = new List<CartItemIngredient>
                 {

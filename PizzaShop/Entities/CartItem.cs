@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace PizzaShop.Entities
@@ -6,7 +7,7 @@ namespace PizzaShop.Entities
     public class CartItem
     {
         public int CartItemId { get; set; }
-        public int CartId { get; set; }
+        public Guid CartId { get; set; }
         [DisplayName("Dish")]
         public string CartItemName { get; set; }
         public Dish Dish { get; set; }

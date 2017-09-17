@@ -9,6 +9,5 @@ namespace PizzaShop.Models.CartViewModels
     {
         public Cart Cart { get; set; }
         public string ReturnUrl { get; set; }
-        //todo maybe also user info, if logged in?
     }
 }

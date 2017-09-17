@@ -56,6 +56,7 @@ namespace PizzaShop.Controllers
                     model.City = user.City;
                     model.Phonenumber = user.PhoneNumber;
                     model.UserId = user.Id;
+                    model.Email = user.Email;
                 }
             }
             return View(model);
@@ -66,44 +67,42 @@ namespace PizzaShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Checkout([Bind("OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber,OrderCartItems")] CheckoutViewModel model)
+        public async Task<IActionResult> Checkout([Bind("OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber,Email,OrderCartItems")] CheckoutViewModel model)
         {
             var cart = _cartService.GetCart();
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+            if (!cart.CartItems.Any())
             {
-                if (!cart.CartItems.Any())
-                {
-                    ModelState.AddModelError("", "Sorry, your cart is empty!");
-                    return View(model);
-                }
-                var order = new Order
-                {
-                    Name = model.Name,
-                    City = model.City,
-                    Address = model.Address,
-                    OrderDateTime = DateTime.Now,
-                    Phonenumber = model.Phonenumber,
-                    Zipcode = model.Zipcode,
-                    TotalAmount = model.TotalAmount,
-                    OrderCartItems = cart.CartItems,
-                    //OrderId = _context.Orders.Count() + 1
-                };
-                if (model.UserId != null)
-                {
-                    order.UserId = model.UserId;
-                    order.User = await _userManager.FindByIdAsync(model.UserId);
-                }
-                foreach (var cartItem in order.OrderCartItems)
-                {
-                    cartItem.DishId = null;
-                    cartItem.Dish = null;
-                }
-                _cartService.ClearCart();
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Payments", new { id = order.OrderId });
+                ModelState.AddModelError("", "Sorry, your cart is empty!");
+                return View(model);
             }
-            return View(model);
+            var order = new Order
+            {
+                Name = model.Name,
+                City = model.City,
+                Address = model.Address,
+                OrderDateTime = DateTime.Now,
+                Phonenumber = model.Phonenumber,
+                Zipcode = model.Zipcode,
+                TotalAmount = model.TotalAmount,
+                OrderCartItems = _context.CartItems.Where(ci => ci.CartId == cart.CartId).ToList(), //todo model.OrderCartItems = null
+                Email = model.Email,
+                //OrderCartItems = cart.CartItems
+            };
+            if (model.UserId != null)
+            {
+                order.UserId = model.UserId;
+                order.User = await _userManager.FindByIdAsync(model.UserId);
+            }
+            //foreach (var cartItem in order.OrderCartItems)
+            //{
+            //    cartItem.DishId = null;
+            //    cartItem.Dish = null;
+            //}
+            _cartService.ClearCart();
+            _context.Add(order);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Create", "Payments", new { id = order.OrderId });
         }
 
 

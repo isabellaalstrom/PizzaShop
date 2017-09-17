@@ -72,9 +72,10 @@ namespace PizzaShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                var order = _context.Orders.FirstOrDefault(o => o.OrderId == model.OrderId);
                 var payment = new Payment
                 {
-                    Order = _context.Orders.Include(o => o.User).FirstOrDefault(o => o.OrderId == model.OrderId),
+                    Order = order,
                     OrderId = model.OrderId,
                     Amount = model.Amount,
                     CardHolder = model.CardHolder,
@@ -83,9 +84,10 @@ namespace PizzaShop.Controllers
                     ExpireMonth = model.ExpireMonth,
                     ExpireYear = model.ExpireYear
                 };
+                order.IsPayed = true;
                 _context.Add(payment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(ThankYou), new { name = payment.Order.Name, amount = payment.Amount, email = payment.Order.User.Email } );
+                return RedirectToAction(nameof(ThankYou), new { name = payment.Order.Name, amount = payment.Amount, email = payment.Order.Email } );
             }
             return View(model);
         }

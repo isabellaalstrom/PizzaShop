@@ -208,7 +208,7 @@ namespace PizzaShop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private async void CreateDishIngredientsListAsync(Dish dish, IEnumerable<string> ingredientCollection)
+        private void CreateDishIngredientsListAsync(Dish dish, IEnumerable<string> ingredientCollection)
         {
             var ingredients = new List<Ingredient>();
             foreach (var key in ingredientCollection)
@@ -223,7 +223,7 @@ namespace PizzaShop.Controllers
                     Ingredient = ingredient
                 });
             }
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
         }
 
         //private async void UpdateDishIngredientsListAsync(Dish dish, IEnumerable<string> ingredientCollection)
