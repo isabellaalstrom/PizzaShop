@@ -8,12 +8,12 @@ namespace PizzaShop.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.DropColumn(name: "CartId", table: "CartItems");
+            migrationBuilder.AddColumn<Guid>(
                 name: "CartId",
                 table: "CartItems",
                 type: "uniqueidentifier",
-                nullable: false,
-                oldClrType: typeof(int));
+                nullable: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
