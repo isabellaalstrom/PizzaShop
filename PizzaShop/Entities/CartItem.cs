@@ -14,7 +14,7 @@ namespace PizzaShop.Entities
         public int Price { get; set; }
         public int Quantity { get; set; }
         public List<CartItemIngredient> CartItemIngredients { get; set; }
-        public int OrderId { get; set; }
+        public int? OrderId { get; set; }
         public Order Order { get; set; }
         public bool IsModified { get; set; }
     }

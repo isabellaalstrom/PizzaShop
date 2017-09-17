@@ -86,7 +86,7 @@ namespace PizzaShop.Controllers
                     Zipcode = model.Zipcode,
                     TotalAmount = model.TotalAmount,
                     OrderCartItems = cart.CartItems,
-                    OrderId = _context.Orders.Count() + 1
+                    //OrderId = _context.Orders.Count() + 1
                 };
                 if (model.UserId != null)
                 {
@@ -101,7 +101,7 @@ namespace PizzaShop.Controllers
                 _cartService.ClearCart();
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Payments", new{ id = order.OrderId });
+                return RedirectToAction("Create", "Payments", new { id = order.OrderId });
             }
             return View(model);
         }

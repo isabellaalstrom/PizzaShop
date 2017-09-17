@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using PizzaShop.Data;
 using PizzaShop.Entities;
 using PizzaShop.Infrastructure;
 using PizzaShop.Models;
@@ -11,16 +12,14 @@ namespace PizzaShop.Services
 {
     public class CartService : ICartService
     {
-        //private readonly IHttpContextAccessor _httpContextAccessor;
-        //public CartService(IHttpContextAccessor httpContextAccessor)
-        //{
-        //    _httpContextAccessor = httpContextAccessor;
-        //}
         private readonly ISession _session;
 
-        public CartService(ISession session)
+        public ApplicationDbContext _context;
+
+        public CartService(ISession session, ApplicationDbContext context)
         {
             _session = session;
+            _context = context;
         }
 
         public virtual Cart GetCart()
@@ -39,19 +38,23 @@ namespace PizzaShop.Services
                 CartItemIngredients = new List<CartItemIngredient>(),
                 Price = dish.Price,
                 Quantity = quantity,
-                CartItemId = cart.CartId + dish.DishId + cart.CartItems.Count,
+                //CartItemId = cart.CartId + dish.DishId + cart.CartItems.Count,
                 CartItemName = dish.DishName
             };
             foreach (var dishIngredient in dish.DishIngredients)
             {
-                item.CartItemIngredients.Add(new CartItemIngredient
+                var cartItemIngredient = new CartItemIngredient
                 {
                     IngredientName = dishIngredient.Ingredient.IngredientName,
                     Price = 0,
                     CartItem = item,
                     IsOriginalIngredient = true
-                });
+                };
+                item.CartItemIngredients.Add(cartItemIngredient);
+                _context.CartItemIngredients.Add(cartItemIngredient);
             }
+            _context.CartItems.Add(item);
+            _context.SaveChanges();
             cart.CartItems.Add(item);
             SaveCart(cart);
         }

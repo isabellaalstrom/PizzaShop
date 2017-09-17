@@ -1,7 +1,4 @@
-﻿@using Microsoft.AspNetCore.Hosting
-@inject IHostingEnvironment _Environment
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -15,7 +12,7 @@
         <link rel="stylesheet" href="~/css/main.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         @*<link href="~/lib/pizza-web/web/css/style.css" rel="stylesheet" />
-        <link href="~/lib/pizza-web/web/css/bootstrap.css" rel="stylesheet" />*@
+            <link href="~/lib/pizza-web/web/css/bootstrap.css" rel="stylesheet" />*@
         @*<script src="~/lib/pizza-web/web/js/jquery-1.11.1.min.js"></script>
             <script src="~/lib/pizza-web/web/js/modernizr.custom.js"></script>*@
 
@@ -24,6 +21,7 @@
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/main.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
@@ -42,7 +40,7 @@
                 </button>
 
             </div>
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MENU - @_Environment.EnvironmentName</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MENU</a>
 
             @await Component.InvokeAsync("LoginLogout")
             @*<a asp-area="" asp-controller="Contact" asp-action="Index" class="navbar-brand">Contact us</a>*@
