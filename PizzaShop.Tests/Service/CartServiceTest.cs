@@ -121,7 +121,8 @@ namespace PizzaShop.Tests.Service
                 }
             };
             cart.CartItems = mockCartItems;
-            var mockCartService = new Mock<CartService>(new TestSession());
+            var context = ServiceProvider.GetService<ApplicationDbContext>();
+            var mockCartService = new Mock<CartService>(new TestSession(), context);
             mockCartService.Setup(x => x.GetCart()).Returns(cart);
             // Act
             var results = mockCartService.Object.ComputeTotalValue();
@@ -173,7 +174,8 @@ namespace PizzaShop.Tests.Service
                 }
             };
             cart.CartItems = mockCartItems;
-            var mockCartService = new Mock<CartService>(new TestSession());
+            var context = ServiceProvider.GetService<ApplicationDbContext>();
+            var mockCartService = new Mock<CartService>(new TestSession(), context);
             mockCartService.Setup(x => x.GetCart()).Returns(cart);
             // Act
             var results = mockCartService.Object.ComputeTotalValue();
@@ -225,7 +227,8 @@ namespace PizzaShop.Tests.Service
                 }
             };
             cart.CartItems = mockCartItems;
-            var mockCartService = new Mock<CartService>(new TestSession());
+            var context = ServiceProvider.GetService<ApplicationDbContext>();
+            var mockCartService = new Mock<CartService>(new TestSession(), context);
             mockCartService.Setup(x => x.GetCart()).Returns(cart);
             // Act
             var results = mockCartService.Object.ComputeTotalValue();
@@ -261,7 +264,8 @@ namespace PizzaShop.Tests.Service
                 }
             };
             cart.CartItems = mockCartItems;
-            var mockCartService = new Mock<CartService>(new TestSession());
+            var context = ServiceProvider.GetService<ApplicationDbContext>();
+            var mockCartService = new Mock<CartService>(new TestSession(), context);
             mockCartService.Setup(x => x.GetCart()).Returns(cart);
             // Act
             var results = mockCartService.Object.ComputeTotalValue();
@@ -306,7 +310,8 @@ namespace PizzaShop.Tests.Service
                 }
             };
             cart.CartItems = mockCartItems;
-            var mockCartService = new Mock<CartService>(new TestSession());
+            var context = ServiceProvider.GetService<ApplicationDbContext>();
+            var mockCartService = new Mock<CartService>(new TestSession(), context);
             mockCartService.Setup(x => x.GetCart()).Returns(cart);
             // Act
             var results = mockCartService.Object.ComputeTotalValue();
