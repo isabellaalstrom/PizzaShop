@@ -6,8 +6,7 @@
         <div class="panel-body">
             <h1 class="menu-title">Menu</h1>
         </div>
-
-        <div class="col-md-6">
+        <div class="col-md-4">
             <h2 class="title text-center">Pizza</h2>
             @foreach (var dish in Model.PizzaDishes)
             {
@@ -15,7 +14,11 @@
             }
 
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <img id="img-pizza" src="~/images/g4627.png"/>
+        </div>
+        <div class="col-md-4">
+            <img src="~/images/salad.png" />
             <h2 class="title text-center">Salad</h2>
             @foreach (var dish in Model.SalladDishes)
             {
@@ -24,7 +27,7 @@
         </div>
         <div class="clearfix"> </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
             <h2 class="title text-center">Pasta</h2>
             @foreach (var dish in Model.PastaDishes)
             {

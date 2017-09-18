@@ -1,8 +1,56 @@
 ﻿@import url(https://fonts.googleapis.com/css?family=Slabo+27px|Ubuntu:400,400i,700);
+@import "colors";
+@font-face {
+    font-family: 'fff_tusj';
+    src: url('../fonts/fff_tusj.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'kgtenthousandreasons';
+    src: url('../fonts/kgtenthousandreasons.ttf') format('truetype');
+}
 
+$tusj: 'fff_tusj', sans-serif;
+$reasons: 'kgtenthousandreasons', serif;
+    
 $slabo: 'Slabo', serif;
 $ubuntu: 'Ubuntu', sans-serif;
 
+
+/*MENU FONTS*/
+#menu {
+    h1, h2 {
+        font-family: $tusj;
+        font-weight: normal;
+        color: $white-chalk;
+    }
+
+    h1 {
+        font-size: 100px;
+    }
+    h2 {
+        font-size: 60px;
+    }
+
+    h3, h4 {
+        font-family: $reasons;
+        font-weight: normal;
+        color: $white-chalk;
+    }
+
+    body, td {
+        font-family: $tusj;
+        font-weight: normal;
+        color: $white-chalk;
+    }
+
+    .add-to-cart {
+        font-family: $reasons;
+        font-weight: normal;
+        color: $green-chalk;
+    }
+}
+
+/*OTHER FONTS*/
 h1, h2, h3, .title, a, th {
     font-family: $ubuntu;
     font-weight: normal;
