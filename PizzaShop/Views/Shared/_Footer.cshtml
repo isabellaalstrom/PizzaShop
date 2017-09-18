@@ -1,0 +1,58 @@
+﻿    <footer id="footer">
+    <div class="container">
+        <div class="col-md-3 footer-left">
+            <div id="map" style="width: 100%; height: 200px; background-color: grey;"></div>
+        </div>
+        <div class="col-md-3">
+            <h2>Find us</h2>
+            <ul class="list-unstyled">
+                <li>Pizza Shop</li>
+                <li>Torsgatan 68</li>
+                <li>113 37 Stockholm</li>
+                <li>08-33 12 50</li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <h2>Opening hours</h2>
+            <ul class="list-unstyled">
+                <li>Monday-Thursday: 11am-21pm</li>
+                <li>Friday-Sunday: 12pm-23pm</li>
+            </ul>
+            <hr />
+            <h4 class="">We deliver every day!</h4>
+        </div>
+        <div class="col-md-3">
+            <h3 id="copyright">
+                © 2016 Pizza Shop
+            </h3>
+            <div class="social-media">
+                <h4>Find us on social media</h4>
+                <ul class="list-unstyled list-inline">
+                    <li><a href="#" class="fa fa-2x fa-twitter"> </a></li>
+                    <li><a href="#" class="fa fa-2x fa-facebook"> </a></li>
+                    <li><a href="#" class="fa fa-2x fa-chrome"> </a></li>
+                    <li><a href="#" class="fa fa-2x fa-pinterest"> </a></li>
+                    <li><a href="#" class="fa fa-2x fa-linkedin"> </a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+</footer>
+
+<script>
+    function initMap() {
+        var uluru = { lat: 59.344451, lng: 18.035224 };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: uluru
+        });
+        var marker = new google.maps.Marker({
+            position: uluru,
+            map: map
+        });
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbCkr9bjFI9QxKO1v2Q_gBkcY_8qL_lJw&callback=initMap">
+</script>

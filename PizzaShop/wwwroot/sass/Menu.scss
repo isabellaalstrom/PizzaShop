@@ -1,5 +1,8 @@
-﻿#menu {
-    background-color: #FAFAFA;
+﻿@import "colors";
+#menu {
+    background-color: $white;
+    margin-top: 130px;
+    padding-bottom: 50px;
     .menu-title {
         text-align: center;
     }
