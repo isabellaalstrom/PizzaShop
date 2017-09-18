@@ -60,7 +60,12 @@
     }
     else
     {
-        <div class="container body-content">
+        var IsCart = "";
+        if (Context.Request.Path == "/Cart")
+        {
+            IsCart = "cart";
+        }
+        <div class="container body-content @IsCart">
             @RenderBody()
         </div>
     }

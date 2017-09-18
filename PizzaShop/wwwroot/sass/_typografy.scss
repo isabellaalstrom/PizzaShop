@@ -1,23 +1,40 @@
 ﻿@import url(https://fonts.googleapis.com/css?family=Slabo+27px|Ubuntu:400,400i,700);
 @import "colors";
+
 @font-face {
     font-family: 'fff_tusj';
     src: url('../fonts/fff_tusj.ttf') format('truetype');
 }
+
 @font-face {
     font-family: 'kgtenthousandreasons';
     src: url('../fonts/kgtenthousandreasons.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'emily lime - bergamot ornaments';
+    src: url('../fonts/emily lime - bergamot ornaments.ttf') format('truetype');
+}
+
 $tusj: 'fff_tusj', sans-serif;
 $reasons: 'kgtenthousandreasons', serif;
-    
+
 $slabo: 'Slabo', serif;
 $ubuntu: 'Ubuntu', sans-serif;
 
+$ornaments: 'emily lime - bergamot ornaments';
+
 
 /*MENU FONTS*/
-#menu {
+#menu, #footer, #cart {
+    .ornament {
+        font-family: $ornaments;
+        font-weight: normal;
+        color: $white-chalk;
+        font-size: 60px;
+        line-height: 10px;
+    }
+
     h1, h2 {
         font-family: $tusj;
         font-weight: normal;
@@ -27,8 +44,13 @@ $ubuntu: 'Ubuntu', sans-serif;
     h1 {
         font-size: 100px;
     }
+
     h2 {
         font-size: 60px;
+    }
+
+    h3.title {
+        font-size: 30px;
     }
 
     h3, h4 {
@@ -37,16 +59,48 @@ $ubuntu: 'Ubuntu', sans-serif;
         color: $white-chalk;
     }
 
-    body, td {
+    th {
+        font-family: $tusj;
+        font-weight: normal;
+        color: $white-chalk;
+        font-size: 30px;
+    }
+
+    td {
+        font-family: $reasons;
+        font-weight: normal;
+        color: $white-chalk;
+    }
+
+    body {
         font-family: $tusj;
         font-weight: normal;
         color: $white-chalk;
     }
 
-    .add-to-cart {
+    .success-chalk {
         font-family: $reasons;
         font-weight: normal;
         color: $green-chalk;
+        font-size: 20px;
+    }
+
+    .yellow-chalk {
+        font-family: $reasons;
+        font-weight: normal;
+        color: $yellow-chalk;
+    }
+
+    .red-chalk {
+        font-family: $reasons;
+        font-weight: normal;
+        color: $red-chalk;
+    }
+
+    h4.modal-title {
+        font-family: $slabo;
+        font-weight: normal;
+        color: $grey;
     }
 }
 
@@ -55,14 +109,17 @@ h1, h2, h3, .title, a, th {
     font-family: $ubuntu;
     font-weight: normal;
 }
+
 body, td {
     font-family: $slabo;
     font-weight: normal;
 }
+
 button, .btn {
     font-family: $ubuntu;
     font-weight: 400;
 }
+
 .btn-danger {
     font-style: italic;
 }

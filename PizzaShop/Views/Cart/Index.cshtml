@@ -7,115 +7,129 @@
 @{
     ViewData["Title"] = "Index";
 }
-    <h2>Your shopping cart</h2>
-    <h4>Here are the delicious dishes in your shopping cart.</h4>
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Dish</th>
-                <th class="text-left">Ingredients</th>
-                <th class="text-right">Price</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Cart.CartItems)
-            {
+<div id="cart">
+    @if (!Model.Cart.CartItems.Any())
+    {
+        <h2>You haven't choosen what to eat...</h2>
+        <a id="place-order" class="red-chalk" asp-controller="Home" asp-action="Index">Go back to decide on something tasty</a>
+    }
+    else
+    {
+        <h2>Shopping cart</h2>
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td class="text-left">@item.Dish.DishName (@_dishType.All().FirstOrDefault(dt => dt.DishTypeId == item.Dish.DishTypeId).DishTypeName)</td>
-                    <td class="text-left">
-                        @foreach (var ingredient in item.CartItemIngredients.OrderBy(x => x.IngredientName))
+                    <th>Dish</th>
+                    <th class="text-left">Ingredients</th>
+                    <th class="text-right">Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Cart.CartItems)
                 {
-                            @ingredient.IngredientName <text> </text>
-                        }
-                        <a class="btn-default" data-toggle="modal" data-target="#ingredientModal"><span class="fa fa-lg fa-pencil"></span></a>
-                    </td>
+                    <tr>
+                        <td class="text-left">@item.Dish.DishName (@_dishType.All().FirstOrDefault(dt => dt.DishTypeId == item.Dish.DishTypeId).DishTypeName)</td>
+                        <td class="text-left">
+                            @foreach (var ingredient in item.CartItemIngredients.OrderBy(x => x.IngredientName))
+                    {
+                                @ingredient.IngredientName <text> </text>
+                            }
+                            <a class="yellow-chalk" data-toggle="modal" data-target="#ingredientModal"><span class="fa fa-lg fa-pencil"></span></a>
+                        </td>
+                        <td class="text-right">
+                            @{
+                                var itemPrice = "";
+                                if (item.Quantity > 1)
+                                {
+                                    itemPrice = $"{item.Quantity} * {_cartItemService.GetItemPrice(item):c} = "
+                                                + (_cartItemService.GetItemPrice(item) * item.Quantity).ToString("c");
+                                }
+                                else
+                                {
+                                    itemPrice = _cartItemService.GetItemPrice(item).ToString("C");
+                                }
+
+                                @itemPrice
+                            }
+                        </td>
+                        <td class="col-md-1 text-center">
+                            <a class="red-chalk" asp-action="RemoveFromCart" method="post"
+                               asp-route-id="@item.CartItemId" asp-route-returnUrl="@Model.ReturnUrl">
+                                <span class="fa fa-2x fa-trash-o"></span>
+                            </a>
+
+                        </td>
+                    </tr>
+            <!-- Modal -->
+                                <div id="ingredientModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <form asp-controller="Cart" asp-action="EditItemIngredients" asp-route-id="@item.CartItemId">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Edit your dish</h4>
+                                                    <p>No discount given if original ingredients are removed.</p>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    @foreach (var ingredient in _ingredient.All())
+                                                    {
+                                                        <div class="form-group">
+                                                            @{
+                                                                var ingredientPrice = ingredient.Price;
+                                                                var isChecked = "";
+                                                                if (item.CartItemIngredients.Exists(x => x.IngredientName == ingredient.IngredientName))
+                                                                {
+                                                                    isChecked = "checked=\"checked\"";
+
+                                                                }
+                                                                if (item.Dish.DishIngredients.Any(di => di.Ingredient.IngredientName == ingredient.IngredientName))
+                                                                {
+                                                                    ingredientPrice = 0;
+                                                                }
+                                                                <input type="checkbox" @isChecked name="ingredient-@ingredient.IngredientId" />
+                                                                <label class="control-label">@ingredient.IngredientName - @ingredientPrice kr</label>
+                                                            }
+                                                        </div>
+                                                                }
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="submit" asp-controller="Cart" asp-action="EditItemIngredients" asp-route-id="@item.CartItemId" class="btn btn-success" value="Save" />
+                                                    <button class="btn btn-danger" data-dismiss="modal">Close without saving</button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                                                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right">Total:</td>
+
                     <td class="text-right">
-                        @{
-                            var itemPrice = "";
-                            if (item.Quantity > 1)
-                            {
-                                itemPrice = $"{item.Quantity} * {_cartItemService.GetItemPrice(item):c} = "
-                                    + (_cartItemService.GetItemPrice(item) * item.Quantity).ToString("c");
-                            }
-                            else
-                            {
-                                itemPrice = _cartItemService.GetItemPrice(item).ToString("C");
-                            }
-
-                            @itemPrice
-                        }
-                    </td>
-                    <td class="col-md-1">
-                        <a class="btn btn-danger" asp-action="RemoveFromCart" method="post"
-                           asp-route-id="@item.CartItemId" asp-route-returnUrl="@Model.ReturnUrl">
-                            <span class="fa fa-lg fa-trash-o"></span>
-                        </a>
-
+                        @_cartService.ComputeTotalValue().ToString("c")
                     </td>
                 </tr>
-        <!-- Modal -->
-                            <div id="ingredientModal" class="modal fade" role="dialog">
-                                <div class="modal-dialog">
+            </tfoot>
+        </table>
+        <a id="place-order" class="success-chalk" asp-controller="Orders" asp-action="Checkout">Place order</a>
+        <br />
+        <a id="place-order" class="red-chalk" asp-controller="Home" asp-action="Index">Back to menu</a>
+                                                                }
+</div>
 
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <form asp-controller="Cart" asp-action="EditItemIngredients" asp-route-id="@item.CartItemId">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title">Edit your dish</h4>
-                                                <p>No discount given if original ingredients are removed.</p>
-                                            </div>
-                                            <div class="modal-body">
 
-                                                @foreach (var ingredient in _ingredient.All())
-                                                {
-                                                    <div class="form-group">
-                                                        @{
-                                                            var ingredientPrice = ingredient.Price;
-                                                            var isChecked = "";
-                                                            if (item.CartItemIngredients.Exists(x => x.IngredientName == ingredient.IngredientName))
-                                                            {
-                                                                isChecked = "checked=\"checked\"";
-
-                                                            }
-                                                            if (item.Dish.DishIngredients.Any(di => di.Ingredient.IngredientName == ingredient.IngredientName))
-                                                            {
-                                                                ingredientPrice = 0;
-                                                            }
-                                                            <input type="checkbox" @isChecked name="ingredient-@ingredient.IngredientId" />
-                                                            <label class="control-label">@ingredient.IngredientName - @ingredientPrice kr</label>
-                                                        }
-                                                    </div>
-                                                            }
-
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input type="submit" asp-controller="Cart" asp-action="EditItemIngredients" asp-route-id="@item.CartItemId" class="btn btn-success" value="Save" />
-                                                <button class="btn btn-danger" data-dismiss="modal">Close without saving</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                </div>
-                            </div>
-                                                            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3" class="text-right">Total:</td>
-
-                <td class="text-right">
-                    @_cartService.ComputeTotalValue().ToString("c")
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-
-    <a id="place-order" class="btn btn-success" asp-controller="Orders" asp-action="Checkout">Place order</a>
 @section Scripts
-{<script>
+    {
+    <script>
      $(document).ready(function() {
          var cartIsEmpty = '@(Model.Cart.CartItems.Count)';
          if (cartIsEmpty == 0) {
@@ -124,4 +138,4 @@
              $('#place-order').removeClass("disabled");
          }
      });
- </script>}
+    </script>}
