@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-<h2>Index</h2>
+<h2>Orders</h2>
 
 <table class="table">
     <thead>
@@ -21,6 +21,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsDelivered)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPayed)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -68,12 +71,22 @@
                     <td>No</td>
                 }
             }
+            @{
+                if (order.IsPayed)
+                {
+                    <td>Yes</td>
+                }
+                else
+                {
+                    <td>No</td>
+                }
+            }
 
             <td>
                 @Html.DisplayFor(modelItem => order.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@order.OrderId">Edit</a> |
+                <a asp-action="SetDelivered" asp-route-id="@order.OrderId">Change Delivery Status</a> |
                 <a asp-action="Details" asp-route-id="@order.OrderId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@order.OrderId">Delete</a>
             </td>

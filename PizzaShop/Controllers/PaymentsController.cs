@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,15 @@ namespace PizzaShop.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public readonly ICartService _cartService;
 
-        public PaymentsController(ApplicationDbContext context, IEmailSender emailSender)
+        public PaymentsController(ApplicationDbContext context, IEmailSender emailSender, ICartService cartService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _emailSender = emailSender;
+            _userManager = userManager;
+            _cartService = cartService;
         }
 
         // GET: Payments1
@@ -53,12 +58,12 @@ namespace PizzaShop.Controllers
 
         // GET: Payments1/Create
         [AllowAnonymous]
-        public IActionResult Create(int id)
+        public IActionResult Create(Order order)
         {
-            var order = _context.Orders.FirstOrDefault(o => o.OrderId == id);
+            //var order = _context.Orders.FirstOrDefault(o => o.OrderId == id);
             var model = new CreatePaymentViewModel
             {
-                OrderId = id,
+                OrderId = order.OrderId,
                 Order = order,
                 CardHolder = order.Name,
                 Amount = order.TotalAmount
@@ -72,11 +77,17 @@ namespace PizzaShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> Create([Bind("PaymentId,CardHolder,CreditCardNumber,ExpireMonth,ExpireYear,Cvv,OrderId,Amount")] CreatePaymentViewModel model)
+        public async Task<IActionResult> Create(CreatePaymentViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var order = _context.Orders.FirstOrDefault(o => o.OrderId == model.OrderId);
+                var order = model.Order;
+                order.OrderCartItems = _context.CartItems.Where(ci => ci.CartId == _cartService.GetCart().CartId).ToList();
+                if (order.UserId != null)
+                {
+                   order.User = await _userManager.FindByIdAsync(order.UserId); 
+                }
+                
                 var payment = new Payment
                 {
                     Order = order,
@@ -88,14 +99,18 @@ namespace PizzaShop.Controllers
                     ExpireMonth = model.ExpireMonth,
                     ExpireYear = model.ExpireYear
                 };
+                order.Payment = payment;
                 order.IsPayed = true;
+                _context.Add(order);
                 _context.Add(payment);
+                _cartService.ClearCart();
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ThankYou), new { name = payment.Order.Name, amount = payment.Amount, email = payment.Order.Email } );
             }
             return View(model);
         }
 
+        [AllowAnonymous]
         public async Task<ViewResult> ThankYou(string name, int amount, string email)
         {
             var model = new ThankYouViewModel

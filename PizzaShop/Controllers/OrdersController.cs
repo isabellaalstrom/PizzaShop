@@ -87,7 +87,7 @@ namespace PizzaShop.Controllers
                 Phonenumber = model.Phonenumber,
                 Zipcode = model.Zipcode,
                 TotalAmount = model.TotalAmount,
-                OrderCartItems = _context.CartItems.Where(ci => ci.CartId == cart.CartId).ToList(), //todo model.OrderCartItems = null
+                OrderCartItems = _context.CartItems.Where(ci => ci.CartId == cart.CartId).ToList(),
                 Email = model.Email
             };
             if (model.UserId != null)
@@ -95,10 +95,7 @@ namespace PizzaShop.Controllers
                 order.UserId = model.UserId;
                 order.User = await _userManager.FindByIdAsync(model.UserId);
             }
-            _cartService.ClearCart();
-            _context.Add(order);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Create", "Payments", new { id = order.OrderId });
+            return RedirectToAction("Create", "Payments", order );
         }
         
         // GET: Orders
@@ -131,8 +128,7 @@ namespace PizzaShop.Controllers
             return View(order);
         }
 
-        // GET: Orders/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> SetDelivered(int? id)
         {
             if (id == null)
             {
@@ -144,46 +140,21 @@ namespace PizzaShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", order.UserId);
-            return View(order);
-        }
-
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderId,OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber,Delivered")] Order order)
-        {
-            if (id != order.OrderId)
+            
+            if (!order.IsDelivered)
             {
-                return NotFound();
+                order.IsDelivered = true;
             }
-
-            if (ModelState.IsValid)
+            else
             {
-                try
-                {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.OrderId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                order.IsDelivered = false;
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", order.UserId);
-            return View(order);
+            
+            _context.Update(order);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
-
+        
         // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

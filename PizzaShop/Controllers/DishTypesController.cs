@@ -25,6 +25,7 @@ namespace PizzaShop.Controllers
         // GET: DishTypes
         public async Task<IActionResult> Index()
         {
+            ViewBag.Error = TempData["Error"];
             return View(await _context.DishTypes.ToListAsync());
         }
 
@@ -127,13 +128,18 @@ namespace PizzaShop.Controllers
                 return NotFound();
             }
 
-            var dishType = await _context.DishTypes
+            var dishType = await _context.DishTypes.Include(x => x.Dishes)
                 .SingleOrDefaultAsync(m => m.DishTypeId == id);
             if (dishType == null)
             {
                 return NotFound();
             }
-
+            if (dishType.Dishes.Any())
+            {
+               TempData["Error"] = "Some dishes have this dish type, therefore it cannot be removed.";
+               return RedirectToAction("Index");
+            }
+            
             return View(dishType);
         }
 

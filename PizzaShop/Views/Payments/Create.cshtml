@@ -66,6 +66,17 @@
                     <input asp-for="Amount" type="hidden" class="form-control" />
                 </div>
                 <input asp-for="OrderId" type="hidden" class="form-control" />
+                <input asp-for="Order.City" type="hidden" class="form-control" />
+                <input asp-for="Order.Address" type="hidden" class="form-control" />
+                <input asp-for="Order.Email" type="hidden" class="form-control" />
+                <input asp-for="Order.IsDelivered" type="hidden" class="form-control" />
+                <input asp-for="Order.IsPayed" type="hidden" class="form-control" />
+                <input asp-for="Order.Name" type="hidden" class="form-control" />
+                <input asp-for="Order.OrderDateTime" type="hidden" class="form-control" />
+                <input asp-for="Order.Phonenumber" type="hidden" class="form-control" />
+                <input asp-for="Order.TotalAmount" type="hidden" class="form-control" />
+                <input asp-for="Order.Zipcode" type="hidden" class="form-control" />
+                <input asp-for="Order.UserId" type="hidden" class="form-control" />
 
                 <div class="form-group">
                     <input type="submit" value="Submit payment" class="submit success-chalk" />
