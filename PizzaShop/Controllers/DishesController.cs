@@ -140,8 +140,6 @@ namespace PizzaShop.Controllers
                                 if (!(ingredient == dishIngredient.Ingredient && dish.DishId == dishIngredient.DishId))
                                 {
                                     _context.Remove(dishIngredient);
-                                    //_context.Update(dish);
-                                    //_context.Update(ingredient);
                                     _context.SaveChanges();
                                 }
                             }
