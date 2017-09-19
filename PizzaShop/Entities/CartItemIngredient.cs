@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using PizzaShop.Models;
 
 namespace PizzaShop.Entities
 {

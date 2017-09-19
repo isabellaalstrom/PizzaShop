@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.Net.Http.Headers;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PizzaShop.Entities
 {

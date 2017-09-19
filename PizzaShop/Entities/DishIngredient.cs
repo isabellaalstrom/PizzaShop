@@ -1,6 +1,4 @@
-﻿using PizzaShop.Models;
-
-namespace PizzaShop.Entities
+﻿namespace PizzaShop.Entities
 {
     public class DishIngredient
     {

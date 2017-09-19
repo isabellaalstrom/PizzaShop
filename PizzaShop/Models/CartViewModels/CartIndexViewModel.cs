@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PizzaShop.Models.CartViewModels
+﻿namespace PizzaShop.Models.CartViewModels
 {
     public class CartIndexViewModel
     {
