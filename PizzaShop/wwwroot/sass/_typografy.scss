@@ -35,6 +35,10 @@ $ornaments: 'emily lime - bergamot ornaments';
         line-height: 10px;
     }
 
+    .ornament-small {
+        font-size: 30px;
+    }
+
     h1, h2 {
         font-family: $tusj;
         font-weight: normal;
@@ -72,10 +76,16 @@ $ornaments: 'emily lime - bergamot ornaments';
         color: $white-chalk;
     }
 
-    body, p, b {
+    body, p, b, label {
         font-family: $reasons;
         font-weight: normal;
         color: $white-chalk;
+    }
+
+    #submit, .submit {
+        border: none;
+        background: none;
+        padding-left: 0;
     }
 
     .success-chalk {
@@ -95,6 +105,26 @@ $ornaments: 'emily lime - bergamot ornaments';
         font-family: $reasons;
         font-weight: normal;
         color: $red-chalk;
+    }
+
+    .blue-chalk {
+        font-family: $reasons;
+        font-weight: normal;
+        color: $blue-chalk;
+    }
+
+    .pink-chalk {
+        font-family: $reasons;
+        font-weight: normal;
+        color: $pink-chalk;
+        font-size: 20px;
+    }
+
+    .purple-chalk {
+        font-family: $reasons;
+        font-weight: normal;
+        color: $purple-chalk;
+        font-size: 20px;
     }
 
     h4.modal-title {

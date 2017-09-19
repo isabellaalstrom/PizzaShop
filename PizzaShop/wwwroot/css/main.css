@@ -25,6 +25,9 @@
   font-size: 60px;
   line-height: 10px; }
 
+#menu .ornament-small, #footer .ornament-small, #cart .ornament-small, .chalk .ornament-small {
+  font-size: 30px; }
+
 #menu h1, #menu h2, #footer h1, #footer h2, #cart h1, #cart h2, .chalk h1, .chalk h2 {
   font-family: "fff_tusj", sans-serif;
   font-weight: normal;
@@ -55,10 +58,15 @@
   font-weight: normal;
   color: #f4f4f0; }
 
-#menu body, #menu p, #menu b, #footer body, #footer p, #footer b, #cart body, #cart p, #cart b, .chalk body, .chalk p, .chalk b {
+#menu body, #menu p, #menu b, #menu label, #footer body, #footer p, #footer b, #footer label, #cart body, #cart p, #cart b, #cart label, .chalk body, .chalk p, .chalk b, .chalk label {
   font-family: "kgtenthousandreasons", serif;
   font-weight: normal;
   color: #f4f4f0; }
+
+#menu #submit, #menu .submit, #footer #submit, #footer .submit, #cart #submit, #cart .submit, .chalk #submit, .chalk .submit {
+  border: none;
+  background: none;
+  padding-left: 0; }
 
 #menu .success-chalk, #footer .success-chalk, #cart .success-chalk, .chalk .success-chalk {
   font-family: "kgtenthousandreasons", serif;
@@ -75,6 +83,23 @@
   font-family: "kgtenthousandreasons", serif;
   font-weight: normal;
   color: #ed7777; }
+
+#menu .blue-chalk, #footer .blue-chalk, #cart .blue-chalk, .chalk .blue-chalk {
+  font-family: "kgtenthousandreasons", serif;
+  font-weight: normal;
+  color: #94c0cc; }
+
+#menu .pink-chalk, #footer .pink-chalk, #cart .pink-chalk, .chalk .pink-chalk {
+  font-family: "kgtenthousandreasons", serif;
+  font-weight: normal;
+  color: #f2a3bd;
+  font-size: 20px; }
+
+#menu .purple-chalk, #footer .purple-chalk, #cart .purple-chalk, .chalk .purple-chalk {
+  font-family: "kgtenthousandreasons", serif;
+  font-weight: normal;
+  color: #c4adc9;
+  font-size: 20px; }
 
 #menu h4.modal-title, #footer h4.modal-title, #cart h4.modal-title, .chalk h4.modal-title {
   font-family: "Slabo", serif;

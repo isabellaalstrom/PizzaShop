@@ -62,7 +62,7 @@
     {
         var IsChalk = "";
         var path = Context.Request.Path;
-        if (path == ("/Cart") || path == "/Payments/ThankYou" || path == "/Orders/Checkout")
+        if (path == ("/Cart") || path == "/Payments/ThankYou" || path == "/Orders/Checkout" || path.ToString().StartsWith("/Payments/Create/"))
         {
             IsChalk = "chalk";
         }
