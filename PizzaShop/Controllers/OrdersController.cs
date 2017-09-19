@@ -14,6 +14,7 @@ using PizzaShop.Services;
 
 namespace PizzaShop.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,8 +26,9 @@ namespace PizzaShop.Controllers
             _context = context;
             _userManager = userManager;
             _cartService = cartService;
-
         }
+
+        [AllowAnonymous]
         public async Task<IActionResult> Checkout()
         {
             var cart = _cartService.GetCart();
@@ -66,7 +68,7 @@ namespace PizzaShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-
+        [AllowAnonymous]
         public async Task<IActionResult> Checkout([Bind("OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber,Email,OrderCartItems")] CheckoutViewModel model)
         {
             var cart = _cartService.GetCart();
@@ -86,30 +88,20 @@ namespace PizzaShop.Controllers
                 Zipcode = model.Zipcode,
                 TotalAmount = model.TotalAmount,
                 OrderCartItems = _context.CartItems.Where(ci => ci.CartId == cart.CartId).ToList(), //todo model.OrderCartItems = null
-                Email = model.Email,
-                //OrderCartItems = cart.CartItems
+                Email = model.Email
             };
             if (model.UserId != null)
             {
                 order.UserId = model.UserId;
                 order.User = await _userManager.FindByIdAsync(model.UserId);
             }
-            //foreach (var cartItem in order.OrderCartItems)
-            //{
-            //    cartItem.DishId = null;
-            //    cartItem.Dish = null;
-            //}
             _cartService.ClearCart();
             _context.Add(order);
             await _context.SaveChangesAsync();
             return RedirectToAction("Create", "Payments", new { id = order.OrderId });
         }
-
-
-
-
+        
         // GET: Orders
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Orders.Include(o => o.User).Include(c => c.OrderCartItems).ThenInclude(ci => ci.Dish);
@@ -117,7 +109,6 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Orders/Details/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -141,7 +132,6 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Orders/Edit/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -163,7 +153,6 @@ namespace PizzaShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("OrderId,OrderDateTime,TotalAmount,UserId,Name,Address,Zipcode,City,Phonenumber,Delivered")] Order order)
         {
             if (id != order.OrderId)
@@ -196,7 +185,6 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Orders/Delete/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -216,7 +204,6 @@ namespace PizzaShop.Controllers
         }
 
         // POST: Orders/Delete/5
-        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

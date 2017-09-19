@@ -1,6 +1,6 @@
 ﻿@import url(https://fonts.googleapis.com/css?family=Slabo+27px|Ubuntu:400,400i,700);
 .admin-navbar {
-  margin-top: 50px;
+  margin-top: 55px;
   padding-bottom: 10px; }
   .admin-navbar .navbar-link {
     padding-right: 20px; }
@@ -18,65 +18,65 @@
   src: url("../fonts/emily lime - bergamot ornaments.ttf") format("truetype"); }
 
 /*MENU FONTS*/
-#menu .ornament, #footer .ornament, #cart .ornament {
+#menu .ornament, #footer .ornament, #cart .ornament, .chalk .ornament {
   font-family: "emily lime - bergamot ornaments";
   font-weight: normal;
   color: #f4f4f0;
   font-size: 60px;
   line-height: 10px; }
 
-#menu h1, #menu h2, #footer h1, #footer h2, #cart h1, #cart h2 {
+#menu h1, #menu h2, #footer h1, #footer h2, #cart h1, #cart h2, .chalk h1, .chalk h2 {
   font-family: "fff_tusj", sans-serif;
   font-weight: normal;
   color: #f4f4f0; }
 
-#menu h1, #footer h1, #cart h1 {
+#menu h1, #footer h1, #cart h1, .chalk h1 {
   font-size: 100px; }
 
-#menu h2, #footer h2, #cart h2 {
+#menu h2, #footer h2, #cart h2, .chalk h2 {
   font-size: 60px; }
 
-#menu h3.title, #footer h3.title, #cart h3.title {
+#menu h3.title, #footer h3.title, #cart h3.title, .chalk h3.title {
   font-size: 30px; }
 
-#menu h3, #menu h4, #footer h3, #footer h4, #cart h3, #cart h4 {
+#menu h3, #menu h4, #footer h3, #footer h4, #cart h3, #cart h4, .chalk h3, .chalk h4 {
   font-family: "kgtenthousandreasons", serif;
   font-weight: normal;
   color: #f4f4f0; }
 
-#menu th, #footer th, #cart th {
+#menu th, #footer th, #cart th, .chalk th {
   font-family: "fff_tusj", sans-serif;
   font-weight: normal;
   color: #f4f4f0;
   font-size: 30px; }
 
-#menu td, #footer td, #cart td {
+#menu td, #footer td, #cart td, .chalk td {
   font-family: "kgtenthousandreasons", serif;
   font-weight: normal;
   color: #f4f4f0; }
 
-#menu body, #footer body, #cart body {
-  font-family: "fff_tusj", sans-serif;
+#menu body, #menu p, #menu b, #footer body, #footer p, #footer b, #cart body, #cart p, #cart b, .chalk body, .chalk p, .chalk b {
+  font-family: "kgtenthousandreasons", serif;
   font-weight: normal;
   color: #f4f4f0; }
 
-#menu .success-chalk, #footer .success-chalk, #cart .success-chalk {
+#menu .success-chalk, #footer .success-chalk, #cart .success-chalk, .chalk .success-chalk {
   font-family: "kgtenthousandreasons", serif;
   font-weight: normal;
   color: #bcdf8a;
   font-size: 20px; }
 
-#menu .yellow-chalk, #footer .yellow-chalk, #cart .yellow-chalk {
+#menu .yellow-chalk, #footer .yellow-chalk, #cart .yellow-chalk, .chalk .yellow-chalk {
   font-family: "kgtenthousandreasons", serif;
   font-weight: normal;
   color: #f5f9ad; }
 
-#menu .red-chalk, #footer .red-chalk, #cart .red-chalk {
+#menu .red-chalk, #footer .red-chalk, #cart .red-chalk, .chalk .red-chalk {
   font-family: "kgtenthousandreasons", serif;
   font-weight: normal;
   color: #ed7777; }
 
-#menu h4.modal-title, #footer h4.modal-title, #cart h4.modal-title {
+#menu h4.modal-title, #footer h4.modal-title, #cart h4.modal-title, .chalk h4.modal-title {
   font-family: "Slabo", serif;
   font-weight: normal;
   color: #555; }
@@ -129,7 +129,7 @@ button, .btn {
       #footer .social-media a:hover {
         color: #222222; }
 
-.container.body-content.cart {
+.container.body-content.chalk {
   background: none; }
 
 body {

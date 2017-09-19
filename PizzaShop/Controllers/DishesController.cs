@@ -15,6 +15,7 @@ using PizzaShop.Models;
 
 namespace PizzaShop.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DishesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,8 +24,6 @@ namespace PizzaShop.Controllers
         {
             _context = context;
         }
-
-        [Authorize(Roles = "Admin")]
         // GET: Dishes
         public async Task<IActionResult> Index()
         {
@@ -35,7 +34,6 @@ namespace PizzaShop.Controllers
                                 .ToListAsync());
         }
 
-        [Authorize(Roles = "Admin")]
         // GET: Dishes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -58,7 +56,6 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Dishes/Create
-        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -69,7 +66,6 @@ namespace PizzaShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("DishId,DishName,Price")] Dish dish, IFormCollection collection)
         {
             if (ModelState.IsValid)
@@ -88,7 +84,6 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Dishes/Edit/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -109,7 +104,6 @@ namespace PizzaShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("DishId,DishName,Price")] Dish dish, IFormCollection collection)
         {
 
@@ -177,7 +171,6 @@ namespace PizzaShop.Controllers
 
 
         // GET: Dishes/Delete/5
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -198,7 +191,6 @@ namespace PizzaShop.Controllers
         // POST: Dishes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             //todo delete dishingredients too
@@ -223,29 +215,7 @@ namespace PizzaShop.Controllers
                     Ingredient = ingredient
                 });
             }
-            //await _context.SaveChangesAsync();
         }
-
-        //private async void UpdateDishIngredientsListAsync(Dish dish, IEnumerable<string> ingredientCollection)
-        //{
-        //    var ingredients = new List<Ingredient>();
-        //    foreach (var key in ingredientCollection)
-        //    {
-        //        ingredients.Add(_context.Ingredients.First(x => x.IngredientId == Int32.Parse(key.Remove(0, 11))));
-        //    }
-        //    foreach (var ingredient in ingredients)
-        //    {
-        //        if (!DishIngredientExists(dish.DishId, ingredient.IngredientId))
-        //        {
-        //            _context.DishIngredients.Add(new DishIngredient
-        //            {
-        //                Dish = dish,
-        //                Ingredient = ingredient
-        //            });
-        //        }
-        //    }
-        //    await _context.SaveChangesAsync();
-        //}
 
         private bool DishExists(int id)
         {
@@ -257,7 +227,5 @@ namespace PizzaShop.Controllers
             var existingDishIngredients = _context.DishIngredients.Where(d => d.DishId == dishId).Where(i => i.IngredientId == ingredientId);
             return existingDishIngredients.Any();
         }
-
-
     }
 }

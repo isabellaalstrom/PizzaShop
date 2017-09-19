@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using PizzaShop.Services;
 
 namespace PizzaShop.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PaymentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -50,6 +52,7 @@ namespace PizzaShop.Controllers
         }
 
         // GET: Payments1/Create
+        [AllowAnonymous]
         public IActionResult Create(int id)
         {
             var order = _context.Orders.FirstOrDefault(o => o.OrderId == id);
@@ -68,6 +71,7 @@ namespace PizzaShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Create([Bind("PaymentId,CardHolder,CreditCardNumber,ExpireMonth,ExpireYear,Cvv,OrderId,Amount")] CreatePaymentViewModel model)
         {
             if (ModelState.IsValid)

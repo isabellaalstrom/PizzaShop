@@ -3,91 +3,79 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h2>Create</h2>
-
-<h4>Payment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CardHolder" class="control-label"></label>
-                <input asp-for="CardHolder" class="form-control" />
-                <span asp-validation-for="CardHolder" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreditCardNumber" class="control-label"></label>
-                <input asp-for="CreditCardNumber" class="form-control" />
-                <span asp-validation-for="CreditCardNumber" class="text-danger"></span>
-            </div>
-            <div class="control-group row">
-                <label class="control-label col-md-4">Card Expiry Date</label>
-                
-                <div class="col-md-4">
-                    <select class="form-control" asp-for="ExpireMonth">
-                        <option value="01">Jan (01)</option>
-                        <option value="02">Feb (02)</option>
-                        <option value="03">Mar (03)</option>
-                        <option value="04">Apr (04)</option>
-                        <option value="05">May (05)</option>
-                        <option value="06">June (06)</option>
-                        <option value="07">July (07)</option>
-                        <option value="08">Aug (08)</option>
-                        <option value="09">Sep (09)</option>
-                        <option value="10">Oct (10)</option>
-                        <option value="11">Nov (11)</option>
-                        <option value="12">Dec (12)</option>
-                    </select>
-                    <span asp-validation-for="ExpireMonth" class="text-danger"></span>
-                </div>
-                   
-                <div class="col-md-4">
-                    <select class="span2 form-control" asp-for="ExpireYear">
-                        <option value="17">2017</option>
-                        <option value="18">2018</option>
-                        <option value="19">2019</option>
-                        <option value="20">2020</option>
-                        <option value="21">2021</option>
-                        <option value="22">2022</option>
-                        <option value="23">2023</option>
-                    </select>
-                    <span asp-validation-for="ExpireYear" class="text-danger"></span>
-                </div>
-                   
-            </div>
-
-            @*<div class="form-group">
-                <label asp-for="ExpireMonth" class="control-label"></label>
-                <input asp-for="ExpireMonth" class="form-control" />
-                <span asp-validation-for="ExpireMonth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ExpireYear" class="control-label"></label>
-                <input asp-for="ExpireYear" class="form-control" />
-                <span asp-validation-for="ExpireYear" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <label asp-for="Cvv" class="control-label"></label>
-                <input asp-for="Cvv" class="form-control" />
-                <span asp-validation-for="Cvv" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Amount" class="control-label"></label>
-                <p>@Model.Amount.ToString("C")</p>
-                <input asp-for="Amount" type="hidden" class ="form-control"/>
-            </div>
-            <input asp-for="OrderId" type="hidden" class ="form-control"/>
-
-            <div class="form-group">
-                <input type="submit" value="Submit payment" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
-</div>
-
 <div>
-    <a asp-controller="Cart" asp-action="Index">Back to cart</a>
-</div>
+    <h2>Pay your order</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CardHolder" class="control-label"></label>
+                    <input asp-for="CardHolder" class="form-control" />
+                    <span asp-validation-for="CardHolder" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CreditCardNumber" class="control-label"></label>
+                    <input asp-for="CreditCardNumber" class="form-control" />
+                    <span asp-validation-for="CreditCardNumber" class="text-danger"></span>
+                </div>
+                <div class="control-group row">
+                    <label class="control-label col-md-4">Card Expiry Date</label>
 
+                    <div class="col-md-4">
+                        <select class="form-control" asp-for="ExpireMonth">
+                            <option value="01">Jan (01)</option>
+                            <option value="02">Feb (02)</option>
+                            <option value="03">Mar (03)</option>
+                            <option value="04">Apr (04)</option>
+                            <option value="05">May (05)</option>
+                            <option value="06">June (06)</option>
+                            <option value="07">July (07)</option>
+                            <option value="08">Aug (08)</option>
+                            <option value="09">Sep (09)</option>
+                            <option value="10">Oct (10)</option>
+                            <option value="11">Nov (11)</option>
+                            <option value="12">Dec (12)</option>
+                        </select>
+                        <span asp-validation-for="ExpireMonth" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <select class="span2 form-control" asp-for="ExpireYear">
+                            <option value="17">2017</option>
+                            <option value="18">2018</option>
+                            <option value="19">2019</option>
+                            <option value="20">2020</option>
+                            <option value="21">2021</option>
+                            <option value="22">2022</option>
+                            <option value="23">2023</option>
+                        </select>
+                        <span asp-validation-for="ExpireYear" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cvv" class="control-label"></label>
+                    <input asp-for="Cvv" class="form-control" />
+                    <span asp-validation-for="Cvv" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Amount" class="control-label"></label>
+                    <p>@Model.Amount.ToString("C")</p>
+                    <input asp-for="Amount" type="hidden" class="form-control" />
+                </div>
+                <input asp-for="OrderId" type="hidden" class="form-control" />
+
+                <div class="form-group">
+                    <input type="submit" value="Submit payment" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-controller="Cart" asp-action="Index">Back to cart</a>
+    </div>
+
+</div>

@@ -26,7 +26,7 @@ $ornaments: 'emily lime - bergamot ornaments';
 
 
 /*MENU FONTS*/
-#menu, #footer, #cart {
+#menu, #footer, #cart, .chalk {
     .ornament {
         font-family: $ornaments;
         font-weight: normal;
@@ -72,8 +72,8 @@ $ornaments: 'emily lime - bergamot ornaments';
         color: $white-chalk;
     }
 
-    body {
-        font-family: $tusj;
+    body, p, b {
+        font-family: $reasons;
         font-weight: normal;
         color: $white-chalk;
     }

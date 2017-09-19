@@ -17,7 +17,7 @@
             }
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 visible-lg visible-md">
             <img id="img-pizza" src="~/images/g4627.png"/>
         </div>
         <div class="col-md-4">
@@ -27,10 +27,6 @@
             {
                 await Html.RenderPartialAsync("_MenuDishPartial", dish);
             }
-        @*</div>
-        <div class="clearfix"> </div>
-
-        <div class="col-md-4 col-md-offset-8">*@
             <h2 class="title text-center">Pasta</h2>
             <div class="text-center"><span class="ornament">`</span></div>
             @foreach (var dish in Model.PastaDishes)

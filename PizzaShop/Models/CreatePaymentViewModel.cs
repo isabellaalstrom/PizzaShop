@@ -14,8 +14,8 @@ namespace PizzaShop.Models
         [Required]
         [DisplayName("Card holder's name")]
         public string CardHolder { get; set; }
-        [Required]
         [DisplayName("Card number")]
+        [Required, RegularExpression("^[0-9]{10,16}$", ErrorMessage = "Please enter your card number (10-16 digits)")]
         public string CreditCardNumber { get; set; }
         [Required]
         [DisplayName("Month of expiration")]
@@ -23,8 +23,8 @@ namespace PizzaShop.Models
         [Required]
         [DisplayName("Year of expiration")]
         public int ExpireYear { get; set; }
-        [Required]
         [DisplayName("CVV code")]
+        [Required, RegularExpression("^[0-9]{3}$", ErrorMessage = "Please enter your CVV code (3 digits)")]
         public string Cvv { get; set; }
 
         public int Amount { get; set; }
